@@ -492,8 +492,11 @@ export function build(options: CensusUrlOptions): URL {
 		Namespace.check(options.namespace),
 		options.collection,
 		options.identifier
-	];
-	const url = new URL(path.filter(p => p).join('/'), 'http://census.daybreakgames.com');
+	]
+		.filter(segment => segment) // Filter out empty segments.
+		.map(segment => `/${segment}`) // Prefix all segments, even the first.
+		.join('');
+	const url = new URL(path, 'https://census.daybreakgames.com');
 
 	Object.entries(options)
 		// Keep those items that have a value (including false) and are not empty arrays.
