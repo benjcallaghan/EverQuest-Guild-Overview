@@ -12,6 +12,6 @@ export class HomePage {
 	constructor(private census: CensusService) { }
 
 	public async makeRequest() {
-		this.data = await this.census.getCharacterWithAchievements();
+		this.data = await this.census.getCharacter();
 	}
 }

@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { build } from './daybreak-census-options';
+import { build, CensusUrlOptions } from './daybreak-census-options';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class CensusService {
+	private defaultOptions: CensusUrlOptions = {
+		serviceId: 's:benjadorncalculator', // TODO: Replace with vexedence value.
+		verb: 'get',
+		namespace: 'eq2'
+	};
 
 	constructor(private http: HttpClient) { }
 
 	getCollections(): Promise<any> {
-		const url = build({
-			verb: 'get',
-			namespace: 'eq2'
-		});
-		return this.http.get(url.href).toPromise();
+		return this.runQuery({});
 	}
 
 	getAchievements(): Promise<any> {
-		const url = build({
-			verb: 'get',
-			namespace: 'eq2',
+		return this.runQuery({
 			collection: 'achievement',
 			limit: 20,
 			filter: [
@@ -29,27 +28,21 @@ export class CensusService {
 				{ field: 'name', value: 'Perfection', match: 'startsWith' }
 			]
 		});
-		return this.http.get(url.href).toPromise();
 	}
 
 	getCharacter(): Promise<any> {
-		const url = build({
-			verb: 'get',
-			namespace: 'eq2',
+		return this.runQuery({
 			collection: 'character',
 			filter: [
-				{ field: 'id', value: 438086903004 }
+				{ field: 'id', value: 438086903004 },
+				{ field: 'id', value: 438087725383 }
 			],
 			show: ['displayname', 'achievements']
 		});
-		return this.http.get(url.href).toPromise();
 	}
 
 	getCharacterWithAchievements(): Promise<any> {
-		const url = build({
-			serviceId: 's:benjadorncalculator',
-			verb: 'get',
-			namespace: 'eq2',
+		return this.runQuery({
 			collection: 'character',
 			filter: [
 				{ field: 'id', value: 438086903004 }
@@ -62,6 +55,13 @@ export class CensusService {
 				inject_at: 'details',
 				show: ['name', 'event_list']
 			}]
+		});
+	}
+
+	private runQuery(options: Partial<CensusUrlOptions>): Promise<any> {
+		const url = build({
+			...this.defaultOptions,
+			...options
 		});
 		return this.http.get(url.href).toPromise();
 	}
