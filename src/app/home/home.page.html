@@ -8,12 +8,22 @@
 
 <ion-content>
 	<div class="ion-padding">
-		The world is your oyster.
-		<p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will
-			be your guide.</p>
-		<button (click)="makeRequest()">Click Me!</button>
-		<div>
-			{{ data | json }}
-		</div>
+		<ion-item>
+			<ion-label>Character Name</ion-label>
+			<ion-input #searchBox></ion-input>
+		</ion-item>
+		<ion-button (click)="search(searchBox.value)">Click Me!</ion-button>
+		<ion-grid>
+			<ion-row>
+				<ion-col *ngFor="let character of searchResults" size="12" size-md="4">
+					<ion-card>
+						<ion-card-header>
+							<ion-card-subtitle>{{ character.guild?.name }}</ion-card-subtitle>
+							<ion-card-title>{{ character.displayname }}</ion-card-title>
+						</ion-card-header>
+					</ion-card>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
 	</div>
 </ion-content>

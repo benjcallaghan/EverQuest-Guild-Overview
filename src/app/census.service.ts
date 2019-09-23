@@ -14,6 +14,20 @@ export class CensusService {
 
 	constructor(private http: HttpClient) { }
 
+	public getCharacterByName(name: string): Promise<any> {
+		return this.runQuery({
+			collection: 'character',
+			filter: [
+				{ field: 'name.first', value: name, match: 'startsWith' }
+			],
+			exactMatchFirst: true,
+			sort: [
+				{ field: 'displayname' }
+			],
+			limit: 5
+		});
+	}
+
 	getCollections(): Promise<any> {
 		return this.runQuery({});
 	}
@@ -37,7 +51,7 @@ export class CensusService {
 				{ field: 'id', value: 438086903004 },
 				{ field: 'id', value: 438087725383 }
 			],
-			show: ['displayname', 'achievements']
+			// show: ['displayname', 'achievements']
 		});
 	}
 

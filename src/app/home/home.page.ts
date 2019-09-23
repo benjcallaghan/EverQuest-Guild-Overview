@@ -7,11 +7,12 @@ import { CensusService } from '../census.service';
 	styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-	public data: any;
+	public searchResults: any[];
 
 	constructor(private census: CensusService) { }
 
-	public async makeRequest() {
-		this.data = await this.census.getCharacter();
+	public async search(name: string) {
+		const results = await this.census.getCharacterByName(name);
+		this.searchResults = results.character_list;
 	}
 }
