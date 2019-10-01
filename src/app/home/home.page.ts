@@ -9,6 +9,7 @@ import { CensusService } from '../census.service';
 export class HomePage {
 	public searchResults: any[];
 	public myCharacters: any[] = [];
+	public achievements: any[];
 
 	constructor(private census: CensusService) { }
 
@@ -19,5 +20,11 @@ export class HomePage {
 
 	public add(character: any) {
 		this.myCharacters.push(character);
+	}
+
+	public async test() {
+		const results = await this.census.getCharacterWithAchievements();
+		console.log(results);
+		this.achievements = results.character_list;
 	}
 }

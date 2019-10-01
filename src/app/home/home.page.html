@@ -41,5 +41,33 @@
 				</ion-col>
 			</ion-row>
 		</ion-grid>
+		<ion-button (click)="test()">Click me!</ion-button>
+		<h2>Achievements</h2>
+		<ion-grid class="borders">
+			<ion-row class="ion-text-center">
+				<ion-col class="ion-text-left">Name</ion-col>
+				<ion-col>Triumph: Unmeltable!</ion-col>
+				<ion-col>Triumph: One With the Wind</ion-col>
+				<ion-col>Triumph: Weathering the Upheaval</ion-col>
+			</ion-row>
+			<ion-row *ngFor="let character of achievements" class="ion-text-center">
+				<ion-col class="ion-text-left ion-padding-vertical">{{ character.displayname }}</ion-col>
+				<ion-col *ngIf="character.achievements.achievement_list[593978207] || {}; let fire">
+					<ion-icon size="large" [color]="fire.completed_timestamp ? 'success' : 'danger'"
+						[name]="fire.completed_timestamp ? 'checkmark-circle' : 'close-circle'">
+					</ion-icon>
+				</ion-col>
+				<ion-col *ngIf="character.achievements.achievement_list[1476365008] || {}; let air">
+					<ion-icon size="large" [color]="air.completed_timestamp ? 'success' : 'danger'"
+						[name]="air.completed_timestamp ? 'checkmark-circle' : 'close-circle'">
+					</ion-icon>
+				</ion-col>
+				<ion-col *ngIf="character.achievements.achievement_list[2397705800] || {}; let earth">
+					<ion-icon size="large" [color]="earth.completed_timestamp ? 'success' : 'danger'"
+						[name]="earth.completed_timestamp ? 'checkmark-circle' : 'close-circle'">
+					</ion-icon>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
 	</div>
 </ion-content>
