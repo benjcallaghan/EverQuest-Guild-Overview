@@ -22,8 +22,17 @@ export class HomePage {
 		this.myCharacters.push(character);
 	}
 
+	public remove(character: any) {
+		const index = this.myCharacters.indexOf(character);
+		if (index > -1) {
+			this.myCharacters.splice(index, 1);
+		}
+	}
+
 	public async test() {
-		const results = await this.census.getCharacterWithAchievements();
+		const results = await this.census.getCharacterWithAchievements(
+			this.myCharacters.map(c => c.id)
+		);
 		console.log(results);
 		this.achievements = results.character_list;
 	}

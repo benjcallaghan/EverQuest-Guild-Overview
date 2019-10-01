@@ -33,10 +33,13 @@
 			<ion-row>
 				<ion-col *ngFor="let character of myCharacters" size="12" size-md="4">
 					<ion-card>
-						<ion-card-header>
+						<ion-card-header class="ion-float-left">
 							<ion-card-subtitle>{{ character.guild?.name }}</ion-card-subtitle>
 							<ion-card-title>{{ character.displayname }}</ion-card-title>
 						</ion-card-header>
+						<ion-button class="ion-float-right" fill="clear" (click)="remove(character)">
+							<ion-icon name="remove" slot="icon-only"></ion-icon>
+						</ion-button>
 					</ion-card>
 				</ion-col>
 			</ion-row>

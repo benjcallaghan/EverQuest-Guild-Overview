@@ -55,34 +55,30 @@ export class CensusService {
 		});
 	}
 
-	getCharacterWithAchievements(): Promise<any> {
+	getCharacterWithAchievements(characters: number[]): Promise<any> {
 		return this.runQuery({
 			collection: 'character',
-			filter: [
-				{ field: 'id', value: 438086903004 }
-			],
+			filter: characters.map(c => ({ field: 'id', value: c })),
 			show: ['displayname', 'achievements.achievement_list'],
 			join: [{
 				type: 'achievement',
 				on: 'achievements.achievement_list.id',
 				to: 'id',
 				inject_at: 'details',
-				// show: ['name', 'event_list'],
 				terms: [
 					{ field: 'name', value: 'Triumph: Unmeltable!' },
 					{ field: 'name', value: 'Triumph: Weathering the Upheaval' },
 					{ field: 'name', value: 'Triumph: One With the Wind' },
-				]
+				],
 			}],
 			tree: {
 				field: 'id',
 				start: 'achievements.achievement_list'
-			}
+			},
+			sort: [
+				{ field: 'displayname' }
+			]
 		});
-
-		// 2397705800 Triumph: Weathering the Upheaval
-		// 593978207  Triumph: Unmeltable!
-		// 1476365008 Triumph: One With the Wind
 	}
 
 	private runQuery(options: Partial<CensusUrlOptions>): Promise<any> {
