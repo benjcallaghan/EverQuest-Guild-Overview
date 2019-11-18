@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, ViewChildren } from '@angular/core';
+import { IonInput, IonChip } from '@ionic/angular';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
 })
-export class SearchPage implements OnInit {
+export class SearchPage {
+  @ViewChild(IonInput, { static: true }) guildInput: IonInput;
+
   public servers = [
     'Antonia Bayle',
     'Beta',
@@ -19,9 +22,14 @@ export class SearchPage implements OnInit {
     'Thurgadin'
   ];
 
-  constructor() { }
+  public guilds = new Set<string>();
 
-  ngOnInit() {
+  public addGuild() {
+    this.guilds.add(this.guildInput.value);
+    this.guildInput.value = '';
   }
 
+  public removeGuild(guild: string) {
+    this.guilds.delete(guild);
+  }
 }

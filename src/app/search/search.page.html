@@ -6,13 +6,19 @@
 
 <ion-content>
   <ion-item>
-    <ion-label>Server</ion-label>
+    <ion-label class="select">Server</ion-label>
     <ion-select placeholder="Select one..." interface="popover">
       <ion-select-option *ngFor="let server of servers">{{ server }}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item>
     <ion-label>Guild(s)</ion-label>
-    <ion-input type="text"></ion-input>
+    <div class="ion-chip-group">
+      <ion-chip *ngFor="let guild of guilds" slot="start" outline (click)="removeGuild(guild)">
+        <ion-label>{{ guild }}</ion-label>
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip>
+      <ion-input placeholder="Add Guild" (keyup.enter)="addGuild()"></ion-input>
+    </div>
   </ion-item>
 </ion-content>
