@@ -1,5 +1,6 @@
 import { Component, ViewChild, ViewChildren } from '@angular/core';
 import { IonInput, IonChip } from '@ionic/angular';
+import { CensusService } from '../census.service';
 
 @Component({
   selector: 'app-search',
@@ -24,6 +25,8 @@ export class SearchPage {
 
   public guilds = new Set<string>();
 
+  constructor(private census: CensusService) { }
+
   public addGuild() {
     this.guilds.add(this.guildInput.value);
     this.guildInput.value = '';
@@ -31,5 +34,9 @@ export class SearchPage {
 
   public removeGuild(guild: string) {
     this.guilds.delete(guild);
+  }
+
+  public async testService() {
+    const temp = await this.census.getGuilds('', []);
   }
 }

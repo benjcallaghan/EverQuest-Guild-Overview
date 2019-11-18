@@ -81,6 +81,13 @@ export class CensusService {
 		});
 	}
 
+	getGuilds(server: string, names: string[]): Promise<any> {
+		return this.runQuery({
+			collection: 'guild',
+			filter: names.map(n => ({ field: 'name', value: n }))
+		});
+	}
+
 	private runQuery(options: Partial<CensusUrlOptions>): Promise<any> {
 		const url = build({
 			...this.defaultOptions,
