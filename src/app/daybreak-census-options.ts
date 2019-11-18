@@ -390,13 +390,13 @@ function checkFilter(filter: StringFilter | NumberFilter): StringFilter | Number
 }
 
 function buildJoin(join: Join): string {
-	if (join.show && join.show.length && join.hide && join.hide.length) {
+	if (join.show && join.hide) {
 		throw new Error('Show and Hide cannot be used in the same join request.');
 	}
 
 	return Object.entries(join)
-		// Keep those items that have a value (including false) and are not empty arrays.
-		.filter(([, value]) => value || value === false && (!Array.isArray(value) || value.length))
+		// Keep those items that have a value (including false).
+		.filter(([, value]) => value !== undefined)
 		.map(([key, value]) => getProp(key, value))
 		.join('^');
 
@@ -444,7 +444,7 @@ const mappings: Mappings = {
 	has: 'c:has',
 	resolve: (url, value) => {
 		const resolves = value.map(
-			resolve => resolve.show && resolve.show.length ? `${resolve.field}(${resolve.show.join(',')})` : resolve.field
+			resolve => resolve.show ? `${resolve.field}(${resolve.show.join(',')})` : resolve.field
 		);
 		url.searchParams.append('c:resolve', resolves.join(','));
 	},
@@ -461,7 +461,7 @@ const mappings: Mappings = {
 	tree: (url, tree) => {
 		const fields = Object.entries(tree)
 			// Keep those items that have a value (including false).
-			.filter(([, value]) => value || value === false)
+			.filter(([, value]) => value !== undefined)
 			.map(([key, value]) => `${key}:${typeof value === 'boolean' ? +value : value}`);
 		url.searchParams.append('c:tree', fields.join('^'));
 	},
@@ -500,7 +500,7 @@ export function build(options: CensusUrlOptions): URL {
 
 	Object.entries(options)
 		// Keep those items that have a value (including false) and are not empty arrays.
-		.filter(([, value]) => (value || value === false) && (!Array.isArray(value) || value.length))
+		.filter(([, value]) => value !== undefined && (!Array.isArray(value) || value.length))
 		.map(([key, value]) => ({ value, map: mappings[key] }))
 		// Keep those items that have a map.
 		.filter(({ map }) => map)
