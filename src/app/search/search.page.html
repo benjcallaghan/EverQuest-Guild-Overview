@@ -22,5 +22,17 @@
     </div>
   </ion-item>
 
-  <ion-button (click)="testService()">Click me!</ion-button>
+  <ion-button (click)="testService()">Search</ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let guild of searchResults?.guild_list" size="12" size-md="4">
+        <ion-card>
+          <ion-card-header class="ion-float-left">
+            <ion-card-subtitle>{{ guild.member_list.length }} Members</ion-card-subtitle>
+            <ion-card-title>{{ guild.name }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

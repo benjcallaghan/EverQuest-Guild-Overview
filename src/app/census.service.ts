@@ -82,9 +82,14 @@ export class CensusService {
 	}
 
 	getGuilds(server: string, names: string[]): Promise<any> {
+		const filter = names.map(name => ({ field: 'name', value: name }));
+		filter.push({ field: 'world', value: server });
+
 		return this.runQuery({
 			collection: 'guild',
-			filter: names.map(n => ({ field: 'name', value: n }))
+			filter,
+			limit: names.length,
+			show: ['name', 'member_list']
 		});
 	}
 
