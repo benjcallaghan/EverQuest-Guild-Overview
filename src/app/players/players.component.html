@@ -1,7 +1,13 @@
 <ion-header>
 	Player(s)
 </ion-header>
-<ion-input #filterBox (change)="filterChange(filterBox.value)">
-<ion-select placeholder="Select" [(ngModel)]="selected">
-	<ion-option *ngFor="let player of filteredPlayers" [value]="player.name">{{player.name}}</ion-option>
-</ion-select>
+<ion-item>
+	<ion-label>Search</ion-label>
+	<ion-input #filterBox (change)="filterChange(filterBox.value)">
+	</ion-input>
+</ion-item>
+<ion-item>
+	<ion-select [(ngModel)]="selected" multiple>
+		<ion-select-option *ngFor="let player of filteredPlayers">{{player.name}}</ion-select-option>
+	</ion-select>
+</ion-item>

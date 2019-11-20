@@ -14,16 +14,15 @@ export class PlayersComponent implements OnInit {
 
 	ngOnInit() {
 		this.players = PLAYERS;
-		this.filteredPlayers = PLAYERS;
+		this.filteredPlayers = this.players;
 	}
 
-	public async filterChange(searchName: string) {
-		this.filteredPlayers.length = 0;
-		for (var i = 0; i < this.players.length; i++) {
-			if (this.players[i].name.includes(searchName)) {
-				this.filteredPlayers.push(this.filteredPlayers[i]);
-			}
+	public filterChange(searchName: string) {
+		if (searchName != "") {
+			this.filteredPlayers = this.players.filter(player => player.name.toLowerCase().includes(searchName.toLowerCase()));
 		}
-		this.filteredPlayers;
+		else {
+			this.filteredPlayers = this.players;
+		}
 	}
 }

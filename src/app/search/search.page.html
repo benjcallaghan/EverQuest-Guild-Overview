@@ -5,34 +5,35 @@
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label class="select">Server</ion-label>
-    <ion-select placeholder="Select one..." interface="popover">
-      <ion-select-option *ngFor="let server of servers">{{ server }}</ion-select-option>
-    </ion-select>
-  </ion-item>
-  <ion-item>
-    <ion-label>Guild(s)</ion-label>
-    <div class="ion-chip-group">
-      <ion-chip *ngFor="let guild of guilds" slot="start" outline (click)="removeGuild(guild)">
-        <ion-label>{{ guild }}</ion-label>
-        <ion-icon name="close-circle"></ion-icon>
-      </ion-chip>
-      <ion-input placeholder="Add Guild" (keyup.enter)="addGuild()"></ion-input>
-    </div>
-  </ion-item>
+	<ion-item>
+		<ion-label class="select">Server</ion-label>
+		<ion-select placeholder="Select one..." interface="popover">
+			<ion-select-option *ngFor="let server of servers">{{ server }}</ion-select-option>
+		</ion-select>
+	</ion-item>
+	<ion-item>
+		<ion-label>Guild(s)</ion-label>
+		<div class="ion-chip-group">
+			<ion-chip *ngFor="let guild of guilds" slot="start" outline (click)="removeGuild(guild)">
+				<ion-label>{{ guild }}</ion-label>
+				<ion-icon name="close-circle"></ion-icon>
+			</ion-chip>
+			<ion-input placeholder="Add Guild" (keyup.enter)="addGuild()"></ion-input>
+		</div>
+	</ion-item>
 
-  <ion-button (click)="testService()">Search</ion-button>
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let guild of searchResults?.guild_list" size="12" size-md="4">
-        <ion-card>
-          <ion-card-header class="ion-float-left">
-            <ion-card-subtitle>{{ guild.member_list.length }} Members</ion-card-subtitle>
-            <ion-card-title>{{ guild.name }}</ion-card-title>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+	<ion-button (click)="testService()">Search</ion-button>
+	<ion-grid>
+		<ion-row>
+			<ion-col *ngFor="let guild of searchResults?.guild_list" size="12" size-md="4">
+				<ion-card>
+					<ion-card-header class="ion-float-left">
+						<ion-card-subtitle>{{ guild.member_list.length }} Members</ion-card-subtitle>
+						<ion-card-title>{{ guild.name }}</ion-card-title>
+					</ion-card-header>
+				</ion-card>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<app-players></app-players>
 </ion-content>
