@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CensusService } from './census.service';
+import { CensusService } from '../census.service';
 
 @Component({
 	selector: 'app-table',
