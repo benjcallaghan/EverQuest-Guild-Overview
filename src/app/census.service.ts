@@ -21,6 +21,7 @@ export class CensusService {
 				{ field: 'name.first', value: name, match: 'startsWith' }
 			],
 			exactMatchFirst: true,
+			caseSensitive: false,
 			sort: [
 				{ field: 'displayname' }
 			],
