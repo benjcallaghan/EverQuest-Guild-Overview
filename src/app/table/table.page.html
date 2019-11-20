@@ -15,17 +15,23 @@
 				<ion-col>HP</ion-col>
 				<ion-col>Resolve</ion-col>
 				<ion-col>Potency</ion-col>
+				<ion-col>Online</ion-col>
 			</ion-row>
 			<ion-row *ngFor="let character of stats" class="ion-text-center">
 				<ion-col class="ion-text-left ion-padding-vertical">{{ character.displayname }}</ion-col>
-				<ion-col *ngIf="character.stats.HP || {}; let hp">
+				<ion-col>
 					{{ character.hp }} <!--Should display the HP here-->
 				</ion-col>
-				<ion-col *ngIf="character.stats.Resolve || {}; let resolve">
+				<ion-col>
 					{{ character.resolve }} <!--Should display the Resolve here-->
 				</ion-col>
-				<ion-col *ngIf="character.stats.Potency || {}; let potency">
+				<ion-col>
 					{{ character.potency }} <!--Should display the Potency here-->
+				</ion-col>
+				<ion-col>
+					<ion-icon size="large" [color]="character.online ? 'success' : 'danger'"
+						[name]="character.online ? 'checkmark-circle' : 'close-circle'">
+					</ion-icon>
 				</ion-col>
 			</ion-row>
 		</ion-grid>
