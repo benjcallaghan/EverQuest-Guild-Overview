@@ -1,10 +1,10 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Search for Players</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>Search for Players</ion-title>
+	</ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
 	<ion-item>
 		<ion-label class="select">Server</ion-label>
 		<ion-select placeholder="Select one..." interface="popover">
@@ -21,19 +21,18 @@
 			<ion-input placeholder="Add Guild" (keyup.enter)="addGuild()"></ion-input>
 		</div>
 	</ion-item>
+	<ion-button (click)="search()">Search</ion-button>
 
-	<ion-button (click)="testService()">Search</ion-button>
-	<ion-grid>
-		<ion-row>
-			<ion-col *ngFor="let guild of searchResults?.guild_list" size="12" size-md="4">
-				<ion-card>
-					<ion-card-header class="ion-float-left">
-						<ion-card-subtitle>{{ guild.member_list.length }} Members</ion-card-subtitle>
-						<ion-card-title>{{ guild.name }}</ion-card-title>
-					</ion-card-header>
-				</ion-card>
-			</ion-col>
-		</ion-row>
-	</ion-grid>
-	<app-players></app-players>
+	<div *ngIf="searchResults">
+		<h2>Players</h2>
+		<ion-item>
+			<ion-label>Search</ion-label>
+			<ion-input (ionChange)="filterChange($event.detail.value)"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-select [(ngModel)]="selected" multiple>
+				<ion-select-option *ngFor="let player of filteredPlayers">{{player.name}}</ion-select-option>
+			</ion-select>
+		</ion-item>
+	</div>
 </ion-content>

@@ -25,6 +25,7 @@ export class SearchPage {
 	];
 	public guilds = new Set<string>();
 	public searchResults: any;
+	public filteredPlayers: any[];
 
 	constructor(private census: CensusService) { }
 
@@ -37,7 +38,17 @@ export class SearchPage {
 		this.guilds.delete(guild);
 	}
 
-	public async testService() {
+	public async search() {
 		this.searchResults = await this.census.getGuilds(this.serverInput.value, [...this.guilds]);
+		this.filteredPlayers = flatten(this.searchResults.guild_list.map(guild => guild.member_list));
 	}
+
+	public filterChange(searchName: string) {
+		this.filteredPlayers = flatten<any>(this.searchResults.guild_list.map(guild => guild.member_list))
+			.filter(player => player.name.toLowerCase().includes(searchName.toLowerCase()));
+	}
+}
+
+function flatten<T>(arr: T[][]): T[] {
+	return Array.prototype.concat.apply([], arr);
 }
