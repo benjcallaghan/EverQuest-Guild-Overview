@@ -9,7 +9,6 @@
 <ion-content>
 	<div class="ion-padding">
         <h2>Statistics</h2>
-        <button onclick="location.href='/home'" block>Go Back</button>
 		<ion-grid class="borders">
 			<ion-row class="ion-text-center">
 				<ion-col class="ion-text-left">Name</ion-col>
@@ -17,22 +16,16 @@
 				<ion-col>Resolve</ion-col>
 				<ion-col>Potency</ion-col>
 			</ion-row>
-			<ion-row *ngFor="let character of achievements" class="ion-text-center">
+			<ion-row *ngFor="let character of stats" class="ion-text-center">
 				<ion-col class="ion-text-left ion-padding-vertical">{{ character.displayname }}</ion-col>
-				<ion-col *ngIf="character.achievements.achievement_list[593978207] || {}; let hp">
-					<ion-icon size="large" [color]="hp.completed_timestamp ? 'success' : 'danger'"
-						[name]="hp.completed_timestamp ? 'checkmark-circle' : 'NULL'">
-					</ion-icon>
+				<ion-col *ngIf="character.stats.HP || {}; let hp">
+					{{ character.hp }} <!--Should display the HP here-->
 				</ion-col>
-				<ion-col *ngIf="character.achievements.achievement_list[1476365008] || {}; let resolve">
-					<ion-icon size="large" [color]="resolve.completed_timestamp ? 'success' : 'danger'"
-						[name]="resolve.completed_timestamp ? 'checkmark-circle' : 'NULL'">
-					</ion-icon>
+				<ion-col *ngIf="character.stats.Resolve || {}; let resolve">
+					{{ character.resolve }} <!--Should display the Resolve here-->
 				</ion-col>
-				<ion-col *ngIf="character.achievements.achievement_list[2397705800] || {}; let potency">
-					<ion-icon size="large" [color]="potency.completed_timestamp ? 'success' : 'danger'"
-						[name]="potency.completed_timestamp ? 'checkmark-circle' : 'NULL'">
-					</ion-icon>
+				<ion-col *ngIf="character.stats.Potency || {}; let potency">
+					{{ character.potency }} <!--Should display the Potency here-->
 				</ion-col>
 			</ion-row>
 		</ion-grid>

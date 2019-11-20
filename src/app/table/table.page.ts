@@ -10,6 +10,7 @@ export class TablePage {
 	public searchResults: any[];
 	public myCharacters: any[] = [];
 	public achievements: any[];
+	public stats: any[];
 
 	constructor(private census: CensusService) { }
 
