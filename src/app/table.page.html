@@ -1,0 +1,40 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title>
+			Character Table
+		</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="ion-padding">
+        <h2>Statistics</h2>
+        <button onclick="location.href='/home'" block>Go Back</button>
+		<ion-grid class="borders">
+			<ion-row class="ion-text-center">
+				<ion-col class="ion-text-left">Name</ion-col>
+				<ion-col>HP</ion-col>
+				<ion-col>Resolve</ion-col>
+				<ion-col>Potency</ion-col>
+			</ion-row>
+			<ion-row *ngFor="let character of achievements" class="ion-text-center">
+				<ion-col class="ion-text-left ion-padding-vertical">{{ character.displayname }}</ion-col>
+				<ion-col *ngIf="character.achievements.achievement_list[593978207] || {}; let hp">
+					<ion-icon size="large" [color]="hp.completed_timestamp ? 'success' : 'danger'"
+						[name]="hp.completed_timestamp ? 'checkmark-circle' : 'NULL'">
+					</ion-icon>
+				</ion-col>
+				<ion-col *ngIf="character.achievements.achievement_list[1476365008] || {}; let resolve">
+					<ion-icon size="large" [color]="resolve.completed_timestamp ? 'success' : 'danger'"
+						[name]="resolve.completed_timestamp ? 'checkmark-circle' : 'NULL'">
+					</ion-icon>
+				</ion-col>
+				<ion-col *ngIf="character.achievements.achievement_list[2397705800] || {}; let potency">
+					<ion-icon size="large" [color]="potency.completed_timestamp ? 'success' : 'danger'"
+						[name]="potency.completed_timestamp ? 'checkmark-circle' : 'NULL'">
+					</ion-icon>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</div>
+</ion-content>
