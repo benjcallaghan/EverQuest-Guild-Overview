@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonInput, IonSelect } from '@ionic/angular';
 import { CensusService } from '../census.service';
+import { StorageService } from '../storage.service';
 
 @Component({
 	selector: 'app-search',
@@ -27,7 +28,7 @@ export class SearchPage {
 	public searchResults: any;
 	public filteredPlayers: any[];
 
-	constructor(private census: CensusService) { }
+	constructor(private census: CensusService, private storage: StorageService) { }
 
 	public addGuild() {
 		this.guilds.add(this.guildInput.value);
@@ -41,6 +42,7 @@ export class SearchPage {
 	public async search() {
 		this.searchResults = await this.census.getGuilds(this.serverInput.value, [...this.guilds]);
 		this.filteredPlayers = flatten(this.searchResults.guild_list.map(guild => guild.member_list));
+		this.storage.saveCharacters(this.filteredPlayers);
 	}
 
 	public filterChange(searchName: string) {
