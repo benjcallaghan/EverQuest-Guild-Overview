@@ -49,6 +49,11 @@ export class SearchPage {
 		this.filteredPlayers = flatten<any>(this.searchResults.guild_list.map(guild => guild.member_list))
 			.filter(player => player.name.toLowerCase().includes(searchName.toLowerCase()));
 	}
+
+	public updateCharList(event: any) {
+		var i = 0;
+		var j = 1;
+	}
 }
 
 function flatten<T>(arr: T[][]): T[] {

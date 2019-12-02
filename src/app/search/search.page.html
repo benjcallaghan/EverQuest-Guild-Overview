@@ -29,11 +29,13 @@
 			<ion-label>Search</ion-label>
 			<ion-input (ionChange)="filterChange($event.detail.value)"></ion-input>
 		</ion-item>
-		<ion-item>
-			<ion-select [(ngModel)]="selected" multiple>
-				<ion-select-option *ngFor="let player of filteredPlayers" [value]="player">{{player.name}}</ion-select-option>
-			</ion-select>
-		</ion-item>
+		
+		<ion-list>
+			<ion-item *ngFor="let player of filteredPlayers">
+				<ion-label>{{player.name}}</ion-label>
+				<ion-checkbox slot="start" [(ngModel)]="player.selected"></ion-checkbox>
+			</ion-item>
+		</ion-list>
 
 		<ion-button routerLink="/table">Load Stats</ion-button>
 	</div>
