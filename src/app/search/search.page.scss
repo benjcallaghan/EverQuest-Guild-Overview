@@ -20,3 +20,9 @@ ion-select {
     direction: ltr!important;
     padding-left: 8px;
 }
+
+.player-list{
+	height: auto;
+	max-height: 40vh;
+	overflow: scroll;
+}
