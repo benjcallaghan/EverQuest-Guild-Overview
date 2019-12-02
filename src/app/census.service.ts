@@ -45,14 +45,14 @@ export class CensusService {
 		});
 	}
 
-	getCharacter(): Promise<any> {
+	getCharacters(characters: any[]): Promise<any> {
+		const dbid = characters.map(c => ({ field: 'dbid', value: c.dbid }));
+		const names = characters.map(c => ({ field: 'name.first', value: c.name }));
 		return this.runQuery({
 			collection: 'character',
-			filter: [
-				{ field: 'id', value: 438086903004 },
-				{ field: 'id', value: 438087725383 }
-			],
-			// show: ['displayname', 'achievements']
+			filter: dbid.concat(names),
+			limit: characters.length,
+			show: ['stats', 'name'],
 		});
 	}
 

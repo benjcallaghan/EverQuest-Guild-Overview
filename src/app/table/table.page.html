@@ -9,7 +9,7 @@
 <ion-content>
 	<div class="ion-padding">
         <h2>Statistics</h2>
-		<ion-grid class="borders">
+		<ion-grid class="borders" *ngIf="searchResults">
 			<ion-row class="ion-text-center">
 				<ion-col class="ion-text-left">Name</ion-col>
 				<ion-col>HP</ion-col>
@@ -17,16 +17,16 @@
 				<ion-col>Potency</ion-col>
 				<ion-col>Online</ion-col>
 			</ion-row>
-			<ion-row *ngFor="let character of stats" class="ion-text-center">
-				<ion-col class="ion-text-left ion-padding-vertical">{{ character.displayname }}</ion-col>
+			<ion-row *ngFor="let character of searchResults.character_list" class="ion-text-center">
+				<ion-col class="ion-text-left ion-padding-vertical">{{ character.name.first }}</ion-col>
 				<ion-col>
-					{{ character.hp }} <!--Should display the HP here-->
+					{{ character.stats.health.max }} <!--Should display the HP here-->
 				</ion-col>
 				<ion-col>
-					{{ character.resolve }} <!--Should display the Resolve here-->
+					{{ character.stats.combat.resolve }} <!--Should display the Resolve here-->
 				</ion-col>
 				<ion-col>
-					{{ character.potency }} <!--Should display the Potency here-->
+					{{ character.stats.combat.basemodifier }} <!--Should display the Potency here-->
 				</ion-col>
 				<ion-col>
 					<ion-icon size="large" [color]="character.online ? 'success' : 'danger'"
