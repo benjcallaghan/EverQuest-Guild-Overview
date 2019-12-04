@@ -9,13 +9,13 @@
 <ion-content>
 	<div class="ion-padding">
         <h2>Statistics</h2>
-		<ion-grid class="borders striped" *ngIf="searchResults">
-			<ion-row class="ion-text-center">
+		<ion-grid class="striped" *ngIf="searchResults">
+			<ion-row class="ion-text-right ion-text-uppercase text-header">
 				<ion-col class="ion-text-left">Name</ion-col>
 				<ion-col>HP</ion-col>
 				<ion-col>Resolve</ion-col>
 				<ion-col>Potency</ion-col>
-				<ion-col>Online</ion-col>
+				<ion-col class="ion-text-center">Online</ion-col>
 			</ion-row>
 			<ion-row *ngFor="let character of searchResults.character_list" class="ion-text-right">
 				<ion-col class="ion-text-left ion-padding-vertical">{{ character.name.first }}</ion-col>
