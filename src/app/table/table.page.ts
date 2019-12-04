@@ -8,9 +8,7 @@ import { StorageService } from '../storage.service';
 	styleUrls: ['table.page.scss'],
 })
 export class TablePage implements OnInit {
-	public searchResults: any[];
-	public achievements: any[];
-	public stats: any[];
+	public searchResults: any;
 
 	constructor(private census: CensusService, private storage: StorageService) { }
 
@@ -18,5 +16,11 @@ export class TablePage implements OnInit {
 		const characters = this.storage.loadCharacters();
 		this.searchResults = await this.census.getCharacters(characters);
 		console.log(this.searchResults);
+
+		setInterval(() => {
+			for (const character of this.searchResults.character_list) {
+				character.online = Math.random() > 0.5;
+			}
+		}, 5000);
 	}
 }
