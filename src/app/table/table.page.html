@@ -17,18 +17,18 @@
 				<ion-col>Potency</ion-col>
 				<ion-col>Online</ion-col>
 			</ion-row>
-			<ion-row *ngFor="let character of searchResults.character_list" class="ion-text-center">
+			<ion-row *ngFor="let character of searchResults.character_list" class="ion-text-right">
 				<ion-col class="ion-text-left ion-padding-vertical">{{ character.name.first }}</ion-col>
 				<ion-col class="ion-padding-vertical">
-					{{ character.stats.health.max }} <!--Should display the HP here-->
+					{{ character.stats.health.max | number }} <!--Should display the HP here-->
 				</ion-col>
 				<ion-col class="ion-padding-vertical">
-					{{ character.stats.combat.resolve }} <!--Should display the Resolve here-->
+					{{ character.stats.combat.resolve | number:'1.0-0' }} <!--Should display the Resolve here-->
 				</ion-col>
 				<ion-col class="ion-padding-vertical">
-					{{ character.stats.combat.basemodifier }} <!--Should display the Potency here-->
+					{{ character.stats.combat.basemodifier | number:'1.2-2' }} <!--Should display the Potency here-->
 				</ion-col>
-				<ion-col>
+				<ion-col class="ion-text-center">
 					<ion-icon size="large" [color]="character.online ? 'success' : 'danger'"
 						[name]="character.online ? 'checkmark-circle' : 'close-circle'">
 					</ion-icon>
