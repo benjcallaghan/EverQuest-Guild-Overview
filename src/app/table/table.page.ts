@@ -14,7 +14,7 @@ export class TablePage implements OnInit {
 
 	async ngOnInit() {
 		const characters = this.storage.loadCharacters();
-		this.searchResults = await this.census.getCharacters(characters);
+		this.searchResults = await this.census.getCharacters(characters.filter(c => c.selected));
 		console.log(this.searchResults);
 
 		setInterval(() => {
