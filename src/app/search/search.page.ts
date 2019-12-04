@@ -41,13 +41,15 @@ export class SearchPage {
 
 	public async search() {
 		this.searchResults = await this.census.getGuilds(this.serverInput.value, [...this.guilds]);
-		this.filteredPlayers = flatten(this.searchResults.guild_list.map(guild => guild.member_list));
+		this.filteredPlayers = flatten<any>(this.searchResults.guild_list.map(guild => guild.member_list))
+			.sort((x, y) => x.name.localeCompare(y.name));
 		this.storage.saveCharacters(this.filteredPlayers);
 	}
 
 	public filterChange(searchName: string) {
 		this.filteredPlayers = flatten<any>(this.searchResults.guild_list.map(guild => guild.member_list))
-			.filter(player => player.name.toLowerCase().includes(searchName.toLowerCase()));
+			.filter(player => player.name.toLowerCase().includes(searchName.toLowerCase()))
+			.sort((x, y) => x.name.localeCompare(y.name));
 	}
 }
 
