@@ -53,6 +53,7 @@ export class CensusService {
 			filter: dbid.concat(names),
 			limit: characters.length,
 			show: ['stats', 'name'],
+			sort: [{ field: 'name.first' }]
 		});
 	}
 
