@@ -52,7 +52,7 @@ export class CensusService {
 			collection: 'character',
 			filter: dbid.concat(names),
 			limit: characters.length,
-			show: ['stats', 'name'],
+			show: ['stats', 'name', 'type'],
 			sort: [{ field: 'name.first' }]
 		});
 	}
