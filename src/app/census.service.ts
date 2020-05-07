@@ -35,7 +35,7 @@ export class CensusService {
 			collection: 'character_misc',
 			filter: [
 				// { field: 'id', value: 438086903004 },
-				//{ field: 'quest_list.stage', value: 'The Crimson Ba', match: 'contains' }
+				// { field: 'quest_list.stage', value: 'The Crimson Ba', match: 'contains' }
 			],
 			show: ['quest_list'],
 			limit: 50

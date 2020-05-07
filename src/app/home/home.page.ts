@@ -53,4 +53,9 @@ export class HomePage implements OnInit {
 		});
 		await this.storage.set('characters', this.characters);
 	}
+
+	public async remove(index: number) {
+		this.characters.splice(index, 1);
+		await this.storage.set('characters', this.characters);
+	}
 }

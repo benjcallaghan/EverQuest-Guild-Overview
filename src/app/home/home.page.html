@@ -43,8 +43,13 @@
 			<th>Wracklands</th>
 			<th>Hallowed Halls</th>
 		</tr>
-		<tr *ngFor="let character of characters">
-			<td class="ion-text-start">{{ character.name }}</td>
+		<tr *ngFor="let character of characters; let index = index">
+			<td class="ion-text-start">
+				{{ character.name }}
+				<ion-button class="ion-float-right" fill="clear" (click)="remove(index)">
+					<ion-icon name="remove" color="danger"></ion-icon>
+				</ion-button>
+			</td>
 			<td>
 				<ion-icon [name]="character.blinding.icon" [color]="character.blinding.color" [title]="character.blinding.tooltip" size="large"></ion-icon>
 			</td>
