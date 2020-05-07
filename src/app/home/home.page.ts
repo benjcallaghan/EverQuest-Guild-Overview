@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Storage } from '@ionic/storage';
 import { CensusService } from '../census.service';
 import { Character } from '../character';
 
@@ -7,18 +8,23 @@ import { Character } from '../character';
 	templateUrl: 'home.page.html',
 	styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
 	public characters: Character[] = [];
 	public searchResults: any[] = [];
 	public searching = false;
 	public refreshing = false;
 
-	constructor(private census: CensusService) { }
+	constructor(private census: CensusService, private storage: Storage) { }
+
+	async ngOnInit() {
+		this.characters = await this.storage.get('characters') || [];
+	}
 
 	public async refresh() {
 		this.refreshing = true;
 		try {
 			this.characters = await this.census.getLeyOfTheLandProgress(this.characters);
+			await this.storage.set('characters', this.characters);
 		} finally {
 			this.refreshing = false;
 		}
@@ -34,7 +40,7 @@ export class HomePage {
 		}
 	}
 
-	public add(character: any) {
+	public async add(character: any) {
 		this.characters.push({
 			id: character.id,
 			name: character.name.first,
@@ -45,5 +51,6 @@ export class HomePage {
 			wracklands: { icon: 'help', tooltip: 'Refresh to load data' },
 			hallowedHalls: { icon: 'help', tooltip: 'Refresh to load data' },
 		});
+		await this.storage.set('characters', this.characters);
 	}
 }
