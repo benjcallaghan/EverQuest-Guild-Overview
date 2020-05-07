@@ -12,13 +12,7 @@ export class HomePage implements OnInit {
 	constructor(private census: CensusService) { }
 
 	async ngOnInit() {
-		let results = await this.census.getCollections();
-		console.log(results);
-
-		results = await this.census.getQuests();
-		console.log(results);
-
-		results = await this.census.getBenj();
+		let results = await this.census.test();
 		console.log(results);
 
 		this.characters = await this.census.getLeyOfTheLandProgress([

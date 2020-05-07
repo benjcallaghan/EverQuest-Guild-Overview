@@ -29,37 +29,15 @@ export class CensusService {
 		});
 	}
 
-	getCollections(): Promise<any> {
-		return this.runQuery({});
-	}
-
-	getQuests(): Promise<any> {
-		return this.runQuery({
-			collection: 'quest',
-			// filter: [
-			// 	// { field: 'name', value: 'Ley of the Land: The Nature of Shadows' }
-			// 	{ field: 'category', value: 'Heritage' }
-			// ],
-			identifier: '460976134',
-			limit: 50
-		});
-	}
-
-	getBenj(): Promise<any> {
-		return this.runQuery({
-			collection: 'character_misc',
-			identifier: '438086903004'
-		});
-	}
-
-	getCharacterMiscs(): Promise<any> {
+	test(): Promise<any> {
 		return this.runQuery({
 			collection: 'character_misc',
 			filter: [
-				{ field: 'id', value: '438086903004' },
-				{ field: 'id', value: '450973806874' }
+				// { field: 'id', value: 438086903004 },
+				//{ field: 'quest_list.stage', value: 'The Crimson Ba', match: 'contains' }
 			],
-			limit: 2
+			show: ['quest_list'],
+			limit: 50
 		});
 	}
 
@@ -77,11 +55,11 @@ export class CensusService {
 		return miscs.character_misc_list.map(misc => ({
 			id: misc.id,
 			name: characters.find(c => c.id === misc.id).name,
-			blinding: { icon: 'help', tooltip: 'Status Unknown' },
-			aurelianCoast: { icon: 'help', tooltip: 'Status Unknown' },
-			sanctusSeru: { icon: 'help', tooltip: 'Status Unknown' },
+			blinding: getQuestStatus(misc, 2233296293),
+			aurelianCoast: getQuestStatus(misc, 471086111),
+			sanctusSeru: getQuestStatus(misc, 1796408457),
 			fordelMidst: getQuestStatus(misc, 4118253866),
-			wracklands: { icon: 'help', tooltip: 'Status Unknown' },
+			wracklands: getQuestStatus(misc, 2188419516),
 			hallowedHalls: getQuestStatus(misc, 460976134)
 		}));
 
