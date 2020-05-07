@@ -19,12 +19,16 @@ export class CensusService {
 		return this.runQuery({
 			collection: 'character',
 			filter: [
-				{ field: 'name.first', value: name, match: 'startsWith' }
+				{ field: 'name.first_lower', value: name.toLowerCase(), match: 'startsWith' }
 			],
 			exactMatchFirst: true,
-			caseSensitive: false,
 			sort: [
 				{ field: 'displayname' }
+			],
+			show: [
+				'displayname',
+				'name',
+				'guild'
 			],
 			limit: 8
 		});
