@@ -7,7 +7,7 @@ import { build, CensusUrlOptions } from './daybreak-census-options';
 })
 export class CensusService {
 	private defaultOptions: CensusUrlOptions = {
-		serviceId: 's:benjadorncalculator', // TODO: Replace with vexedence value.
+		serviceId: 's:benjadorncalculator',
 		verb: 'get',
 		namespace: 'eq2'
 	};
@@ -25,7 +25,7 @@ export class CensusService {
 			sort: [
 				{ field: 'displayname' }
 			],
-			limit: 6
+			limit: 8
 		});
 	}
 
