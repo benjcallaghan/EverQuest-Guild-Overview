@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { build, CensusUrlOptions } from './daybreak-census-options';
+import { Character, QuestStatus } from './character';
 
 @Injectable({
 	providedIn: 'root'
@@ -41,7 +42,7 @@ export class CensusService {
 		});
 	}
 
-	async getLeyOfTheLandProgress(characters: any[]): Promise<any> {
+	async getLeyOfTheLandProgress(characters: Character[]): Promise<Character[]> {
 		const miscs = await this.runQuery({
 			collection: 'character_misc',
 			filter: characters.map(c => ({ field: 'id', value: c.id })),
@@ -63,7 +64,7 @@ export class CensusService {
 			hallowedHalls: getQuestStatus(misc, 460976134)
 		}));
 
-		function getQuestStatus(misc: any, crc: number) {
+		function getQuestStatus(misc: any, crc: number): QuestStatus {
 			if (misc.completed_quest_list.map(q => q.crc).includes(crc)) {
 				return { icon: 'checkmark-circle', color: 'success', tooltip: 'Complete' };
 			} else if (misc.quest_list.map(q => q.crc).includes(crc)) {

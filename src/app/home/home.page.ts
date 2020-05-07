@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CensusService } from '../census.service';
+import { Character } from '../character';
 
 @Component({
 	selector: 'app-home',
@@ -7,7 +8,7 @@ import { CensusService } from '../census.service';
 	styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-	public characters: any[] = [];
+	public characters: Character[] = [];
 	public searchResults: any[] = [];
 	public searching = false;
 	public refreshing = false;
