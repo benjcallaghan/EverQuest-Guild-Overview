@@ -35,6 +35,7 @@
 	<ion-spinner *ngIf="refreshing"></ion-spinner>
 	<table class="ion-text-center">
 		<tr>
+			<th></th>
 			<th>Character</th>
 			<th>The Blinding</th>
 			<th>Aurelian Coast</th>
@@ -44,29 +45,37 @@
 			<th>Hallowed Halls</th>
 		</tr>
 		<tr *ngFor="let character of characters; let index = index">
-			<td class="ion-text-start">
-				{{ character.name }}
+			<td>
 				<ion-button class="ion-float-right" fill="clear" (click)="remove(index)">
 					<ion-icon name="remove" color="danger"></ion-icon>
 				</ion-button>
 			</td>
-			<td>
-				<ion-icon [name]="character.blinding.icon" [color]="character.blinding.color" [title]="character.blinding.tooltip" size="large"></ion-icon>
+			<td class="ion-text-start">
+				{{ character.name }}
 			</td>
 			<td>
-				<ion-icon [name]="character.aurelianCoast.icon" [color]="character.aurelianCoast.color" [title]="character.aurelianCoast.tooltip" size="large"></ion-icon>
+				<ion-icon [name]="character.blinding.icon" [color]="character.blinding.color"
+					[title]="character.blinding.tooltip" size="large"></ion-icon>
 			</td>
 			<td>
-				<ion-icon [name]="character.sanctusSeru.icon" [color]="character.sanctusSeru.color" [title]="character.sanctusSeru.tooltip" size="large"></ion-icon>
+				<ion-icon [name]="character.aurelianCoast.icon" [color]="character.aurelianCoast.color"
+					[title]="character.aurelianCoast.tooltip" size="large"></ion-icon>
 			</td>
 			<td>
-				<ion-icon [name]="character.fordelMidst.icon" [color]="character.fordelMidst.color" [title]="character.fordelMidst.tooltip" size="large"></ion-icon>
+				<ion-icon [name]="character.sanctusSeru.icon" [color]="character.sanctusSeru.color"
+					[title]="character.sanctusSeru.tooltip" size="large"></ion-icon>
 			</td>
 			<td>
-				<ion-icon [name]="character.wracklands.icon" [color]="character.wracklands.color" [title]="character.wracklands.tooltip" size="large"></ion-icon>
+				<ion-icon [name]="character.fordelMidst.icon" [color]="character.fordelMidst.color"
+					[title]="character.fordelMidst.tooltip" size="large"></ion-icon>
 			</td>
 			<td>
-				<ion-icon [name]="character.hallowedHalls.icon" [color]="character.hallowedHalls.color" [title]="character.hallowedHalls.tooltip" size="large"></ion-icon>
+				<ion-icon [name]="character.wracklands.icon" [color]="character.wracklands.color"
+					[title]="character.wracklands.tooltip" size="large"></ion-icon>
+			</td>
+			<td>
+				<ion-icon [name]="character.hallowedHalls.icon" [color]="character.hallowedHalls.color"
+					[title]="character.hallowedHalls.tooltip" size="large"></ion-icon>
 			</td>
 		</tr>
 	</table>
