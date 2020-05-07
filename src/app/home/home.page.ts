@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CensusService } from '../census.service';
 
 @Component({
@@ -6,34 +6,24 @@ import { CensusService } from '../census.service';
 	templateUrl: 'home.page.html',
 	styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-	public searchResults: any[];
-	public myCharacters: any[] = [];
-	public achievements: any[];
+export class HomePage implements OnInit {
+	public characters: any[] = [];
 
 	constructor(private census: CensusService) { }
 
-	public async search(name: string) {
-		const results = await this.census.getCharacterByName(name);
-		this.searchResults = results.character_list;
-	}
-
-	public add(character: any) {
-		this.myCharacters.push(character);
-	}
-
-	public remove(character: any) {
-		const index = this.myCharacters.indexOf(character);
-		if (index > -1) {
-			this.myCharacters.splice(index, 1);
-		}
-	}
-
-	public async test() {
-		const results = await this.census.getCharacterWithAchievements(
-			this.myCharacters.map(c => c.id)
-		);
+	async ngOnInit() {
+		let results = await this.census.getCollections();
 		console.log(results);
-		this.achievements = results.character_list;
+
+		results = await this.census.getQuests();
+		console.log(results);
+
+		results = await this.census.getBenj();
+		console.log(results);
+
+		this.characters = await this.census.getLeyOfTheLandProgress([
+			{ id: 438086903004, name: 'Benj' },
+			{ id: 450973806874, name: 'Piggle' }
+		]);
 	}
 }

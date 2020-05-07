@@ -33,6 +33,73 @@ export class CensusService {
 		return this.runQuery({});
 	}
 
+	getQuests(): Promise<any> {
+		return this.runQuery({
+			collection: 'quest',
+			// filter: [
+			// 	// { field: 'name', value: 'Ley of the Land: The Nature of Shadows' }
+			// 	{ field: 'category', value: 'Heritage' }
+			// ],
+			identifier: '460976134',
+			limit: 50
+		});
+	}
+
+	getBenj(): Promise<any> {
+		return this.runQuery({
+			collection: 'character_misc',
+			identifier: '438086903004'
+		});
+	}
+
+	getCharacterMiscs(): Promise<any> {
+		return this.runQuery({
+			collection: 'character_misc',
+			filter: [
+				{ field: 'id', value: '438086903004' },
+				{ field: 'id', value: '450973806874' }
+			],
+			limit: 2
+		});
+	}
+
+	async getLeyOfTheLandProgress(characters: any[]): Promise<any> {
+		const miscs = await this.runQuery({
+			collection: 'character_misc',
+			filter: characters.map(c => ({ field: 'id', value: c.id })),
+			show: [
+				'completed_quest_list',
+				'quest_list',
+			],
+			limit: characters.length
+		});
+
+		return miscs.character_misc_list.map(misc => ({
+			id: misc.id,
+			name: characters.find(c => c.id === misc.id).name,
+			blinding: { icon: 'help', tooltip: 'Status Unknown' },
+			aurelianCoast: { icon: 'help', tooltip: 'Status Unknown' },
+			sanctusSeru: { icon: 'help', tooltip: 'Status Unknown' },
+			fordelMidst: getQuestStatus(misc, 4118253866),
+			wracklands: { icon: 'help', tooltip: 'Status Unknown' },
+			hallowedHalls: getQuestStatus(misc, 460976134)
+		}));
+
+		function getQuestStatus(misc: any, crc: number) {
+			if (misc.completed_quest_list.map(q => q.crc).includes(crc)) {
+				return { icon: 'checkmark-circle', color: 'success', tooltip: 'Complete' };
+			} else if (misc.quest_list.map(q => q.crc).includes(crc)) {
+				return {
+					icon: 'alert',
+					color: 'warning',
+					tooltip: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => step.progress_text).join('\n')
+				};
+			} else {
+				return { tooltip: 'Not Started' };
+			}
+		}
+	}
+
 	getAchievements(): Promise<any> {
 		return this.runQuery({
 			collection: 'achievement',
