@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "vexedence-tracker": {
+      "hosting": {
+        "app": [
+          "vexedence-tracker"
+        ]
+      }
+    }
+  }
+}
