@@ -31,7 +31,7 @@ export class SearchPage {
 	constructor(private census: CensusService, private storage: StorageService) { }
 
 	public addGuild() {
-		this.guilds.add(this.guildInput.value);
+		this.guilds.add(this.guildInput.value as string);
 		this.guildInput.value = '';
 	}
 
