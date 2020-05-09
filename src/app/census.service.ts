@@ -60,6 +60,7 @@ export class CensusService {
         return miscs.character_misc_list.map(misc => ({
             id: misc.id,
             name: characters.find(c => c.id === misc.id).name,
+            weekly: getWeeklyStatus(misc, 3347608555),
             blinding: getQuestStatus(misc, 2233296293),
             aurelianCoast: getQuestStatus(misc, 471086111),
             sanctusSeru: getQuestStatus(misc, 1796408457),
@@ -76,6 +77,20 @@ export class CensusService {
                     icon: 'alert-circle',
                     color: 'warning',
                     tooltip: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => step.progress_text).join('\n')
+                };
+            } else {
+                return { tooltip: 'Not Started' };
+            }
+        }
+
+        function getWeeklyStatus(misc: any, crc: number): QuestStatus {
+            if (misc.completed_quest_list.map(q => q.crc).includes(crc)) {
+                return { icon: 'checkmark-circle', color: 'success', tooltip: 'Complete' };
+            } else if (misc.quest_list.map(q => q.crc).includes(crc)) {
+                return {
+                    icon: 'alert-circle',
+                    color: 'warning',
+                    tooltip: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => `${step.progress}/${step.quota}`)[0]
                 };
             } else {
                 return { tooltip: 'Not Started' };

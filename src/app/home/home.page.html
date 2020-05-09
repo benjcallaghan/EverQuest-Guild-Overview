@@ -37,6 +37,7 @@
 		<tr>
 			<th></th>
 			<th>Character</th>
+			<th>Weekly</th>
 			<th>The Blinding</th>
 			<th>Aurelian Coast</th>
 			<th>Sanctus Seru</th>
@@ -52,6 +53,10 @@
 			</td>
 			<td class="ion-text-start">
 				{{ character.name }}
+			</td>
+			<td>
+				<ion-icon [name]="character.weekly.icon" [color]="character.weekly.color"
+					[title]="character.weekly.tooltip" size="large"></ion-icon>
 			</td>
 			<td>
 				<ion-icon [name]="character.blinding.icon" [color]="character.blinding.color"

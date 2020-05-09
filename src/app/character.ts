@@ -1,16 +1,17 @@
 export interface Character {
-	id: number;
-	name: string;
-	blinding: QuestStatus;
-	aurelianCoast: QuestStatus;
-	sanctusSeru: QuestStatus;
-	fordelMidst: QuestStatus;
-	wracklands: QuestStatus;
-	hallowedHalls: QuestStatus;
+    id: number;
+    name: string;
+    weekly: QuestStatus;
+    blinding: QuestStatus;
+    aurelianCoast: QuestStatus;
+    sanctusSeru: QuestStatus;
+    fordelMidst: QuestStatus;
+    wracklands: QuestStatus;
+    hallowedHalls: QuestStatus;
 }
 
 export interface QuestStatus {
-	icon?: string;
-	color?: string;
-	tooltip: string;
+    icon?: string;
+    color?: string;
+    tooltip: string;
 }

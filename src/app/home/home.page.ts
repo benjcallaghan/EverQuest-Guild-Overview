@@ -44,6 +44,7 @@ export class HomePage implements OnInit {
         this.characters.push({
             id: character.id,
             name: character.name.first,
+            weekly: { icon: 'help', tooltip: 'Refresh to load data' },
             blinding: { icon: 'help', tooltip: 'Refresh to load data' },
             aurelianCoast: { icon: 'help', tooltip: 'Refresh to load data' },
             sanctusSeru: { icon: 'help', tooltip: 'Refresh to load data' },
