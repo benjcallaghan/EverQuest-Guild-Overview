@@ -67,7 +67,7 @@ export class CensusService {
             fordelMidst: getQuestStatus(misc, 4118253866),
             wracklands: getQuestStatus(misc, 2188419516),
             hallowedHalls: getQuestStatus(misc, 460976134)
-        }));
+        })).sort((a, b) => a.name.localeCompare(b.name));
 
         function getQuestStatus(misc: any, crc: number): QuestStatus {
             if (misc.completed_quest_list.map(q => q.crc).includes(crc)) {
