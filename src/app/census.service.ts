@@ -66,7 +66,8 @@ export class CensusService {
             sanctusSeru: getQuestStatus(misc, 1796408457),
             fordelMidst: getQuestStatus(misc, 4118253866),
             wracklands: getQuestStatus(misc, 2188419516),
-            hallowedHalls: getQuestStatus(misc, 460976134)
+            hallowedHalls: getQuestStatus(misc, 460976134),
+            challenge1: getQuestStatus(misc, 1820246160)
         })).sort((a, b) => a.name.localeCompare(b.name));
 
         function getQuestStatus(misc: any, crc: number): QuestStatus {

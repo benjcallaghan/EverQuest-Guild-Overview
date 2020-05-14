@@ -44,6 +44,7 @@
 			<th>Fordel Midst</th>
 			<th>Wracklands</th>
 			<th>Hallowed Halls</th>
+			<th>Tier 1 Challenge</th>
 		</tr>
 		<tr *ngFor="let character of characters; let index = index">
 			<td>
@@ -81,6 +82,10 @@
 			<td>
 				<ion-icon [name]="character.hallowedHalls.icon" [color]="character.hallowedHalls.color"
 					[title]="character.hallowedHalls.tooltip" size="large"></ion-icon>
+			</td>
+			<td>
+				<ion-icon [name]="character.challenge1.icon" [color]="character.challenge1.color"
+					[title]="character.challenge1.tooltip" size="large"></ion-icon>
 			</td>
 		</tr>
 	</table>
