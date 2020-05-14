@@ -44,13 +44,13 @@ export class HomePage implements OnInit {
         this.characters.push({
             id: character.id,
             name: character.name.first,
-            weekly: { icon: 'help', tooltip: 'Refresh to load data' },
-            blinding: { icon: 'help', tooltip: 'Refresh to load data' },
-            aurelianCoast: { icon: 'help', tooltip: 'Refresh to load data' },
-            sanctusSeru: { icon: 'help', tooltip: 'Refresh to load data' },
-            fordelMidst: { icon: 'help', tooltip: 'Refresh to load data' },
-            wracklands: { icon: 'help', tooltip: 'Refresh to load data' },
-            hallowedHalls: { icon: 'help', tooltip: 'Refresh to load data' },
+            weekly: { status: 'unknown' },
+            blinding: { status: 'unknown' },
+            aurelianCoast: { status: 'unknown' },
+            sanctusSeru: { status: 'unknown' },
+            fordelMidst: { status: 'unknown' },
+            wracklands: { status: 'unknown' },
+            hallowedHalls: { status: 'unknown' },
         });
         await this.storage.set('characters', this.characters);
     }

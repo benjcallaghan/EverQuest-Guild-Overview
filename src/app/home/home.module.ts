@@ -6,20 +6,22 @@ import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { HomePage } from './home.page';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-	imports: [
-		CommonModule,
-		FormsModule,
-		IonicModule,
-		IonicStorageModule,
-		RouterModule.forChild([
-			{
-				path: '',
-				component: HomePage
-			}
-		])
-	],
-	declarations: [HomePage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        IonicStorageModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: HomePage
+            }
+        ]),
+        SharedModule
+    ],
+    declarations: [HomePage]
 })
 export class HomePageModule { }

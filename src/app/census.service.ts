@@ -72,29 +72,27 @@ export class CensusService {
 
         function getQuestStatus(misc: any, crc: number): QuestStatus {
             if (misc.completed_quest_list.map(q => q.crc).includes(crc)) {
-                return { icon: 'checkmark-circle', color: 'success', tooltip: 'Complete' };
+                return { status: 'complete' };
             } else if (misc.quest_list.map(q => q.crc).includes(crc)) {
                 return {
-                    icon: 'alert-circle',
-                    color: 'warning',
-                    tooltip: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => step.progress_text).join('\n')
+                    status: 'in-progress',
+                    text: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => step.progress_text).join('\n')
                 };
             } else {
-                return { tooltip: 'Not Started' };
+                return { status: 'not-started' };
             }
         }
 
         function getWeeklyStatus(misc: any, crc: number): QuestStatus {
             if (misc.completed_quest_list.map(q => q.crc).includes(crc)) {
-                return { icon: 'checkmark-circle', color: 'success', tooltip: 'Complete' };
+                return { status: 'complete' };
             } else if (misc.quest_list.map(q => q.crc).includes(crc)) {
                 return {
-                    icon: 'alert-circle',
-                    color: 'warning',
-                    tooltip: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => `${step.progress}/${step.quota}`)[0]
+                    status: 'in-progress',
+                    text: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => `${step.progress}/${step.quota}`)[0]
                 };
             } else {
-                return { tooltip: 'Not Started' };
+                return { status: 'not-started' };
             }
         }
     }

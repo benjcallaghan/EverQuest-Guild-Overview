@@ -30,64 +30,66 @@
 		</ion-row>
 	</ion-grid>
 
-	<h1>Ley of the Land</h1>
+	<h1>Blood of Luclin</h1>
 	<ion-button (click)="refresh()">Refresh</ion-button>
 	<ion-spinner *ngIf="refreshing"></ion-spinner>
 	<table class="ion-text-center">
-		<tr>
-			<th></th>
-			<th>Character</th>
-			<th>Weekly</th>
-			<th>The Blinding</th>
-			<th>Aurelian Coast</th>
-			<th>Sanctus Seru</th>
-			<th>Fordel Midst</th>
-			<th>Wracklands</th>
-			<th>Hallowed Halls</th>
-			<th>Tier 1 Challenge</th>
-		</tr>
-		<tr *ngFor="let character of characters; let index = index">
-			<td>
-				<ion-button class="ion-float-right" fill="clear" (click)="remove(index)">
-					<ion-icon name="remove" color="danger"></ion-icon>
-				</ion-button>
-			</td>
-			<td class="ion-text-start">
-				{{ character.name }}
-			</td>
-			<td>
-				<ion-icon [name]="character.weekly.icon" [color]="character.weekly.color"
-					[title]="character.weekly.tooltip" size="large"></ion-icon>
-			</td>
-			<td>
-				<ion-icon [name]="character.blinding.icon" [color]="character.blinding.color"
-					[title]="character.blinding.tooltip" size="large"></ion-icon>
-			</td>
-			<td>
-				<ion-icon [name]="character.aurelianCoast.icon" [color]="character.aurelianCoast.color"
-					[title]="character.aurelianCoast.tooltip" size="large"></ion-icon>
-			</td>
-			<td>
-				<ion-icon [name]="character.sanctusSeru.icon" [color]="character.sanctusSeru.color"
-					[title]="character.sanctusSeru.tooltip" size="large"></ion-icon>
-			</td>
-			<td>
-				<ion-icon [name]="character.fordelMidst.icon" [color]="character.fordelMidst.color"
-					[title]="character.fordelMidst.tooltip" size="large"></ion-icon>
-			</td>
-			<td>
-				<ion-icon [name]="character.wracklands.icon" [color]="character.wracklands.color"
-					[title]="character.wracklands.tooltip" size="large"></ion-icon>
-			</td>
-			<td>
-				<ion-icon [name]="character.hallowedHalls.icon" [color]="character.hallowedHalls.color"
-					[title]="character.hallowedHalls.tooltip" size="large"></ion-icon>
-			</td>
-			<td>
-				<ion-icon [name]="character.challenge1.icon" [color]="character.challenge1.color"
-					[title]="character.challenge1.tooltip" size="large"></ion-icon>
-			</td>
-		</tr>
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th colspan="7">Ley of the Land</th>
+			</tr>
+			<tr>
+				<th></th>
+				<th>Character</th>
+				<th>Weekly</th>
+				<th>The Blinding</th>
+				<th>Aurelian Coast</th>
+				<th>Sanctus Seru</th>
+				<th>Fordel Midst</th>
+				<th>Wracklands</th>
+				<th>Hallowed Halls</th>
+				<th>Tier 1 Challenge</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let character of characters; let index = index">
+				<td>
+					<ion-button class="ion-float-right" fill="clear" (click)="remove(index)">
+						<ion-icon name="remove" color="danger"></ion-icon>
+					</ion-button>
+				</td>
+				<td class="ion-text-start">
+					{{ character.name }}
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.weekly"></app-quest-icon>
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.blinding"></app-quest-icon>
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.aurelianCoast"></app-quest-icon>
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.sanctusSeru"></app-quest-icon>
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.fordelMidst"></app-quest-icon>
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.wracklands"></app-quest-icon>
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.hallowedHalls"></app-quest-icon>
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.challenge1"></app-quest-icon>
+				</td>
+			</tr>
+		</tbody>
 	</table>
 </ion-content>
 

@@ -11,7 +11,6 @@ export interface Character {
 }
 
 export interface QuestStatus {
-    icon?: string;
-    color?: string;
-    tooltip: string;
+    text?: string;
+    status: 'in-progress' | 'complete' | 'not-started' | 'unknown';
 }
