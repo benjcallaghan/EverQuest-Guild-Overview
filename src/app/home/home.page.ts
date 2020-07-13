@@ -17,13 +17,13 @@ export class HomePage implements OnInit {
     constructor(private census: CensusService, private storage: Storage) { }
 
     async ngOnInit() {
-        this.characters = await this.storage.get('characters') || [];
+        this.characters = await this.storage.get('characters') ?? [];
     }
 
     public async refresh() {
         this.refreshing = true;
         try {
-            this.characters = await this.census.getLeyOfTheLandProgress(this.characters);
+            this.characters = await this.census.getQuests(this.characters);
             await this.storage.set('characters', this.characters);
         } finally {
             this.refreshing = false;

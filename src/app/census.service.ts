@@ -46,7 +46,7 @@ export class CensusService {
         });
     }
 
-    async getLeyOfTheLandProgress(characters: Character[]): Promise<Character[]> {
+    async getQuests(characters: Character[]): Promise<Character[]> {
         const miscs = await this.runQuery({
             collection: 'character_misc',
             filter: characters.map(c => ({ field: 'id', value: c.id })),
