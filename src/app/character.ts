@@ -9,6 +9,7 @@ export interface Character {
     wracklands: QuestStatus;
     hallowedHalls: QuestStatus;
     bolChallenge: QuestStatus;
+    bindingToTheDark: QuestStatus;
 }
 
 export interface QuestStatus {

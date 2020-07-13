@@ -51,7 +51,8 @@ export class HomePage implements OnInit {
             fordelMidst: { status: 'unknown' },
             wracklands: { status: 'unknown' },
             hallowedHalls: { status: 'unknown' },
-            bolChallenge: { status: 'unknown' }
+            bolChallenge: { status: 'unknown' },
+            bindingToTheDark: { status: 'unknown' }
         });
         await this.storage.set('characters', this.characters);
     }
