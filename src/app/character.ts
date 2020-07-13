@@ -8,6 +8,7 @@ export interface Character {
     fordelMidst: QuestStatus;
     wracklands: QuestStatus;
     hallowedHalls: QuestStatus;
+    bolChallenge: QuestStatus;
 }
 
 export interface QuestStatus {
