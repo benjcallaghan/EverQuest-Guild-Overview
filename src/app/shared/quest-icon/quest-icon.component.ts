@@ -1,15 +1,30 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { QuestStatus } from 'src/app/character';
+import { IonIcon } from '@ionic/angular';
 
 @Component({
   selector: 'app-quest-icon',
   templateUrl: './quest-icon.component.html',
   styleUrls: ['./quest-icon.component.scss'],
 })
-export class QuestIconComponent {
+export class QuestIconComponent implements AfterViewChecked {
   @Input() quest: QuestStatus;
+  @ViewChild(IonIcon, { read: ElementRef }) icon: ElementRef<HTMLElement>;
 
-  public get icon(): string {
+  ngAfterViewChecked(): void {
+    // The property ariaLabel doesn't properly set the tooltip text, so we need to open the Shadow DOM of the icon.
+    // Because the SVG is lazy-loaded, this must be repeatedly checked and reset.
+    // See https://github.com/ionic-team/ionicons/issues/838.
+    const root = this.icon.nativeElement.shadowRoot;
+    if (root.childElementCount) {
+      const title = root.querySelector('title');
+      if (title) {
+        title.innerHTML = this.text;
+      }
+    }
+  }
+
+  public get iconName(): string {
     switch (this.quest.status) {
       case 'in-progress':
         return 'alert-circle';
@@ -35,7 +50,7 @@ export class QuestIconComponent {
     }
   }
 
-  public get title(): string {
+  public get text(): string {
     if (this.quest.text) {
       return this.quest.text;
     }
