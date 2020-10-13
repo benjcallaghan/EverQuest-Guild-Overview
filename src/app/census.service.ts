@@ -9,6 +9,7 @@ import { Character, QuestStatus } from './character';
 export class CensusService {
     private defaultOptions: CensusUrlOptions = {
         serviceId: 's:benjadorncalculator',
+        format: 'json',
         verb: 'get',
         namespace: 'eq2'
     };
@@ -138,10 +139,10 @@ export class CensusService {
                     { field: 'name', value: 'Triumph: One With the Wind' },
                 ],
             }],
-            tree: {
+            tree: [{
                 field: 'id',
                 start: 'achievements.achievement_list'
-            },
+            }],
             sort: [
                 { field: 'displayname' }
             ]
