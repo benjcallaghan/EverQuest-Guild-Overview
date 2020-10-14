@@ -54,9 +54,16 @@ export class CensusService {
             show: [
                 'completed_quest_list',
                 'quest_list',
+                'collection_list'
             ],
             limit: characters.length
         });
+
+        const results = await this.runQuery({
+            collection: 'collection',
+            identifier: '2997731257'
+        });
+        const fireWithin = results.collection_list[0];
 
         return miscs.character_misc_list.map(misc => ({
             id: misc.id,
@@ -71,6 +78,7 @@ export class CensusService {
             bolChallenge: getQuestStatus(misc, 1820246160),
             // bindingToTheDark: getQuestStatus(misc, 2310147712),
             volcanicThreats: getQuestStatus(misc, 179143310),
+            theFireWithin: getCollectionStatus(misc, 2997731257, fireWithin),
             windingDescent: getQuestStatus(misc, 384548791),
             indispensableComponents: getQuestStatus(misc, 2414013965),
             // formulaForSuccess: getQuestStatus(misc, 179143310),
@@ -97,6 +105,26 @@ export class CensusService {
                     status: 'in-progress',
                     text: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => `${step.progress}/${step.quota}`)[0]
                 };
+            } else {
+                return { status: 'not-started' };
+            }
+        }
+
+        function getCollectionStatus(misc: any, crc: number, collection: any): QuestStatus {
+            if (misc.collection_list.map(q => q.crc).includes(crc)) {
+                const completedItems = misc.collection_list.find(q => q.crc === crc);
+
+                const set = new Set<string>();
+                for (const id of completedItems.item_list.map(q => q.crc)) {
+                    set.add(id);
+                }
+
+                const remaining = collection.reference_list.filter(i => !set.has(i.id)).map(i => i.name);
+                if (remaining.length) {
+                    return { status: 'in-progress', text: remaining.join('\n') };
+                } else {
+                    return { status: 'complete' };
+                }
             } else {
                 return { status: 'not-started' };
             }
