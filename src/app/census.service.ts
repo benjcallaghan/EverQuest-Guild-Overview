@@ -48,127 +48,124 @@ export class CensusService {
     }
 
     async getQuests(characters: Character[]): Promise<Character[]> {
-        const miscs = await this.runQuery({
-            collection: 'character_misc',
-            filter: characters.map(c => ({ field: 'id', value: c.id })),
-            show: [
-                'completed_quest_list',
-                'quest_list',
-                'collection_list'
-            ],
-            limit: characters.length
-        });
-
-        const collectionResults = await this.runQuery({
-            collection: 'collection',
-            identifier: '2997731257'
-        });
-        const fireWithin = collectionResults.collection_list[0];
-
-        const charactersWithQuests: Character[] = miscs.character_misc_list.map(misc => ({
-            id: misc.id,
-            name: characters.find(c => c.id === misc.id).name,
-            weekly: getWeeklyStatus(misc, 3347608555),
-            blinding: getQuestStatus(misc, 2233296293),
-            aurelianCoast: getQuestStatus(misc, 471086111),
-            sanctusSeru: getQuestStatus(misc, 1796408457),
-            fordelMidst: getQuestStatus(misc, 4118253866),
-            wracklands: getQuestStatus(misc, 2188419516),
-            hallowedHalls: getQuestStatus(misc, 460976134),
-            bolChallenge: getQuestStatus(misc, 1820246160),
-            // bindingToTheDark: getQuestStatus(misc, 2310147712),
-            volcanicThreats: getQuestStatus(misc, 179143310),
-            theFireWithin: getCollectionStatus(misc, 2997731257, fireWithin),
-            windingDescent: getQuestStatus(misc, 384548791),
-            indispensableComponents: getQuestStatus(misc, 2414013965),
-            // formulaForSuccess: getQuestStatus(misc, 179143310),
-        })).sort((a, b) => a.name.localeCompare(b.name));
-
-        const censusCharacters = await this.runQuery({
+        const data = await this.runQuery({
             collection: 'character',
-            filter: characters.map(c => ({ field: 'id', value: c.id })),
-            show: [
-                'achievements'
+            limit: characters.length,
+            // filter: characters.map(c => ({ field: 'id', value: c.id })),
+            filter: [{ field: 'id', value: characters.map(c => c.id).join(',') }],
+            show: ['achievements.achievement_list', 'name.first'],
+            resolve: [
+                { field: 'achievements', show: ['event_list'] },
             ],
-            limit: characters.length
-        });
-
-        const achievementResults = await this.runQuery({
-            collection: 'achievement',
-            identifier: '4101718547'
-        });
-        const answerTheCall = achievementResults.achievement_list[0];
-
-        for (const character of charactersWithQuests) {
-            const censusCharacter = censusCharacters.character_list.find(c => c.id === character.id);
-            character.answerTheCall = getAchievementStatus(censusCharacter, 4101718547, answerTheCall);
-        }
-
-        return charactersWithQuests;
-
-        function getQuestStatus(misc: any, crc: number): QuestStatus {
-            if (misc.completed_quest_list.map(q => q.crc).includes(crc)) {
-                return { status: 'complete' };
-            } else if (misc.quest_list.map(q => q.crc).includes(crc)) {
-                return {
-                    status: 'in-progress',
-                    text: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => step.progress_text).join('\n')
-                };
-            } else {
-                return { status: 'not-started' };
-            }
-        }
-
-        function getWeeklyStatus(misc: any, crc: number): QuestStatus {
-            if (misc.completed_quest_list.map(q => q.crc).includes(crc)) {
-                return { status: 'complete' };
-            } else if (misc.quest_list.map(q => q.crc).includes(crc)) {
-                return {
-                    status: 'in-progress',
-                    text: misc.quest_list.find(q => q.crc === crc).requiredItem_list.map(step => `${step.progress}/${step.quota}`)[0]
-                };
-            } else {
-                return { status: 'not-started' };
-            }
-        }
-
-        function getCollectionStatus(misc: any, crc: number, collection: any): QuestStatus {
-            if (misc.collection_list.map(q => q.crc).includes(crc)) {
-                const completedItems = misc.collection_list.find(q => q.crc === crc);
-
-                const set = new Set<string>();
-                for (const id of completedItems.item_list.map(q => q.crc)) {
-                    set.add(id);
-                }
-
-                const remaining = collection.reference_list.filter(i => !set.has(i.id)).map(i => i.name);
-                if (remaining.length) {
-                    return { status: 'in-progress', text: remaining.join('\n') };
-                } else {
-                    return { status: 'complete' };
-                }
-            } else {
-                return { status: 'not-started' };
-            }
-        }
-
-        function getAchievementStatus(character: any, id: number, achievement: any): QuestStatus {
-            const active = character.achievements.achievement_list.find(a => a.id === id);
-            if (active) {
-                if (active.completed_timestamp) {
-                    return { status: 'complete' };
-                } else {
-                    const remaining = [];
-                    for (let i = 0; i < active.event_list.length; i++) {
-                        if (active.event_list[i].count === 0) {
-                            remaining.push(achievement.event_list[i].desc);
-                        }
+            join: [
+                {
+                    type: 'character_misc',
+                    on: 'id',
+                    to: 'id',
+                    inject_at: 'misc',
+                    show: ['completed_quest_list', 'quest_list', 'collection_list'],
+                    nestedJoin: {
+                        type: 'collection',
+                        on: 'collection_list.crc',
+                        to: 'id',
+                        inject_at: 'reference',
+                        show: ['reference_list']
                     }
-                    return { status: 'in-progress', text: remaining.join('\n') };
-                }
-            } else {
-                return { status: 'not-started' };
+                },
+            ],
+            tree: [
+                { start: 'achievements.achievement_list', field: 'id' },
+                { start: 'misc.collection_list', field: 'crc' },
+                { start: 'misc.quest_list', field: 'crc' },
+                { start: 'misc.completed_quest_list', field: 'crc' }
+            ],
+        });
+
+        const characterStatus: Character[] = data.character_list.map(c => ({
+            id: c.id,
+            name: c.name.first,
+            weekly: getWeeklyStatus(c, 3347608555),
+            blinding: getQuestStatus(c, 2233296293),
+            aurelianCoast: getQuestStatus(c, 471086111),
+            sanctusSeru: getQuestStatus(c, 1796408457),
+            fordelMidst: getQuestStatus(c, 4118253866),
+            wracklands: getQuestStatus(c, 2188419516),
+            hallowedHalls: getQuestStatus(c, 460976134),
+            bolChallenge: getQuestStatus(c, 1820246160),
+            // bindingToTheDark: getQuestStatus(c, 2310147712),
+            answerTheCall: getAchievementStatus(c, 4101718547),
+            volcanicThreats: getQuestStatus(c, 179143310),
+            theFireWithin: getCollectionStatus(c, 2997731257),
+            windingDescent: getQuestStatus(c, 384548791),
+            indispensableComponents: getQuestStatus(c, 2414013965),
+            // formulaForSuccess: getQuestStatus(c, 179143310),
+        }) as Character);
+
+        characterStatus.sort((a, b) => a.name.localeCompare(b.name));
+        return characterStatus;
+
+        function getQuestStatus(character: any, crc: number): QuestStatus {
+            const completed = character.misc.completed_quest_list[crc];
+            if (completed) {
+                return { status: 'complete', text: new Date(completed.completion_date).toDateString() };
             }
+
+            const active = character.misc.quest_list[crc];
+            if (active) {
+                return {
+                    status: 'in-progress',
+                    text: active.requiredItem_list.map(step => step.progress_text).join('\n')
+                };
+            }
+
+            return { status: 'not-started' };
+        }
+
+        function getWeeklyStatus(character: any, crc: number): QuestStatus {
+            const completed = character.misc.completed_quest_list[crc];
+            if (completed) {
+                return { status: 'complete', text: new Date(completed.completion_date).toDateString() };
+            }
+
+            const active = character.misc.quest_list[crc];
+            if (active) {
+                return {
+                    status: 'in-progress',
+                    text: active.requiredItem_list.map(step => `${step.progress}/${step.quota}`)[0]
+                };
+            }
+
+            return { status: 'not-started' };
+        }
+
+        function getCollectionStatus(character: any, crc: number): QuestStatus {
+            const collection = character.misc.collection_list[crc];
+            if (collection) {
+                if (collection.item_list.length === collection.reference.reference_list.length) {
+                    return { status: 'complete' };
+                }
+
+                const completed = new Set<string>(collection.item_list.map(i => i.crc));
+                const remaining = collection.reference.reference_list.filter(i => !completed.has(i.id)).map(i => i.name);
+
+                return { status: 'in-progress', text: remaining.join('\n') };
+            }
+
+            return { status: 'not-started' };
+        }
+
+        function getAchievementStatus(character: any, id: number): QuestStatus {
+            const achievement = character.achievements.achievement_list[id];
+            if (achievement) {
+                if (achievement.completed_timestamp) {
+                    return { status: 'complete', text: new Date(achievement.completed_timestamp * 1000).toDateString() };
+                }
+
+                const remaining = achievement.event_list.filter(e => e.count === 0);
+                return { status: 'in-progress', text: remaining.map(e => e.desc).join('\n') };
+            }
+
+            return { status: 'not-started' };
         }
     }
 

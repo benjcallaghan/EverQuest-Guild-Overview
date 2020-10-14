@@ -462,12 +462,14 @@ const mappings: Mappings = {
         const joins = value.map(join => buildJoin(join));
         url.searchParams.append('c:join', joins.join(','));
     },
-    tree: (url, tree) => {
-        const fields = Object.entries(tree)
+    tree: (url, trees) => {
+        const treeParams = trees.map(tree => Object.entries(tree)
             // Keep those items that have a value (including false).
             .filter(([, value]) => value !== undefined)
-            .map(([key, value]) => `${key}:${typeof value === 'boolean' ? +value : value}`);
-        url.searchParams.append('c:tree', fields.join('^'));
+            .map(([key, value]) => `${key}:${typeof value === 'boolean' ? +value : value}`)
+            .join('^')
+        );
+        url.searchParams.append('c:tree', treeParams.join(','));
     },
     includeTiming: 'c:timing',
     exactMatchFirst: 'c:exactMatchFirst',
