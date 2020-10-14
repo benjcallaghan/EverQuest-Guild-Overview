@@ -59,13 +59,13 @@ export class CensusService {
             limit: characters.length
         });
 
-        const results = await this.runQuery({
+        const collectionResults = await this.runQuery({
             collection: 'collection',
             identifier: '2997731257'
         });
-        const fireWithin = results.collection_list[0];
+        const fireWithin = collectionResults.collection_list[0];
 
-        return miscs.character_misc_list.map(misc => ({
+        const charactersWithQuests: Character[] = miscs.character_misc_list.map(misc => ({
             id: misc.id,
             name: characters.find(c => c.id === misc.id).name,
             weekly: getWeeklyStatus(misc, 3347608555),
@@ -83,6 +83,28 @@ export class CensusService {
             indispensableComponents: getQuestStatus(misc, 2414013965),
             // formulaForSuccess: getQuestStatus(misc, 179143310),
         })).sort((a, b) => a.name.localeCompare(b.name));
+
+        const censusCharacters = await this.runQuery({
+            collection: 'character',
+            filter: characters.map(c => ({ field: 'id', value: c.id })),
+            show: [
+                'achievements'
+            ],
+            limit: characters.length
+        });
+
+        const achievementResults = await this.runQuery({
+            collection: 'achievement',
+            identifier: '4101718547'
+        });
+        const answerTheCall = achievementResults.achievement_list[0];
+
+        for (const character of charactersWithQuests) {
+            const censusCharacter = censusCharacters.character_list.find(c => c.id === character.id);
+            character.answerTheCall = getAchievementStatus(censusCharacter, 4101718547, answerTheCall);
+        }
+
+        return charactersWithQuests;
 
         function getQuestStatus(misc: any, crc: number): QuestStatus {
             if (misc.completed_quest_list.map(q => q.crc).includes(crc)) {
@@ -124,6 +146,25 @@ export class CensusService {
                     return { status: 'in-progress', text: remaining.join('\n') };
                 } else {
                     return { status: 'complete' };
+                }
+            } else {
+                return { status: 'not-started' };
+            }
+        }
+
+        function getAchievementStatus(character: any, id: number, achievement: any): QuestStatus {
+            const active = character.achievements.achievement_list.find(a => a.id === id);
+            if (active) {
+                if (active.completed_timestamp) {
+                    return { status: 'complete' };
+                } else {
+                    const remaining = [];
+                    for (let i = 0; i < active.event_list.length; i++) {
+                        if (active.event_list[i].count === 0) {
+                            remaining.push(achievement.event_list[i].desc);
+                        }
+                    }
+                    return { status: 'in-progress', text: remaining.join('\n') };
                 }
             } else {
                 return { status: 'not-started' };
