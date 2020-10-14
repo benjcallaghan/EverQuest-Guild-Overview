@@ -69,7 +69,11 @@ export class CensusService {
             wracklands: getQuestStatus(misc, 2188419516),
             hallowedHalls: getQuestStatus(misc, 460976134),
             bolChallenge: getQuestStatus(misc, 1820246160),
-            // bindingToTheDark: getQuestStatus(misc, 2310147712)
+            // bindingToTheDark: getQuestStatus(misc, 2310147712),
+            volcanicThreats: getQuestStatus(misc, 179143310),
+            windingDescent: getQuestStatus(misc, 384548791),
+            indispensableComponents: getQuestStatus(misc, 2414013965),
+            // formulaForSuccess: getQuestStatus(misc, 179143310),
         })).sort((a, b) => a.name.localeCompare(b.name));
 
         function getQuestStatus(misc: any, crc: number): QuestStatus {

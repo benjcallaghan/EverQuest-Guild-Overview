@@ -51,7 +51,11 @@ export class HomePage implements OnInit {
             fordelMidst: { status: 'unknown' },
             wracklands: { status: 'unknown' },
             hallowedHalls: { status: 'unknown' },
-            bolChallenge: { status: 'unknown' }
+            bolChallenge: { status: 'unknown' },
+            volcanicThreats: { status: 'unknown' },
+            windingDescent: { status: 'unknown' },
+            indispensableComponents: { status: 'unknown' },
+            formulaForSuccess: { status: 'unknown' },
         });
         await this.storage.set('characters', this.characters);
     }

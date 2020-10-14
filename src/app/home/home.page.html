@@ -30,6 +30,60 @@
 		</ion-row>
 	</ion-grid>
 
+	<h1>Solusek's Eye: The Calling</h1>
+	<ion-button (click)="refresh()">Refresh</ion-button>
+	<ion-spinner *ngIf="refreshing"></ion-spinner>
+	<table class="ion-text-center">
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+				<th colspan="2">First Visit</th>
+				<th colspan="4">The Fire Within</th>
+			</tr>
+			<tr>
+				<th></th>
+				<th>Character</th>
+				<th>Triumph: Answer the Call</th>
+				<th>Volcanic Threats</th>
+				<th>Collection</th>
+				<th>Winding Descent</th>
+				<th>Indispensable Components</th>
+				<th>Formula for Success</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let character of characters; let index = index">
+				<td>
+					<ion-button class="ion-float-right" fill="clear" (click)="remove(index)">
+						<ion-icon name="remove" color="danger"></ion-icon>
+					</ion-button>
+				</td>
+				<td class="ion-text-start">
+					{{ character.name }}
+				</td>
+				<td>
+					
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.volcanicThreats"></app-quest-icon>
+				</td>
+				<td>
+
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.windingDescent"></app-quest-icon>
+				</td>
+				<td>
+					<app-quest-icon [quest]="character.indispensableComponents"></app-quest-icon>
+				</td>
+				<td>
+					<!-- <app-quest-icon [quest]="character.formulaForSuccess"></app-quest-icon> -->
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
 	<h1>Blood of Luclin</h1>
 	<ion-button (click)="refresh()">Refresh</ion-button>
 	<ion-spinner *ngIf="refreshing"></ion-spinner>

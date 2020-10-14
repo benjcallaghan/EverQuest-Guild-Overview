@@ -9,6 +9,10 @@ export interface Character {
     wracklands: QuestStatus;
     hallowedHalls: QuestStatus;
     bolChallenge: QuestStatus;
+    volcanicThreats: QuestStatus;
+    windingDescent: QuestStatus;
+    indispensableComponents: QuestStatus;
+    formulaForSuccess: QuestStatus;
 }
 
 export interface QuestStatus {
