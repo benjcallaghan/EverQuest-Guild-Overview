@@ -98,7 +98,7 @@ export class CensusService {
             theFireWithin: getCollectionStatus(c, 2997731257),
             windingDescent: getQuestStatus(c, 384548791),
             indispensableComponents: getQuestStatus(c, 2414013965),
-            // formulaForSuccess: getQuestStatus(c, 179143310),
+            formulaForSuccess: getQuestStatus(c, 4175814299),
         }) as Character);
 
         characterStatus.sort((a, b) => a.name.localeCompare(b.name));
