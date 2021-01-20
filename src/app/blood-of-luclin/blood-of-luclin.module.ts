@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 
-import { HomePage } from './home.page';
+import { BloodOfLuclinPage } from './blood-of-luclin.page';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -17,11 +17,11 @@ import { SharedModule } from '../shared/shared.module';
     RouterModule.forChild([
       {
         path: '',
-        component: HomePage,
+        component: BloodOfLuclinPage,
       },
     ]),
     SharedModule,
   ],
-  declarations: [HomePage],
+  declarations: [BloodOfLuclinPage],
 })
-export class HomePageModule {}
+export class BloodOfLuclinPageModule {}

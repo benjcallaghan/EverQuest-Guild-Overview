@@ -4,11 +4,11 @@ import { CensusService } from '../census.service';
 import { Character } from '../character';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-blood-of-luclin',
+  templateUrl: 'blood-of-luclin.page.html',
+  styleUrls: ['blood-of-luclin.page.scss'],
 })
-export class HomePage implements OnInit {
+export class BloodOfLuclinPage implements OnInit {
   public characters: Character[] = [];
   public searchResults: any[] = [];
   public searching = false;
