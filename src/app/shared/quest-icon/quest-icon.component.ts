@@ -1,4 +1,11 @@
-import { Component, Input, AfterViewInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import {
+  Component,
+  Input,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  AfterViewChecked,
+} from '@angular/core';
 import { QuestStatus } from 'src/app/character';
 import { IonIcon } from '@ionic/angular';
 

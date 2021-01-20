@@ -9,8 +9,8 @@ describe('QuestIconComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuestIconComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [QuestIconComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(QuestIconComponent);

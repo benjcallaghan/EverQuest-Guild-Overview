@@ -9,8 +9,8 @@ describe('TablePage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TablePage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [TablePage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TablePage);

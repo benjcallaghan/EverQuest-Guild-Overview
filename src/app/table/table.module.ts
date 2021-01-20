@@ -14,10 +14,10 @@ import { TablePage } from './table.page';
     RouterModule.forChild([
       {
         path: '',
-        component: TablePage
-      }
-    ])
+        component: TablePage,
+      },
+    ]),
   ],
-  declarations: [TablePage]
+  declarations: [TablePage],
 })
 export class TablePageModule {}
