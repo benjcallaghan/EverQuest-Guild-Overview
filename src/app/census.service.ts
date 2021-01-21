@@ -33,19 +33,7 @@ export class CensusService {
     });
   }
 
-  test(): Promise<any> {
-    return this.runQuery({
-      collection: 'character_misc',
-      filter: [
-        // { field: 'id', value: 438086903004 },
-        // { field: 'quest_list.stage', value: 'The Crimson Ba', match: 'contains' }
-      ],
-      show: ['quest_list'],
-      limit: 50,
-    });
-  }
-
-  async getReignOfShadowsRankings(): Promise<any[]> {
+  public async getReignOfShadowsRankings(): Promise<any[]> {
     const rosRaids = [
       // Echo Caverns
       2270131434, // The Ancient Burrower Beast (Tier 1)
@@ -114,11 +102,10 @@ export class CensusService {
     }
   }
 
-  async getQuests(characters: Character[]): Promise<Character[]> {
+  public async getQuests(characters: Character[]): Promise<Character[]> {
     const data = await this.runQuery({
       collection: 'character',
       limit: characters.length,
-      // filter: characters.map(c => ({ field: 'id', value: c.id })),
       filter: [{ field: 'id', value: characters.map((c) => c.id).join(',') }],
       show: ['achievements.achievement_list', 'name.first'],
       resolve: [{ field: 'achievements', show: ['event_list'] }],
@@ -260,73 +247,6 @@ export class CensusService {
 
       return { status: 'not-started' };
     }
-  }
-
-  getAchievements(): Promise<any> {
-    return this.runQuery({
-      collection: 'achievement',
-      limit: 20,
-      filter: [
-        { field: 'category', value: 'Triumphs' },
-        { field: 'subcategory', value: 'Chaos Descending' },
-        { field: 'name', value: 'Triumph', match: 'startsWith' },
-      ],
-    });
-  }
-
-  getCharacters(characters: any[]): Promise<any> {
-    const dbid = characters.map((c) => ({ field: 'dbid', value: c.dbid }));
-    const names = characters.map((c) => ({
-      field: 'name.first',
-      value: c.name,
-    }));
-    return this.runQuery({
-      collection: 'character',
-      filter: dbid.concat(names),
-      limit: characters.length,
-      show: ['stats', 'name', 'type'],
-      sort: [{ field: 'name.first' }],
-    });
-  }
-
-  getCharacterWithAchievements(characters: number[]): Promise<any> {
-    return this.runQuery({
-      collection: 'character',
-      filter: characters.map((c) => ({ field: 'id', value: c })),
-      show: ['displayname', 'achievements.achievement_list'],
-      join: [
-        {
-          type: 'achievement',
-          on: 'achievements.achievement_list.id',
-          to: 'id',
-          inject_at: 'details',
-          terms: [
-            { field: 'name', value: 'Triumph: Unmeltable!' },
-            { field: 'name', value: 'Triumph: Weathering the Upheaval' },
-            { field: 'name', value: 'Triumph: One With the Wind' },
-          ],
-        },
-      ],
-      tree: [
-        {
-          field: 'id',
-          start: 'achievements.achievement_list',
-        },
-      ],
-      sort: [{ field: 'displayname' }],
-    });
-  }
-
-  getGuilds(server: string, names: string[]): Promise<any> {
-    const filter = names.map((name) => ({ field: 'name', value: name }));
-    filter.push({ field: 'world', value: server });
-
-    return this.runQuery({
-      collection: 'guild',
-      filter,
-      limit: names.length,
-      show: ['name', 'member_list'],
-    });
   }
 
   private runQuery(options: Partial<CensusUrlOptions>): Promise<any> {
