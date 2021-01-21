@@ -4,19 +4,18 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
-    path: 'home',
+    path: 'blood-of-luclin',
     loadChildren: () =>
-      import('./blood-of-luclin/blood-of-luclin.module').then((m) => m.BloodOfLuclinPageModule),
+      import('./blood-of-luclin/blood-of-luclin.module').then(
+        (m) => m.BloodOfLuclinPageModule
+      ),
   },
   {
-    path: 'table',
+    path: 'reign-of-shadows',
     loadChildren: () =>
-      import('./table/table.module').then((m) => m.TablePageModule),
-  },
-  {
-    path: 'search',
-    loadChildren: () =>
-      import('./search/search.module').then((m) => m.SearchPageModule),
+      import('./reign-of-shadows/reign-of-shadows.module').then(
+        (m) => m.ReignOfShadowsPageModule
+      ),
   },
 ];
 

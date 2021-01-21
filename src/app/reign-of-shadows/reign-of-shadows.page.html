@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reign of Shadows</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p>
+    Only guilds that have killed the first raid boss are included. Only guilds
+    that automatically report through Census are included.
+  </p>
+  <h1>Reign of Shadows Raid Rankings</h1>
+  <table>
+    <thead>
+      <tr>
+        <th colspan="3"></th>
+        <th colspan="4">Echo Caverns</th>
+        <th colspan="4">Spiritweaver's Thicket</th>
+        <th colspan="9">Vex Thal</th>
+        <th>Savage Weald</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th>Guild</th>
+        <th>Server</th>
+        <th>The Ancient Burrower Beast</th>
+        <th>Lhurzz</th>
+        <th>Jerrek Amaw'Rosis</th>
+        <th>Grieg Veneficus</th>
+        <th>Nelon Ves</th>
+        <th>The Eternal Cinder</th>
+        <th>Fehdu, Rehud, and Pehdu</th>
+        <th>The Ancient Spirit</th>
+        <th>Va Dyn Khar</th>
+        <th>Xakra Fu'un</th>
+        <th>Betrayer I</th>
+        <th>Betrayer II</th>
+        <th>Betrayer III</th>
+        <th>Betrayer IV</th>
+        <th>Monstrous Shadows</th>
+        <th>Zun Liako Ferun, Zun Diabo Xiun, and Zun Thall Heral</th>
+        <th>The Creator</th>
+        <th>The Grimling Hero</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let guild of guilds; let index=index">
+        <td>{{ index + 1 }}</td>
+        <td>{{ guild.name }}</td>
+        <td>{{ guild.world }}</td>
+        <td><span *ngIf="guild.achievement_list[2270131434]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[915224777]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[1578027977]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[2775203849]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[3398946219]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[4001261287]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[1187803900]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[3622982097]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[1446166111]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[3975437458]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[949908588]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[707517314]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[2459417831]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[2435060221]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[326405197]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[1209463812]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[823313119]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+        <td><span *ngIf="guild.achievement_list[2743413289]?.completedtimestamp as completed">{{ completed * 1000 | date }}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</ion-content>

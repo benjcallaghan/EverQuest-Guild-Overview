@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TablePage } from './table.page';
+import { ReignOfShadowsPage } from './reign-of-shadows.page';
 
-describe('TablePage', () => {
-  let component: TablePage;
-  let fixture: ComponentFixture<TablePage>;
+describe('ReignOfShadowsPage', () => {
+  let component: ReignOfShadowsPage;
+  let fixture: ComponentFixture<ReignOfShadowsPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TablePage],
-      imports: [IonicModule.forRoot()],
+      declarations: [ ReignOfShadowsPage ],
+      imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TablePage);
+    fixture = TestBed.createComponent(ReignOfShadowsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

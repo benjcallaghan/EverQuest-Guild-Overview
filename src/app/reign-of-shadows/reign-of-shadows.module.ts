@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 
-import { TablePage } from './table.page';
+import { IonicModule } from '@ionic/angular';
+
+import { ReignOfShadowsPage } from './reign-of-shadows.page';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -14,10 +15,10 @@ import { TablePage } from './table.page';
     RouterModule.forChild([
       {
         path: '',
-        component: TablePage,
+        component: ReignOfShadowsPage,
       },
     ]),
   ],
-  declarations: [TablePage],
+  declarations: [ReignOfShadowsPage],
 })
-export class TablePageModule {}
+export class ReignOfShadowsPageModule {}
