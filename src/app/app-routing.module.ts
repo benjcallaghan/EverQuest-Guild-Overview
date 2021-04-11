@@ -17,6 +17,13 @@ const routes: Routes = [
         (m) => m.ReignOfShadowsPageModule
       ),
   },
+  {
+    path: 'planes-of-prophecy',
+    loadChildren: () =>
+      import('./planes-of-prophecy/planes-of-prophecy.module').then(
+        (m) => m.PlanesOfProphecyPageModule
+      ),
+  },
 ];
 
 @NgModule({

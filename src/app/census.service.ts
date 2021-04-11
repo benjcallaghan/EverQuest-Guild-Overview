@@ -249,6 +249,19 @@ export class CensusService {
     }
   }
 
+  public getCharactersWithAchievements(characters: any[]): Promise<any> {
+    return this.runQuery({
+      collection: 'character',
+      limit: characters.length,
+      filter: [{ field: 'id', value: characters.map((c) => c.id).join(',') }],
+      show: ['achievements.achievement_list', 'name.first'],
+      resolve: [{ field: 'achievements', show: ['event_list'] }],
+      tree: [
+        { start: 'achievements.achievement_list', field: 'id' },
+      ],
+    });
+  }
+
   private runQuery(options: Partial<CensusUrlOptions>): Promise<any> {
     const url = build({
       ...this.defaultOptions,
