@@ -42,7 +42,7 @@ export class CensusService {
       2775203849, // Grieg Veneficus (Tier 3)
 
       // Spiritweaver's Thicket
-      3398946219, // Nelon Ves (Tier 1)
+      3398946219, // Nelon Hes (Tier 1)
       4001261287, // The Eternal Cinder (Tier 1)
       1187803900, // Fehdu, Rehdu, and Pehdu (Tier 2)
       3622982097, // The Ancient Spirit (Tier 3)
