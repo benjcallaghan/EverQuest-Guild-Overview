@@ -97,7 +97,7 @@
         <ng-container *ngFor="let boss of round">
           <ion-item *ngIf="includeTier(boss.tier)">
             <ion-label>{{ boss.name }}</ion-label>
-            <ion-note color="primary">{{ boss.neededBy.length }}</ion-note>
+            <ion-note slot="end" color="primary">{{ boss.neededBy.length }}</ion-note>
           </ion-item>
         </ng-container>
       </ng-container>
