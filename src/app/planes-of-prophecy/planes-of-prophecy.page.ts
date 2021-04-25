@@ -30,10 +30,10 @@ export class PlanesOfProphecyPage {
 
   constructor(private census: CensusService) {}
 
-  public async search(name: string | number): Promise<void> {
+  public async search(name: string | number, serverId: number): Promise<void> {
     this.searching = true;
     try {
-      const results = await this.census.getCharacterByName(name as string);
+      const results = await this.census.getCharacterByName(name as string, serverId);
       this.searchResults = results.character_list;
     } finally {
       this.searching = false;

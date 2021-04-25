@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { build, CensusUrlOptions } from './daybreak-census-options';
+import {
+  build,
+  CensusUrlOptions,
+  StringFilter,
+} from './daybreak-census-options';
 import { Character, QuestStatus } from './character';
 
 @Injectable({
@@ -16,7 +20,7 @@ export class CensusService {
 
   constructor(private http: HttpClient) {}
 
-  public getCharacterByName(name: string): Promise<any> {
+  public getCharacterByName(name: string, serverId?: number): Promise<any> {
     return this.runQuery({
       collection: 'character',
       filter: [
@@ -25,6 +29,14 @@ export class CensusService {
           value: name.toLowerCase(),
           match: 'startsWith',
         },
+        ...(serverId
+          ? [
+              {
+                field: 'locationdata.worldid',
+                value: `${serverId}`,
+              },
+            ]
+          : []),
       ],
       exactMatchFirst: true,
       sort: [{ field: 'displayname' }],
@@ -54,8 +66,8 @@ export class CensusService {
       707517314, // Betrayer II (Tier 3)
       2459417831, // Betrayer III (Tier 3)
       2435060221, // Betrayer IV (Tier 4)
-      326405197, // Monstrous Shadows (Tier 4)
       1209463812, // Zun Liako Ferun, Zun Diabo Xiun, and Zun Thall Heral (Tier 4)
+      326405197, // Monstrous Shadows (Tier 4)
       823313119, // The Creator (Tier 5)
 
       // Savage Weald
@@ -258,9 +270,7 @@ export class CensusService {
       // resolve: [{ field: 'achievements', show: ['event_list'] }],
       // The consumers do not require achievement details, just achievement completion.
       // This is already available in the basic character data.
-      tree: [
-        { start: 'achievements.achievement_list', field: 'id' },
-      ],
+      tree: [{ start: 'achievements.achievement_list', field: 'id' }],
     });
   }
 

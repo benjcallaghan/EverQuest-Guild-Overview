@@ -17,7 +17,22 @@
     <ion-label>Character Name</ion-label>
     <ion-input #searchBox></ion-input>
   </ion-item>
-  <ion-button (click)="search(searchBox.value)">Search</ion-button>
+  <ion-item>
+    <ion-label>Server</ion-label>
+    <ion-select #serverSelect placeholder="Select server...">
+      <ion-select-option [value]="104">Antonia Bayle</ion-select-option>
+      <!-- <ion-select-option [value]="">Beta</ion-select-option> -->
+      <ion-select-option [value]="605">Halls of Fate</ion-select-option>
+      <ion-select-option [value]="601">Isle of Refuge</ion-select-option>
+      <ion-select-option [value]="610">Kaladim</ion-select-option>
+      <ion-select-option [value]="604">Maj'Dul</ion-select-option>
+      <ion-select-option [value]="611">Rivervale</ion-select-option>
+      <ion-select-option [value]="606">Skyfire</ion-select-option>
+      <ion-select-option [value]="100">Test</ion-select-option>
+      <ion-select-option [value]="701">Thurgadin</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-button (click)="search(searchBox.value, serverSelect.value)">Search</ion-button>
   <ion-spinner *ngIf="searching"></ion-spinner>
   <ion-grid>
     <ion-row>
