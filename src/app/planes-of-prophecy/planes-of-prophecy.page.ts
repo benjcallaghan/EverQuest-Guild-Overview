@@ -220,6 +220,11 @@ export class PlanesOfProphecyPage {
               neededBy: charactersWhoNeed(3032312480),
             },
             {
+              name: 'Thunderclap and Skyfury',
+              tier: 2,
+              neededBy: charactersWhoNeed(3543709875),
+            },
+            {
               name: 'Erech Eyford',
               tier: 2,
               neededBy: charactersWhoNeed(3819890458),
@@ -228,11 +233,6 @@ export class PlanesOfProphecyPage {
               name: 'Sandstorm, Steelthorn, Sutherland, and Stormseer',
               tier: 2,
               neededBy: charactersWhoNeed(531969117),
-            },
-            {
-              name: 'Thunderclap and Skyfury',
-              tier: 2,
-              neededBy: charactersWhoNeed(3543709875),
             },
             {
               name: 'Kuanbyr Hailstorm',
