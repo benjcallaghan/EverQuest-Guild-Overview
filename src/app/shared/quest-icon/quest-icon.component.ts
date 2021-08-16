@@ -1,7 +1,6 @@
 import {
   Component,
   Input,
-  AfterViewInit,
   ViewChild,
   ElementRef,
   AfterViewChecked,
@@ -15,7 +14,7 @@ import { IonIcon } from '@ionic/angular';
   styleUrls: ['./quest-icon.component.scss'],
 })
 export class QuestIconComponent implements AfterViewChecked {
-  @Input() quest: QuestStatus;
+  @Input() quest?: QuestStatus;
   @ViewChild(IonIcon, { read: ElementRef }) icon: ElementRef<HTMLElement>;
 
   ngAfterViewChecked(): void {
@@ -32,44 +31,44 @@ export class QuestIconComponent implements AfterViewChecked {
   }
 
   public get iconName(): string {
-    switch (this.quest.status) {
+    switch (this.quest?.status) {
       case 'in-progress':
         return 'alert-circle';
       case 'complete':
         return 'checkmark-circle';
       case 'not-started':
         return '';
-      case 'unknown':
+      default:
         return 'help';
     }
   }
 
   public get color(): string {
-    switch (this.quest.status) {
+    switch (this.quest?.status) {
       case 'in-progress':
         return 'warning';
       case 'complete':
         return 'success';
       case 'not-started':
         return '';
-      case 'unknown':
+      default:
         return '';
     }
   }
 
   public get text(): string {
-    if (this.quest.text) {
+    if (this.quest?.text) {
       return this.quest.text;
     }
 
-    switch (this.quest.status) {
+    switch (this.quest?.status) {
       case 'in-progress':
         return 'In Progress';
       case 'complete':
         return 'Complete';
       case 'not-started':
         return '';
-      case 'unknown':
+      default:
         return 'Refresh to load data';
     }
   }

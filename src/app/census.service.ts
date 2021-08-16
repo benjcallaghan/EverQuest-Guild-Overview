@@ -261,6 +261,129 @@ export class CensusService {
     }
   }
 
+  public async getReignOfShadowsQuests(characters: Character[]): Promise<Character[]> {
+    const data = await this.runQuery({
+      collection: 'character',
+      limit: characters.length,
+      filter: [{ field: 'id', value: characters.map((c) => c.id).join(',') }],
+      join: [
+        {
+          type: 'character_misc',
+          on: 'id',
+          to: 'id',
+          inject_at: 'misc',
+          show: ['completed_quest_list', 'quest_list'],
+        },
+      ],
+      tree: [
+        { start: 'misc.quest_list', field: 'crc' },
+        { start: 'misc.completed_quest_list', field: 'crc' },
+      ],
+    });
+
+    const characterStatus: Character[] = data.character_list.map(
+      (c) =>
+        ({
+          id: c.id,
+          name: c.name.first,
+          vexThal: getQuestStatus(c, 3589141327),
+        } as Character)
+    );
+
+    characterStatus.sort((a, b) => a.name.localeCompare(b.name));
+    return characterStatus;
+
+    function getQuestStatus(character: any, crc: number): QuestStatus {
+      const completed = character.misc.completed_quest_list[crc];
+      if (completed) {
+        return {
+          status: 'complete',
+          text: new Date(completed.completion_date).toDateString(),
+        };
+      }
+
+      const active = character.misc.quest_list[crc];
+      if (active) {
+        return {
+          status: 'in-progress',
+          text: active.requiredItem_list
+            .map((step) => step.progress_text)
+            .join('\n'),
+        };
+      }
+
+      return { status: 'not-started' };
+    }
+
+    function getWeeklyStatus(character: any, crc: number): QuestStatus {
+      const completed = character.misc.completed_quest_list[crc];
+      if (completed) {
+        return {
+          status: 'complete',
+          text: new Date(completed.completion_date).toDateString(),
+        };
+      }
+
+      const active = character.misc.quest_list[crc];
+      if (active) {
+        return {
+          status: 'in-progress',
+          text: active.requiredItem_list.map(
+            (step) => `${step.progress}/${step.quota}`
+          )[0],
+        };
+      }
+
+      return { status: 'not-started' };
+    }
+
+    function getCollectionStatus(character: any, crc: number): QuestStatus {
+      const collection = character.misc.collection_list[crc];
+      if (collection) {
+        if (
+          collection.item_list.length ===
+          collection.reference.reference_list.length
+        ) {
+          return { status: 'complete' };
+        }
+
+        const completed = new Set<string>(
+          collection.item_list.map((i) => i.crc)
+        );
+        const remaining = collection.reference.reference_list
+          .filter((i) => !completed.has(i.id))
+          .map((i) => i.name);
+
+        return { status: 'in-progress', text: remaining.join('\n') };
+      }
+
+      return { status: 'not-started' };
+    }
+
+    function getAchievementStatus(character: any, id: number): QuestStatus {
+      const achievement = character.achievements.achievement_list[id];
+      if (achievement) {
+        if (achievement.completed_timestamp) {
+          return {
+            status: 'complete',
+            text: new Date(
+              achievement.completed_timestamp * 1000
+            ).toDateString(),
+          };
+        }
+
+        const remaining = achievement.event_list.filter((e) => e.count === 0);
+        return {
+          status: 'in-progress',
+          text: remaining.map((e) => e.desc).join('\n'),
+        };
+      }
+
+      return { status: 'not-started' };
+    }
+  }
+
+
   public getCharactersWithAchievements(characters: any[]): Promise<any> {
     return this.runQuery({
       collection: 'character',

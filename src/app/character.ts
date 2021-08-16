@@ -1,20 +1,23 @@
 export interface Character {
   id: number;
   name: string;
-  weekly: QuestStatus;
-  blinding: QuestStatus;
-  aurelianCoast: QuestStatus;
-  sanctusSeru: QuestStatus;
-  fordelMidst: QuestStatus;
-  wracklands: QuestStatus;
-  hallowedHalls: QuestStatus;
-  bolChallenge: QuestStatus;
-  answerTheCall: QuestStatus;
-  volcanicThreats: QuestStatus;
-  theFireWithin: QuestStatus;
-  windingDescent: QuestStatus;
-  indispensableComponents: QuestStatus;
-  formulaForSuccess: QuestStatus;
+  weekly?: QuestStatus;
+  blinding?: QuestStatus;
+  aurelianCoast?: QuestStatus;
+  sanctusSeru?: QuestStatus;
+  fordelMidst?: QuestStatus;
+  wracklands?: QuestStatus;
+  hallowedHalls?: QuestStatus;
+  bolChallenge?: QuestStatus;
+  answerTheCall?: QuestStatus;
+  volcanicThreats?: QuestStatus;
+  theFireWithin?: QuestStatus;
+  windingDescent?: QuestStatus;
+  indispensableComponents?: QuestStatus;
+  formulaForSuccess?: QuestStatus;
+  echoCaverns?: QuestStatus;
+  shadeweaversThicket?: QuestStatus;
+  vexThal?: QuestStatus;
 }
 
 export interface QuestStatus {

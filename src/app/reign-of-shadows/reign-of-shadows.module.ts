@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ReignOfShadowsPage } from './reign-of-shadows.page';
 import { RouterModule } from '@angular/router';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { RouterModule } from '@angular/router';
         component: ReignOfShadowsPage,
       },
     ]),
+    SharedModule,
   ],
   declarations: [ReignOfShadowsPage],
 })
