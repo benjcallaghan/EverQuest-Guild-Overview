@@ -22,6 +22,14 @@ export type CharacterSearchResults = {
   character_list: CensusCharacter[];
 };
 
+export type RosCharacter = {
+  id: number;
+  name: string;
+  echoCaverns: QuestStatus;
+  shadeweaversThicket: QuestStatus;
+  vexThal: QuestStatus;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -280,12 +288,12 @@ export class CensusService {
   }
 
   public async getReignOfShadowsQuests(
-    characters: Character[]
-  ): Promise<Character[]> {
+    characterIds: number[]
+  ): Promise<RosCharacter[]> {
     const data = await this.runQuery({
       collection: 'character',
-      limit: characters.length,
-      filter: [{ field: 'id', value: characters.map((c) => c.id).join(',') }],
+      limit: characterIds.length,
+      filter: [{ field: 'id', value: characterIds.join(',') }],
       join: [
         {
           type: 'character_misc',
@@ -299,16 +307,16 @@ export class CensusService {
         { start: 'misc.quest_list', field: 'crc' },
         { start: 'misc.completed_quest_list', field: 'crc' },
       ],
+      show: ['name.first', 'misc.quest_list', 'misc.completed_quest_list']
     });
 
-    const characterStatus: Character[] = data.character_list.map(
-      (c) =>
-        ({
-          id: c.id,
-          name: c.name.first,
-          vexThal: getQuestStatus(c, 3589141327),
-        } as Character)
-    );
+    const characterStatus: RosCharacter[] = data.character_list.map((c) => ({
+      id: c.id,
+      name: c.name.first,
+      echoCaverns: getQuestStatus(c, 1004769891),
+      shadeweaversThicket: getQuestStatus(c, 2733294553),
+      vexThal: getQuestStatus(c, 3589141327),
+    }));
 
     characterStatus.sort((a, b) => a.name.localeCompare(b.name));
     return characterStatus;
