@@ -24,3 +24,13 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+
+  @media(prefers-color-scheme: dark) {
+    border-color: white;
+  }
+}

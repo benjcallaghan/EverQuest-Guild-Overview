@@ -12,95 +12,8 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h1>Add Character</h1>
-  <ion-item>
-    <ion-label>Character Name</ion-label>
-    <ion-input #searchBox></ion-input>
-  </ion-item>
-  <ion-button (click)="search(searchBox.value)">Search</ion-button>
-  <ion-spinner *ngIf="searching"></ion-spinner>
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let character of searchResults" size="12" size-md="3">
-        <ion-card>
-          <ion-card-header class="ion-float-left">
-            <ion-card-subtitle>{{ character.guild?.name }}</ion-card-subtitle>
-            <ion-card-title>{{ character.displayname }}</ion-card-title>
-          </ion-card-header>
-          <ion-button
-            class="ion-float-right"
-            fill="clear"
-            (click)="add(character)"
-          >
-            <ion-icon name="add" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <h1>Solusek's Eye: The Calling</h1>
-  <ion-button (click)="refresh()">Refresh</ion-button>
-  <ion-spinner *ngIf="refreshing"></ion-spinner>
-  <table class="ion-text-center">
-    <thead>
-      <tr>
-        <th></th>
-        <th></th>
-        <th colspan="2">First Visit</th>
-        <th colspan="4">The Fire Within</th>
-      </tr>
-      <tr>
-        <th></th>
-        <th>Character</th>
-        <th>Triumph: Answer the Call</th>
-        <th>Volcanic Threats</th>
-        <th>Collection</th>
-        <th>Winding Descent</th>
-        <th>Indispensable Components</th>
-        <th>Formula for Success</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let character of characters; let index = index">
-        <td>
-          <ion-button
-            class="ion-float-right"
-            fill="clear"
-            (click)="remove(index)"
-          >
-            <ion-icon name="remove" color="danger"></ion-icon>
-          </ion-button>
-        </td>
-        <td class="ion-text-start">{{ character.name }}</td>
-        <td>
-          <app-quest-icon [quest]="character.answerTheCall"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.volcanicThreats"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.theFireWithin"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.windingDescent"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon
-            [quest]="character.indispensableComponents"
-          ></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon
-            [quest]="character.formulaForSuccess"
-          ></app-quest-icon>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 
   <h1>Blood of Luclin</h1>
-  <ion-button (click)="refresh()">Refresh</ion-button>
   <ion-spinner *ngIf="refreshing"></ion-spinner>
   <table class="ion-text-center">
     <thead>
@@ -163,15 +76,3 @@
     </tbody>
   </table>
 </ion-content>
-
-<ion-footer class="ion-padding-start">
-  <p>
-    Special thanks to Feldon from EQ2U for his help with the Census Data API.
-  </p>
-  <p>
-    The source code to this project is available at
-    <a href="https://github.com/benjcallaghan/EverQuest-Guild-Overview"
-      >GitHub</a
-    >.
-  </p>
-</ion-footer>

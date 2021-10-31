@@ -29,6 +29,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./settings/settings.module').then((m) => m.SettingsPageModule),
   },
+  {
+    path: 'soluseks-eye',
+    loadChildren: () => import('./soluseks-eye/soluseks-eye.module').then( m => m.SoluseksEyePageModule)
+  },
 ];
 
 @NgModule({
