@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { IonicStorageModule } from '@ionic/storage';
 
 import { BloodOfLuclinPage } from './blood-of-luclin.page';
 import { SharedModule } from '../shared/shared.module';
@@ -13,7 +12,6 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    IonicStorageModule,
     RouterModule.forChild([
       {
         path: '',

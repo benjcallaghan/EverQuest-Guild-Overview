@@ -3,6 +3,25 @@ import { HttpClient } from '@angular/common/http';
 import { build, CensusUrlOptions } from './daybreak-census-options';
 import { Character, QuestStatus } from './character';
 
+export type CensusCharacter = {
+  id: number;
+  displayname: string;
+  name: any;
+  guild?: {
+    guildid: number;
+    id: number;
+    joined: number;
+    level: number;
+    name: string;
+    rank: number;
+    status: number;
+  };
+};
+
+export type CharacterSearchResults = {
+  character_list: CensusCharacter[];
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -16,7 +35,10 @@ export class CensusService {
 
   constructor(private http: HttpClient) {}
 
-  public getCharacterByName(name: string, serverId?: number): Promise<any> {
+  public getCharacterByName(
+    name: string,
+    serverId?: number
+  ): Promise<CharacterSearchResults> {
     return this.runQuery({
       collection: 'character',
       filter: [

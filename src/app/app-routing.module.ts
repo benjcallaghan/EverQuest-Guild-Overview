@@ -24,6 +24,11 @@ const routes: Routes = [
         (m) => m.PlanesOfProphecyPageModule
       ),
   },
+  {
+    path: 'settings',
+    loadChildren: () =>
+      import('./settings/settings.module').then((m) => m.SettingsPageModule),
+  },
 ];
 
 @NgModule({
