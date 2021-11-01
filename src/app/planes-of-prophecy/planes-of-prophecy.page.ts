@@ -33,7 +33,7 @@ export class PlanesOfProphecyPage {
   public async search(name: string | number, serverId: number): Promise<void> {
     this.searching = true;
     try {
-      const results = await this.census.getCharacterByName(name as string, serverId);
+      const results = await this.census.getCharactersByName(name as string, serverId);
       this.searchResults = results.character_list;
     } finally {
       this.searching = false;

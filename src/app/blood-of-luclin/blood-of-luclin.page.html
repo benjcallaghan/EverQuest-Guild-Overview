@@ -12,21 +12,15 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
-  <h1>Blood of Luclin</h1>
   <ion-spinner *ngIf="refreshing"></ion-spinner>
   <table class="ion-text-center">
     <thead>
       <tr>
         <th></th>
-        <th></th>
-        <th></th>
         <th colspan="7">Ley of the Land</th>
       </tr>
       <tr>
-        <th></th>
         <th>Character</th>
-        <th>Weekly</th>
         <th>The Blinding</th>
         <th>Aurelian Coast</th>
         <th>Sanctus Seru</th>
@@ -38,19 +32,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let character of characters; let index = index">
-        <td>
-          <ion-button
-            class="ion-float-right"
-            fill="clear"
-            (click)="remove(index)"
-          >
-            <ion-icon name="remove" color="danger"></ion-icon>
-          </ion-button>
-        </td>
         <td class="ion-text-start">{{ character.name }}</td>
-        <td>
-          <app-quest-icon [quest]="character.weekly"></app-quest-icon>
-        </td>
         <td>
           <app-quest-icon [quest]="character.blinding"></app-quest-icon>
         </td>

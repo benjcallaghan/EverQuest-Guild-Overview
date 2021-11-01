@@ -26,7 +26,7 @@ export class SettingsPage implements OnInit {
   async searchForCharacter(): Promise<void> {
     this.searching = true;
     try {
-      const { character_list } = await this.census.getCharacterByName(
+      const { character_list } = await this.census.getCharactersByName(
         this.searchName,
         this.searchServer
       );
