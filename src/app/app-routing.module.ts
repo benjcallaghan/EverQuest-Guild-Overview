@@ -33,6 +33,10 @@ const routes: Routes = [
     path: 'soluseks-eye',
     loadChildren: () => import('./soluseks-eye/soluseks-eye.module').then( m => m.SoluseksEyePageModule)
   },
+  {
+    path: 'ros-flawless',
+    loadChildren: () => import('./ros-flawless/ros-flawless.module').then( m => m.RosFlawlessPageModule)
+  },
 ];
 
 @NgModule({
