@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { build, CensusUrlOptions, Join, Tree } from './daybreak-census-options';
-import { QuestStatus } from './character';
 
-export type CensusCharacter = {
+export interface QuestStatus {
+  text?: string;
+  status: 'in-progress' | 'complete' | 'not-started' | 'unknown';
+}
+
+export interface CensusCharacter {
   id: number;
   displayname: string;
   name: any;
@@ -18,7 +22,7 @@ export type CensusCharacter = {
   };
 };
 
-export type CharacterSearchResults = {
+export interface CharacterSearchResults {
   character_list: CensusCharacter[];
 };
 
