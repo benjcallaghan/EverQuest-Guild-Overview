@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { build, CensusUrlOptions } from './daybreak-census-options';
+import { build, CensusUrlOptions, Join, Tree } from './daybreak-census-options';
 import { QuestStatus } from './character';
 
 export type CensusCharacter = {
@@ -22,19 +22,8 @@ export type CharacterSearchResults = {
   character_list: CensusCharacter[];
 };
 
-export type SolEyeCharacter = {
-  id: number;
-  name: string;
-  answerTheCall: QuestStatus;
-  volcanicThreats: QuestStatus;
-  theFireWithin: QuestStatus;
-  windingDescent: QuestStatus;
-  indispensableComponents: QuestStatus;
-  formulaForSuccess: QuestStatus;
-};
-
 export type CensusQuery = {
-  [key: string]: { type: 'achievement' | 'quest'; id: number };
+  [key: string]: { type: 'achievement' | 'quest' | 'collection'; id: number };
 };
 
 export type CensusResults<TQuery extends CensusQuery> = ({
@@ -93,33 +82,53 @@ export class CensusService {
     const hasAchievements = Object.values(query).some(
       ({ type }) => type === 'achievement'
     );
+    const hasCollections = Object.values(query).some(
+      ({ type }) => type === 'collection'
+    );
 
     const data = await this.runQuery({
       collection: 'character',
       limit: characterIds.length,
       filter: [{ field: 'id', value: characterIds.join(',') }],
       join: [
-        ...(hasQuests
-          ? [
+        ...(hasQuests || hasCollections
+          ? ([
               {
                 type: 'character_misc',
                 on: 'id',
                 to: 'id',
                 inject_at: 'misc',
-                show: ['completed_quest_list', 'quest_list'],
+                show: [
+                  ...(hasQuests ? ['completed_quest_list', 'quest_list'] : []),
+                  ...(hasCollections ? ['collection_list'] : []),
+                ],
+                nestedJoin: hasCollections
+                  ? {
+                      type: 'collection',
+                      on: 'collection_list.crc',
+                      to: 'id',
+                      inject_at: 'reference',
+                      show: ['reference_list'],
+                    }
+                  : undefined,
               },
-            ]
+            ] as Join[])
           : []),
       ],
       tree: [
         ...(hasAchievements
-          ? [{ start: 'achievements.achievement_list', field: 'id' }]
+          ? ([
+              { start: 'achievements.achievement_list', field: 'id' },
+            ] as Tree[])
           : []),
         ...(hasQuests
-          ? [
+          ? ([
               { start: 'misc.quest_list', field: 'crc' },
               { start: 'misc.completed_quest_list', field: 'crc' },
-            ]
+            ] as Tree[])
+          : []),
+        ...(hasCollections
+          ? ([{ start: 'misc.collection_list', field: 'crc' }] as Tree[])
           : []),
       ],
       show: [
@@ -137,6 +146,8 @@ export class CensusService {
             ? this.getAchievementStatus(c, id)
             : type === 'quest'
             ? this.getQuestStatus(c, id)
+            : type === 'collection'
+            ? this.getCollectionStatus(c, id)
             : undefined;
       }
 
@@ -145,53 +156,6 @@ export class CensusService {
 
     characters.sort((a, b) => a.name.localeCompare(b.name));
     return characters;
-  }
-
-  public async getSoluseksEyeQuests(
-    characterIds: number[]
-  ): Promise<SolEyeCharacter[]> {
-    const data = await this.runQuery({
-      collection: 'character',
-      limit: characterIds.length,
-      filter: [{ field: 'id', value: characterIds.join(',') }],
-      join: [
-        {
-          type: 'character_misc',
-          on: 'id',
-          to: 'id',
-          inject_at: 'misc',
-          show: ['completed_quest_list', 'quest_list', 'collection_list'],
-          nestedJoin: {
-            type: 'collection',
-            on: 'collection_list.crc',
-            to: 'id',
-            inject_at: 'reference',
-            show: ['reference_list'],
-          },
-        },
-      ],
-      tree: [
-        { start: 'misc.quest_list', field: 'crc' },
-        { start: 'misc.collection_list', field: 'crc' },
-        { start: 'misc.completed_quest_list', field: 'crc' },
-        { start: 'achievements.achievement_list', field: 'id' },
-      ],
-      show: ['name.first', 'achievements.achievement_list'],
-    });
-
-    const characterStatus: SolEyeCharacter[] = data.character_list.map((c) => ({
-      id: c.id,
-      name: c.name.first,
-      answerTheCall: this.getAchievementStatus(c, 4101718547),
-      volcanicThreats: this.getQuestStatus(c, 179143310),
-      theFireWithin: this.getCollectionStatus(c, 2997731257),
-      windingDescent: this.getQuestStatus(c, 384548791),
-      indispensableComponents: this.getQuestStatus(c, 2414013965),
-      formulaForSuccess: this.getQuestStatus(c, 4175814299),
-    }));
-
-    characterStatus.sort((a, b) => a.name.localeCompare(b.name));
-    return characterStatus;
   }
 
   public getCharactersWithAchievements(characters: any[]): Promise<any> {

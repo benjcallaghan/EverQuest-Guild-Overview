@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { CensusService, CensusCharacter, SolEyeCharacter } from '../census.service';
+import {
+  CensusService,
+  CensusCharacter,
+  CensusResults,
+} from '../census.service';
 
 @Component({
   selector: 'app-soluseks-eye',
@@ -8,7 +12,16 @@ import { CensusService, CensusCharacter, SolEyeCharacter } from '../census.servi
   styleUrls: ['./soluseks-eye.page.scss'],
 })
 export class SoluseksEyePage implements OnInit {
-  public characters: SolEyeCharacter[];
+  private static readonly quests = {
+    answerTheCall: { type: 'achievement', id: 4101718547 },
+    volcanicThreats: { type: 'quest', id: 179143310 },
+    theFireWithin: { type: 'collection', id: 2997731257 },
+    windingDescent: { type: 'quest', id: 384548791 },
+    indispensableComponents: { type: 'quest', id: 2414013965 },
+    formulaForSuccess: { type: 'quest', id: 4175814299 },
+  } as const;
+
+  public characters: CensusResults<typeof SoluseksEyePage.quests>;
   public refreshing = false;
 
   constructor(
@@ -22,7 +35,10 @@ export class SoluseksEyePage implements OnInit {
       const characters: CensusCharacter[] =
         (await this.storage.get('characters')) ?? [];
       const ids = characters.map((c) => c.id);
-      this.characters = await this.census.getSoluseksEyeQuests(ids);
+      this.characters = await this.census.queryCurrentStatus(
+        ids,
+        SoluseksEyePage.quests
+      );
     } finally {
       this.refreshing = false;
     }
