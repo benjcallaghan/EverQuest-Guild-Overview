@@ -22,38 +22,6 @@ export type CharacterSearchResults = {
   character_list: CensusCharacter[];
 };
 
-export type RosFlawlessCharacter = {
-  id: number;
-  name: string;
-  creator: QuestStatus;
-  kaasThoxXiAtenHaRa: QuestStatus;
-  zzz: QuestStatus;
-  betrayer4: QuestStatus;
-  betrayer3: QuestStatus;
-  betrayer2: QuestStatus;
-  betrayer1: QuestStatus;
-  xakra: QuestStatus;
-  vaDynKhar: QuestStatus;
-  greta: QuestStatus;
-  beastFromBeyond: QuestStatus;
-  grimlock: QuestStatus;
-  colossus: QuestStatus;
-  diabo: QuestStatus;
-  thallXundraxDiabo: QuestStatus;
-  thallVaXakraFer: QuestStatus;
-  akhessaVaLiakoVess: QuestStatus;
-  verrkara: QuestStatus;
-  emperor: QuestStatus;
-  nelonHes: QuestStatus;
-  hoggith: QuestStatus;
-  fenirekTal: QuestStatus;
-  khatiSha: QuestStatus;
-  burrowerBeast: QuestStatus;
-  lhurzz: QuestStatus;
-  jerrek: QuestStatus;
-  grieg: QuestStatus;
-};
-
 export type RosCharacter = {
   id: number;
   name: string;
@@ -84,6 +52,17 @@ export type BolCharacter = {
   hallowedHalls: QuestStatus;
   bolChallenge: QuestStatus;
 };
+
+export type CensusQuery = {
+  [key: string]: { type: 'achievement'; id: number };
+};
+
+export type CensusResults<TQuery extends CensusQuery> = ({
+  id: number;
+  name: string;
+} & {
+  [key in keyof TQuery]: QuestStatus;
+})[];
 
 @Injectable({
   providedIn: 'root',
@@ -126,9 +105,10 @@ export class CensusService {
     });
   }
 
-  public async getReignOfShadowsFlawlessQuests(
-    characterIds: number[]
-  ): Promise<RosFlawlessCharacter[]> {
+  public async getAchievements<TQuery extends CensusQuery>(
+    characterIds: number[],
+    achievements: TQuery
+  ): Promise<CensusResults<TQuery>> {
     const data = await this.runQuery({
       collection: 'character',
       limit: characterIds.length,
@@ -137,40 +117,18 @@ export class CensusService {
       show: ['name.first', 'achievements.achievement_list'],
     });
 
-    const characterStatus: RosFlawlessCharacter[] = data.character_list.map((c) => ({
-      id: c.id,
-      name: c.name.first,
-      creator: this.getAchievementStatus(c, 233108436),
-      kaasThoxXiAtenHaRa: this.getAchievementStatus(c, 2707319114),
-      zzz: this.getAchievementStatus(c, 2450032467),
-      betrayer4: this.getAchievementStatus(c, 235217895),
-      betrayer3: this.getAchievementStatus(c, 230067965),
-      betrayer2: this.getAchievementStatus(c, 3037391256),
-      betrayer1: this.getAchievementStatus(c, 2814330486),
-      xakra: this.getAchievementStatus(c, 1914889172),
-      vaDynKhar: this.getAchievementStatus(c, 3373501509),
-      greta: this.getAchievementStatus(c, 760470014),
-      beastFromBeyond: this.getAchievementStatus(c, 517383268),
-      grimlock: this.getAchievementStatus(c, 1384602904),
-      colossus: this.getAchievementStatus(c, 1251582723),
-      diabo: this.getAchievementStatus(c, 3188430906),
-      thallXundraxDiabo: this.getAchievementStatus(c, 1606158253),
-      thallVaXakraFer: this.getAchievementStatus(c, 3948433922),
-      akhessaVaLiakoVess: this.getAchievementStatus(c, 1732565854),
-      verrkara: this.getAchievementStatus(c, 2042129110),
-      emperor: this.getAchievementStatus(c, 2098276653),
-      nelonHes: this.getAchievementStatus(c, 1348749755),
-      hoggith: this.getAchievementStatus(c, 2253932959),
-      fenirekTal: this.getAchievementStatus(c, 1319033136),
-      khatiSha: this.getAchievementStatus(c, 745459971),
-      burrowerBeast: this.getAchievementStatus(c, 983088361),
-      lhurzz: this.getAchievementStatus(c, 1781623804),
-      jerrek: this.getAchievementStatus(c, 3548829345),
-      grieg: this.getAchievementStatus(c, 3061320400),
-    }));
+    const characters = data.character_list.map((c) => {
+      const result = { id: c.id, name: c.name.first };
 
-    characterStatus.sort((a, b) => a.name.localeCompare(b.name));
-    return characterStatus;
+      for (const [key, { type, id }] of Object.entries(achievements)) {
+        result[key] = this.getAchievementStatus(c, id);
+      }
+
+      return result;
+    });
+
+    characters.sort((a, b) => a.name.localeCompare(b.name));
+    return characters;
   }
 
   public async getReignOfShadowsQuests(
