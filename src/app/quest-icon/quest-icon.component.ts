@@ -6,7 +6,7 @@ import {
   AfterViewChecked,
 } from '@angular/core';
 import { IonIcon } from '@ionic/angular';
-import { QuestStatus } from '../../census.service';
+import { QuestStatus } from '../census.service';
 
 @Component({
   selector: 'app-quest-icon',

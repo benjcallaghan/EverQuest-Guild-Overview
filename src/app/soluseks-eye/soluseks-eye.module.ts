@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { SoluseksEyePageRoutingModule } from './soluseks-eye-routing.module';
 
 import { SoluseksEyePage } from './soluseks-eye.page';
-import { SharedModule } from '../shared/shared.module';
+import { QuestIconModule } from '../quest-icon/quest-icon.module';
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     IonicModule,
     SoluseksEyePageRoutingModule,
-    SharedModule
+    QuestIconModule
   ],
   declarations: [SoluseksEyePage]
 })

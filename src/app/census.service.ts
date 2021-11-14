@@ -20,11 +20,11 @@ export interface CensusCharacter {
     rank: number;
     status: number;
   };
-};
+}
 
 export interface CharacterSearchResults {
   character_list: CensusCharacter[];
-};
+}
 
 export type CensusQuery = {
   [key: string]: { type: 'achievement' | 'quest' | 'collection'; id: number };

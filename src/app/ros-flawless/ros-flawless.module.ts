@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { RosFlawlessPageRoutingModule } from './ros-flawless-routing.module';
 
 import { RosFlawlessPage } from './ros-flawless.page';
-import { SharedModule } from '../shared/shared.module';
+import { QuestIconModule } from '../quest-icon/quest-icon.module';
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     IonicModule,
     RosFlawlessPageRoutingModule,
-    SharedModule,
+    QuestIconModule,
   ],
   declarations: [RosFlawlessPage],
 })

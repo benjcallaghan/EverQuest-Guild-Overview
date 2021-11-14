@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { BloodOfLuclinPage } from './blood-of-luclin.page';
-import { SharedModule } from '../shared/shared.module';
+import { QuestIconModule } from '../quest-icon/quest-icon.module';
 
 @NgModule({
   imports: [
@@ -18,7 +18,7 @@ import { SharedModule } from '../shared/shared.module';
         component: BloodOfLuclinPage,
       },
     ]),
-    SharedModule,
+    QuestIconModule,
   ],
   declarations: [BloodOfLuclinPage],
 })

@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ReignOfShadowsPage } from './reign-of-shadows.page';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from '../shared/shared.module';
+import { QuestIconModule } from '../quest-icon/quest-icon.module';
 
 @NgModule({
   imports: [
@@ -19,7 +19,7 @@ import { SharedModule } from '../shared/shared.module';
         component: ReignOfShadowsPage,
       },
     ]),
-    SharedModule,
+    QuestIconModule,
   ],
   declarations: [ReignOfShadowsPage],
 })
