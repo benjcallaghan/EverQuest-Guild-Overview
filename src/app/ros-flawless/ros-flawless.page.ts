@@ -56,7 +56,7 @@ export class RosFlawlessPage implements OnInit {
       const characters: CensusCharacter[] =
         (await this.storage.get('characters')) ?? [];
       const ids = characters.map((c) => c.id);
-      this.characters = await this.census.getAchievements(
+      this.characters = await this.census.queryCurrentStatus(
         ids,
         RosFlawlessPage.achievements
       );

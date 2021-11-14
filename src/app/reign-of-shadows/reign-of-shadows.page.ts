@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage';
 import {
   CensusService,
   CensusCharacter,
-  RosCharacter,
+  CensusResults,
 } from '../census.service';
 
 @Component({
@@ -12,7 +12,13 @@ import {
   styleUrls: ['reign-of-shadows.page.scss'],
 })
 export class ReignOfShadowsPage implements OnInit {
-  public characters: RosCharacter[];
+  private static readonly quests = {
+    echoCaverns: { type: 'quest', id: 1004769891 },
+    shadeweaversThicket: { type: 'quest', id: 2733294553 },
+    vexThal: { type: 'quest', id: 3589141327 },
+  } as const;
+
+  public characters: CensusResults<typeof ReignOfShadowsPage.quests>;
   public refreshing = false;
 
   constructor(
@@ -26,7 +32,10 @@ export class ReignOfShadowsPage implements OnInit {
       const characters: CensusCharacter[] =
         (await this.storage.get('characters')) ?? [];
       const ids = characters.map((c) => c.id);
-      this.characters = await this.census.getReignOfShadowsQuests(ids);
+      this.characters = await this.census.queryCurrentStatus(
+        ids,
+        ReignOfShadowsPage.quests
+      );
     } finally {
       this.refreshing = false;
     }

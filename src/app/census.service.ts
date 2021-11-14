@@ -22,14 +22,6 @@ export type CharacterSearchResults = {
   character_list: CensusCharacter[];
 };
 
-export type RosCharacter = {
-  id: number;
-  name: string;
-  echoCaverns: QuestStatus;
-  shadeweaversThicket: QuestStatus;
-  vexThal: QuestStatus;
-};
-
 export type SolEyeCharacter = {
   id: number;
   name: string;
@@ -41,20 +33,8 @@ export type SolEyeCharacter = {
   formulaForSuccess: QuestStatus;
 };
 
-export type BolCharacter = {
-  id: number;
-  name: string;
-  blinding: QuestStatus;
-  aurelianCoast: QuestStatus;
-  sanctusSeru: QuestStatus;
-  fordelMidst: QuestStatus;
-  wracklands: QuestStatus;
-  hallowedHalls: QuestStatus;
-  bolChallenge: QuestStatus;
-};
-
 export type CensusQuery = {
-  [key: string]: { type: 'achievement'; id: number };
+  [key: string]: { type: 'achievement' | 'quest'; id: number };
 };
 
 export type CensusResults<TQuery extends CensusQuery> = ({
@@ -105,23 +85,59 @@ export class CensusService {
     });
   }
 
-  public async getAchievements<TQuery extends CensusQuery>(
+  public async queryCurrentStatus<TQuery extends CensusQuery>(
     characterIds: number[],
-    achievements: TQuery
+    query: TQuery
   ): Promise<CensusResults<TQuery>> {
+    const hasQuests = Object.values(query).some(({ type }) => type === 'quest');
+    const hasAchievements = Object.values(query).some(
+      ({ type }) => type === 'achievement'
+    );
+
     const data = await this.runQuery({
       collection: 'character',
       limit: characterIds.length,
       filter: [{ field: 'id', value: characterIds.join(',') }],
-      tree: [{ start: 'achievements.achievement_list', field: 'id' }],
-      show: ['name.first', 'achievements.achievement_list'],
+      join: [
+        ...(hasQuests
+          ? [
+              {
+                type: 'character_misc',
+                on: 'id',
+                to: 'id',
+                inject_at: 'misc',
+                show: ['completed_quest_list', 'quest_list'],
+              },
+            ]
+          : []),
+      ],
+      tree: [
+        ...(hasAchievements
+          ? [{ start: 'achievements.achievement_list', field: 'id' }]
+          : []),
+        ...(hasQuests
+          ? [
+              { start: 'misc.quest_list', field: 'crc' },
+              { start: 'misc.completed_quest_list', field: 'crc' },
+            ]
+          : []),
+      ],
+      show: [
+        'name.first',
+        ...(hasAchievements ? ['achievements.achievement_list'] : []),
+      ],
     });
 
     const characters = data.character_list.map((c) => {
       const result = { id: c.id, name: c.name.first };
 
-      for (const [key, { type, id }] of Object.entries(achievements)) {
-        result[key] = this.getAchievementStatus(c, id);
+      for (const [key, { type, id }] of Object.entries(query)) {
+        result[key] =
+          type === 'achievement'
+            ? this.getAchievementStatus(c, id)
+            : type === 'quest'
+            ? this.getQuestStatus(c, id)
+            : undefined;
       }
 
       return result;
@@ -129,41 +145,6 @@ export class CensusService {
 
     characters.sort((a, b) => a.name.localeCompare(b.name));
     return characters;
-  }
-
-  public async getReignOfShadowsQuests(
-    characterIds: number[]
-  ): Promise<RosCharacter[]> {
-    const data = await this.runQuery({
-      collection: 'character',
-      limit: characterIds.length,
-      filter: [{ field: 'id', value: characterIds.join(',') }],
-      join: [
-        {
-          type: 'character_misc',
-          on: 'id',
-          to: 'id',
-          inject_at: 'misc',
-          show: ['completed_quest_list', 'quest_list'],
-        },
-      ],
-      tree: [
-        { start: 'misc.quest_list', field: 'crc' },
-        { start: 'misc.completed_quest_list', field: 'crc' },
-      ],
-      show: ['name.first'],
-    });
-
-    const characterStatus: RosCharacter[] = data.character_list.map((c) => ({
-      id: c.id,
-      name: c.name.first,
-      echoCaverns: this.getQuestStatus(c, 1004769891),
-      shadeweaversThicket: this.getQuestStatus(c, 2733294553),
-      vexThal: this.getQuestStatus(c, 3589141327),
-    }));
-
-    characterStatus.sort((a, b) => a.name.localeCompare(b.name));
-    return characterStatus;
   }
 
   public async getSoluseksEyeQuests(
@@ -207,45 +188,6 @@ export class CensusService {
       windingDescent: this.getQuestStatus(c, 384548791),
       indispensableComponents: this.getQuestStatus(c, 2414013965),
       formulaForSuccess: this.getQuestStatus(c, 4175814299),
-    }));
-
-    characterStatus.sort((a, b) => a.name.localeCompare(b.name));
-    return characterStatus;
-  }
-
-  public async getBloodOfLuclinQuests(
-    characterIds: number[]
-  ): Promise<BolCharacter[]> {
-    const data = await this.runQuery({
-      collection: 'character',
-      limit: characterIds.length,
-      filter: [{ field: 'id', value: characterIds.join(',') }],
-      join: [
-        {
-          type: 'character_misc',
-          on: 'id',
-          to: 'id',
-          inject_at: 'misc',
-          show: ['completed_quest_list', 'quest_list'],
-        },
-      ],
-      tree: [
-        { start: 'misc.quest_list', field: 'crc' },
-        { start: 'misc.completed_quest_list', field: 'crc' },
-      ],
-      show: ['name.first'],
-    });
-
-    const characterStatus: BolCharacter[] = data.character_list.map((c) => ({
-      id: c.id,
-      name: c.name.first,
-      blinding: this.getQuestStatus(c, 2233296293),
-      aurelianCoast: this.getQuestStatus(c, 471086111),
-      sanctusSeru: this.getQuestStatus(c, 1796408457),
-      fordelMidst: this.getQuestStatus(c, 4118253866),
-      wracklands: this.getQuestStatus(c, 2188419516),
-      hallowedHalls: this.getQuestStatus(c, 460976134),
-      bolChallenge: this.getQuestStatus(c, 1820246160),
     }));
 
     characterStatus.sort((a, b) => a.name.localeCompare(b.name));

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { CensusService, CensusCharacter, BolCharacter } from '../census.service';
+import {
+  CensusService,
+  CensusCharacter,
+  CensusResults,
+} from '../census.service';
 
 @Component({
   selector: 'app-blood-of-luclin',
@@ -8,7 +12,17 @@ import { CensusService, CensusCharacter, BolCharacter } from '../census.service'
   styleUrls: ['blood-of-luclin.page.scss'],
 })
 export class BloodOfLuclinPage implements OnInit {
-  public characters: BolCharacter[];
+  private static readonly quests = {
+    blinding: { type: 'quest', id: 2233296293 },
+    aurelianCoast: { type: 'quest', id: 471086111 },
+    sanctusSeru: { type: 'quest', id: 1796408457 },
+    fordelMidst: { type: 'quest', id: 4118253866 },
+    wracklands: { type: 'quest', id: 2188419516 },
+    hallowedHalls: { type: 'quest', id: 460976134 },
+    bolChallenge: { type: 'quest', id: 1820246160 },
+  } as const;
+
+  public characters: CensusResults<typeof BloodOfLuclinPage.quests>;
   public refreshing = false;
 
   constructor(
@@ -22,7 +36,10 @@ export class BloodOfLuclinPage implements OnInit {
       const characters: CensusCharacter[] =
         (await this.storage.get('characters')) ?? [];
       const ids = characters.map((c) => c.id);
-      this.characters = await this.census.getBloodOfLuclinQuests(ids);
+      this.characters = await this.census.queryCurrentStatus(
+        ids,
+        BloodOfLuclinPage.quests
+      );
     } finally {
       this.refreshing = false;
     }
