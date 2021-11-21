@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
-import {
-  CensusService,
-  CensusCharacter,
-  QuestResults,
-} from '../census.service';
+import { CensusService, QuestResults } from '../census.service';
+import { CharacterService } from '../character.service';
 
 @Component({
   selector: 'app-soluseks-eye',
@@ -26,14 +22,13 @@ export class SoluseksEyePage implements OnInit {
 
   constructor(
     private readonly census: CensusService,
-    private readonly storage: Storage
+    private readonly characterService: CharacterService
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.refreshing = true;
     try {
-      const characters: CensusCharacter[] =
-        (await this.storage.get('characters')) ?? [];
+      const characters = await this.characterService.getAllCharacters();
       const ids = characters.map((c) => c.id);
       this.characters = await this.census.queryQuestStatus(
         ids,

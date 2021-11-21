@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
 import { CensusService, CensusCharacter } from '../census.service';
+import { CharacterService } from '../character.service';
 
 @Component({
   selector: 'app-settings',
@@ -16,11 +16,11 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private readonly census: CensusService,
-    private readonly storage: Storage
+    private readonly characterService: CharacterService
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.selected = (await this.storage.get('characters')) ?? [];
+    this.selected = await this.characterService.getAllCharacters();
   }
 
   async searchForCharacter(): Promise<void> {
@@ -42,13 +42,13 @@ export class SettingsPage implements OnInit {
       this.selected.sort((a, b) => a.displayname.localeCompare(b.displayname));
     }
 
-    await this.storage.set('characters', this.selected);
+    await this.characterService.saveCharacters(this.selected);
   }
 
   async remove(index: number): Promise<void> {
     this.selected.splice(index, 1);
     this.selected.sort((a, b) => a.displayname.localeCompare(b.displayname));
 
-    await this.storage.set('characters', this.selected);
+    await this.characterService.saveCharacters(this.selected);
   }
 }
