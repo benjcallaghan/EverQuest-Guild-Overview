@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { PlanesOfProphecyPageRoutingModule } from './planes-of-prophecy-routing.module';
 
 import { PlanesOfProphecyPage } from './planes-of-prophecy.page';
+import { QuestIconModule } from '../quest-icon/quest-icon.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PlanesOfProphecyPageRoutingModule
+    PlanesOfProphecyPageRoutingModule,
+    QuestIconModule,
   ],
-  declarations: [PlanesOfProphecyPage]
+  declarations: [PlanesOfProphecyPage],
 })
 export class PlanesOfProphecyPageModule {}

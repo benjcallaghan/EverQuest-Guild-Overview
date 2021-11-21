@@ -7,115 +7,608 @@
         </ion-button>
       </ion-menu-toggle>
     </ion-buttons>
-    <ion-title>Planes of Prophecy</ion-title>
+    <ion-title>Planes of Prophecy Flawless</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding-horizontal">
-  <h2>Add Character</h2>
-  <ion-item>
-    <ion-label>Character Name</ion-label>
-    <ion-input #searchBox></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Server</ion-label>
-    <ion-select #serverSelect placeholder="Select server...">
-      <ion-select-option [value]="104">Antonia Bayle</ion-select-option>
-      <!-- <ion-select-option [value]="">Beta</ion-select-option> -->
-      <ion-select-option [value]="605">Halls of Fate</ion-select-option>
-      <ion-select-option [value]="601">Isle of Refuge</ion-select-option>
-      <ion-select-option [value]="610">Kaladim</ion-select-option>
-      <ion-select-option [value]="604">Maj'Dul</ion-select-option>
-      <ion-select-option [value]="611">Rivervale</ion-select-option>
-      <ion-select-option [value]="606">Skyfire</ion-select-option>
-      <ion-select-option [value]="100">Test</ion-select-option>
-      <ion-select-option [value]="701">Thurgadin</ion-select-option>
-    </ion-select>
-  </ion-item>
-  <ion-button (click)="search(searchBox.value, serverSelect.value)">Search</ion-button>
-  <ion-spinner *ngIf="searching"></ion-spinner>
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let character of searchResults" size="12" size-md="3">
-        <ion-card>
-          <ion-card-header class="ion-float-left">
-            <ion-card-subtitle>{{ character.guild?.name }}</ion-card-subtitle>
-            <ion-card-title>{{ character.displayname }}</ion-card-title>
-          </ion-card-header>
-          <ion-button
-            class="ion-float-right"
-            fill="clear"
-            (click)="add(character)"
-          >
-            <ion-icon name="add" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-content class="ion-padding">
+  <ion-spinner *ngIf="refreshing"></ion-spinner>
 
-  <h2>Raid</h2>
-  <ion-grid>
-    <ion-row>
-      <ion-col
-        *ngFor="let character of characters; let index=index"
-        size="12"
-        size-md="3"
-      >
-        <ion-card>
-          <ion-card-header class="ion-float-left">
-            <ion-card-subtitle>{{ character.guild?.name }}</ion-card-subtitle>
-            <ion-card-title>{{ character.displayname }}</ion-card-title>
-          </ion-card-header>
-          <ion-button
-            class="ion-float-right"
-            fill="clear"
-            (click)="remove(index)"
-          >
-            <ion-icon name="remove" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="13">Plane of Innovation: The Wasteyards</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th colspan="4">Tier 1</th>
+        <th colspan="5">Tier 2</th>
+        <th colspan="3">Tier 3</th>
+        <th>Tier 4</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>Manaetic Prototype IX</th>
+        <th>Manaetic Prototype XI</th>
+        <th>Tin Overseer Alpha</th>
+        <th>Tin Overseer Omega</th>
+        <th>Karnah of the Source</th>
+        <th>Construct Automaton</th>
+        <th>Gearbox the Energy Siphon</th>
+        <th>The Junk Beast</th>
+        <th>Meldrath the Mechanized</th>
+        <th>Meldrath the Malignant</th>
+        <th>Junkyard Mawg</th>
+        <th>Operator Figl</th>
+        <th>The Manaetic Behemoth</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-start">{{ character.name }}</td>
+        <td>
+          <app-quest-icon
+            [quest]="character.manaeticPrototypeIX"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.manaeticPrototypeXI"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.tinOverseerAlpha"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.tinOverseerOmega"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.karnahOfTheSource"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.constructAutomaton"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.gearboxTheEnergySiphon"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theJunkBeast"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.meldrathTheMechanized"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.meldrathTheMalignant"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.junkyardMawg"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.operatorFigl"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.theManaeticBehemoth"
+          ></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  <ion-button (click)="buildReport()">Build Report</ion-button>
-  <ion-list>
-    <ion-item>
-      <ion-label>Include Tier 1</ion-label>
-      <ion-checkbox [(ngModel)]="includeTier1"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <ion-label>Include Tier 2</ion-label>
-      <ion-checkbox [(ngModel)]="includeTier2"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <ion-label>Include Tier 3</ion-label>
-      <ion-checkbox [(ngModel)]="includeTier3"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <ion-label>Include Tier 4</ion-label>
-      <ion-checkbox [(ngModel)]="includeTier4"></ion-checkbox>
-    </ion-item>
-  </ion-list>
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="11">Plane of Disease: Virulent Insurrection</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th colspan="3">Tier 1</th>
+        <th colspan="3">Tier 2</th>
+        <th colspan="4">Tier 3</th>
+        <th>Tier 4</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>Dysperitia</th>
+        <th>Resnake and Rythrak</th>
+        <th>Rankle</th>
+        <th>Plaguen the Piper</th>
+        <th>Corpulus</th>
+        <th>Wretch</th>
+        <th>Nightlure the Fleshfeaster</th>
+        <th>Pox</th>
+        <th>Grummus</th>
+        <th>Skal'sli the Wretched</th>
+        <th>Bertoxxulous</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-start">{{ character.name }}</td>
+        <td>
+          <app-quest-icon [quest]="character.dysperitia"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.resnakeAndRythrak"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.rankle"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.plaguenThePiper"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.corpulus"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.wretch"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.nightlureTheFleshfeaster"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.pox"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.grummus"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.skalsliTheWretched"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.bertoxxulous"></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  <ion-list>
-    <ion-list-header>Required Flawless Kills</ion-list-header>
-    <ion-item-group *ngFor="let dungeon of dungeons">
-      <ion-item-divider>
-        <ion-label>{{ dungeon.name }}</ion-label>
-      </ion-item-divider>
-      <ng-container *ngFor="let round of dungeon.bosses; let index=index">
-        <ion-item-divider *ngIf="dungeon.bosses.length > 1"
-          >Round {{ index + 1 }}</ion-item-divider
-        >
-        <ng-container *ngFor="let boss of round">
-          <ion-item *ngIf="includeTier(boss.tier)">
-            <ion-label>{{ boss.name }}</ion-label>
-            <ion-note slot="end" color="primary">{{ boss.neededBy.length }}</ion-note>
-          </ion-item>
-        </ng-container>
-      </ng-container>
-    </ion-item-group>
-  </ion-list>
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="11">Torden, Bastion of Thunder: Storm Surge</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th colspan="2">Tier 1</th>
+        <th colspan="4">Tier 2</th>
+        <th colspan="4">Tier 3</th>
+        <th>Tier 4</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>Valbrand and Thanbrand</th>
+        <th>Wybjorn</th>
+        <th>Eindride Icestorm</th>
+        <th>Thunderclap and Skyfury</th>
+        <th>Erech Eyford</th>
+        <th>Sandstorm, Steelthorn, Sutherland, and Stormseer</th>
+        <th>Kuanbyr Hailstorm</th>
+        <th>Stormtide and Sandstorm</th>
+        <th>Wavecrasher and Firestorm</th>
+        <th>Thundercall and Cyclone</th>
+        <th>Agnarr the Storm Lord</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-start">{{ character.name }}</td>
+        <td>
+          <app-quest-icon
+            [quest]="character.valbrandAndThangbrand"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.wybjorn"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.eindrideIcestorm"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.thunderclapAndSkyfury"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.erechEyford"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.sandstormSteelthornSutherlandAndStormseer"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.kuanbyrHailstorm"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.stormtideAndSandstorm"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.wavecrasherAndFirestorm"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.thundercallAndCyclone"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.agnarrTheStormLord"
+          ></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="3">Brackish Vaults: Realm of the Triumvirate</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th colspan="3">Tier 3</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>Dyronis, Harbinger of E'ci</th>
+        <th>Rheumus, Harbinger of Tarew Marr</th>
+        <th>Eurold, Harbinger of Povar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-start">{{ character.name }}</td>
+        <td>
+          <app-quest-icon
+            [quest]="character.dyronisHarbingerOfEci"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.rheumusHarbingerOfTarewMarr"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.euroldHarbingerOfPovar"
+          ></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="11">Solusek Ro's Tower: Citadel of the Sun</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th colspan="3">Tier 1</th>
+        <th colspan="3">Tier 2</th>
+        <th colspan="2">Tier 3</th>
+        <th colspan="3">Tier 4</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>Ferris</th>
+        <th>Veleroth and Zrexul</th>
+        <th>Bling</th>
+        <th>Guardian and Protector of Dresolik</th>
+        <th>Brundin of the Guard</th>
+        <th>Amohn</th>
+        <th>Arlyxir</th>
+        <th>Rizlona</th>
+        <th>Feridus Emberblaze</th>
+        <th>Grezou</th>
+        <th>Solusek Ro</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-start">{{ character.name }}</td>
+        <td>
+          <app-quest-icon [quest]="character.ferris"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.velerothAndZrexul"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.bling"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.guardianAndProtectorOfDresolik"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.brundinOfTheGuard"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.amohn"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.arlyxir"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.rizlona"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.feridusEmberblaze"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.grezou"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.solusekRo"></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="4">Shard of Hate: Reignited Hatred (Round 1)</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>The Deathrot Knight (T1)</th>
+        <th>The Culler of Bones (T1)</th>
+        <th>The Arch Bonefiend (T1)</th>
+        <th>The Lord of Decay (T1)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-start">{{ character.name }}</td>
+        <td>
+          <app-quest-icon
+            [quest]="character.theDeathrotKnight"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theCullerOfBones"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theArchBonefined"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theLordOfDecay"></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="4">Shard of Hate: Reignited Hatred (Round 2)</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>The Mistress of Scorn (T1)</th>
+        <th>The Lord of Loathing (T1)</th>
+        <th>The Lord of Ire (T1)</th>
+        <th>The Master of Spite (T2)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-start">{{ character.name }}</td>
+        <td>
+          <app-quest-icon
+            [quest]="character.theMistressOfScorn"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.theLordOfLoathing"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theLordOfIre"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theMasterOfSpite"></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="4">Shard of Hate: Reignted Hatred (Round 3)</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>The Hoarder P'Lewt (T1)</th>
+        <th>The Phantom Wraith (T1)</th>
+        <th>The Bleeder of Ire (T2)</th>
+        <th>The Master P'Tasa (T2)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-left">{{ character.name }}</td>
+        <td>
+          <app-quest-icon [quest]="character.theHoarderPlewt"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.thePhantomWraith"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theBleederOfIre"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theMasterPtasa"></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="4">Shard of Hate: Reignted Hatred (Round 4)</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>High Priest M'kari (T1)</th>
+        <th>The Hand of Maestro (T2)</th>
+        <th>Demetrius Crane (T2)</th>
+        <th>The Deathspinner K'dora (T2)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-left">{{ character.name }}</td>
+        <td>
+          <app-quest-icon [quest]="character.highPriestMkari"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theHandOfMaestro"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.demetriusCrane"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.theDeathspinnerKdora"
+          ></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="4">Shard of Hate: Reignted Hatred (Round 5)</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>Coercer T'vala (T1)</th>
+        <th>Dreadlord D'Somni (T2)</th>
+        <th>Grandmaster R'Tal (T2)</th>
+        <th>The Avatar of Abhorrence (T3)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-left">{{ character.name }}</td>
+        <td>
+          <app-quest-icon [quest]="character.coercerTvala"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.dreadlordDsomni"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.grandmasterRtal"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.theAvatarOfAbhorrence"
+          ></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="4">Shard of Hate: Reignted Hatred (Round 6)</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>The Ashenbone Broodmaster (T3)</th>
+        <th>The Avatar of Bone (T3)</th>
+        <th>Kpul D'Vngur, Maestro of Rancor (T3)</th>
+        <th>Byzola (T3)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-left">{{ character.name }}</td>
+        <td>
+          <app-quest-icon
+            [quest]="character.theAshenboneBroodmaster"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.theAvatarOfBone"></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon
+            [quest]="character.kpulDvngurMaestroOfRancor"
+          ></app-quest-icon>
+        </td>
+        <td>
+          <app-quest-icon [quest]="character.byzola"></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="ion-text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Shard of Hate: Reignited Hatred (Round 7)</th>
+      </tr>
+      <tr>
+        <th>Character</th>
+        <th>Innoruuk, God of Hate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let character of characters">
+        <td class="ion-text-left">{{ character.name }}</td>
+        <td>
+          <app-quest-icon
+            [quest]="character.innoruukGodOfHate"
+          ></app-quest-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </ion-content>
