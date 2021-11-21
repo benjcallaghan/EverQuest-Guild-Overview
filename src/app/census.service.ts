@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { build, CensusUrlOptions, Join, Tree } from './daybreak-census-options';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface QuestStatus {
   text?: string;
@@ -53,7 +55,7 @@ export class CensusService {
   public getCharactersByName(
     name: string,
     serverId?: number
-  ): Promise<CharacterSearchResults> {
+  ): Observable<CharacterSearchResults> {
     return this.runQuery({
       collection: 'character',
       filter: [
@@ -78,10 +80,10 @@ export class CensusService {
     });
   }
 
-  public async queryQuestStatus<Query extends QuestQuery>(
+  public queryQuestStatus<Query extends QuestQuery>(
     characterIds: number[],
     query: Query
-  ): Promise<QuestResults<Query>> {
+  ): Observable<QuestResults<Query>> {
     const hasQuests = Object.values(query).some(({ type }) => type === 'quest');
     const hasAchievements = Object.values(query).some(
       ({ type }) => type === 'achievement'
@@ -90,7 +92,7 @@ export class CensusService {
       ({ type }) => type === 'collection'
     );
 
-    const data = await this.runQuery({
+    return this.runQuery({
       collection: 'character',
       limit: characterIds.length,
       filter: [{ field: 'id', value: characterIds.join(',') }],
@@ -139,35 +141,37 @@ export class CensusService {
         'name.first',
         ...(hasAchievements ? ['achievements.achievement_list'] : []),
       ],
-    });
+    }).pipe(
+      map((data) => {
+        const characters = data.character_list.map((c) => {
+          const result = { id: c.id, name: c.name.first };
 
-    const characters = data.character_list.map((c) => {
-      const result = { id: c.id, name: c.name.first };
+          for (const [key, { type, id }] of Object.entries(query)) {
+            result[key] =
+              type === 'achievement'
+                ? this.getAchievementStatus(c, id)
+                : type === 'quest'
+                ? this.getQuestStatus(c, id)
+                : type === 'collection'
+                ? this.getCollectionStatus(c, id)
+                : undefined;
+          }
 
-      for (const [key, { type, id }] of Object.entries(query)) {
-        result[key] =
-          type === 'achievement'
-            ? this.getAchievementStatus(c, id)
-            : type === 'quest'
-            ? this.getQuestStatus(c, id)
-            : type === 'collection'
-            ? this.getCollectionStatus(c, id)
-            : undefined;
-      }
+          return result;
+        });
 
-      return result;
-    });
-
-    characters.sort((a, b) => a.name.localeCompare(b.name));
-    return characters;
+        characters.sort((a, b) => a.name.localeCompare(b.name));
+        return characters;
+      })
+    );
   }
 
-  private runQuery(options: Partial<CensusUrlOptions>): Promise<any> {
+  private runQuery(options: Partial<CensusUrlOptions>): Observable<any> {
     const url = build({
       ...this.defaultOptions,
       ...options,
     });
-    return this.http.get(url.href).toPromise();
+    return this.http.get(url.href);
   }
 
   private getQuestStatus(character: any, crc: number): QuestStatus {

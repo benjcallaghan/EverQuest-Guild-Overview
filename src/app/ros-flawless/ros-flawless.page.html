@@ -13,196 +13,209 @@
 
 <ion-content class="ion-padding">
   <ion-spinner *ngIf="refreshing"></ion-spinner>
-  <table class="ion-text-center">
-    <thead>
-      <tr>
-        <th></th>
-        <th colspan="4">Echo Caverns</th>
-      </tr>
-      <tr>
-        <th>Character</th>
-        <th>The Ancient Burrower Beast</th>
-        <th>Lhurzz the Nibbler</th>
-        <th>Jerrek Amaw'Rosis</th>
-        <th>Grieg Veneficus</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let character of characters">
-        <td class="ion-text-start">{{ character.name }}</td>
-        <td>
-          <app-quest-icon [quest]="character.burrowerBeast"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.lhurzz"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.jerrek"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.grieg"></app-quest-icon>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 
-  <table class="ion-text-center">
-    <thead>
-      <tr>
-        <th></th>
-        <th colspan="4">Shadeweaver's Thicket</th>
-      </tr>
-      <tr>
-        <th>Character</th>
-        <th>Nelon Hes</th>
-        <th>Hoggith the Eternal Cinder</th>
-        <th>Fenirek'tal</th>
-        <th>Khati Sha the Twisted</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let character of characters">
-        <td class="ion-text-start">{{ character.name }}</td>
-        <td>
-          <app-quest-icon [quest]="character.nelonHes"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.hoggith"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.fenirekTal"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.khatiSha"></app-quest-icon>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <ng-container *ngIf="characters$ | async as characters">
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="4">Echo Caverns</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>The Ancient Burrower Beast</th>
+          <th>Lhurzz the Nibbler</th>
+          <th>Jerrek Amaw'Rosis</th>
+          <th>Grieg Veneficus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.burrowerBeast"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.lhurzz"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.jerrek"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.grieg"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-  <table class="ion-text-center">
-    <thead>
-      <tr>
-        <th></th>
-        <th colspan="4">Shadow's Hold</th>
-      </tr>
-      <tr>
-        <th>Character</th>
-        <th>Greta Gnitrat</th>
-        <th>Beast from Beyond</th>
-        <th>Shadowcaster Grimlock</th>
-        <th>Colossus of Crystallized Shadow</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let character of characters">
-        <td class="ion-text-start">{{ character.name }}</td>
-        <td>
-          <app-quest-icon [quest]="character.greta"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.beastFromBeyond"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.grimlock"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.colossus"></app-quest-icon>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="4">Shadeweaver's Thicket</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>Nelon Hes</th>
+          <th>Hoggith the Eternal Cinder</th>
+          <th>Fenirek'tal</th>
+          <th>Khati Sha the Twisted</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.nelonHes"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.hoggith"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.fenirekTal"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.khatiSha"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-  <table class="ion-text-center">
-    <thead>
-      <tr>
-        <th></th>
-        <th colspan="9">Vex Thal 1</th>
-      </tr>
-      <tr>
-        <th>Character</th>
-        <th>Va Dyn Khar</th>
-        <th>Xakra Fu'un</th>
-        <th>Betrayer 1</th>
-        <th>Betrayer 2</th>
-        <th>Betrayer 3</th>
-        <th>Betrayer 4</th>
-        <th>Zun, Zun, and Zun</th>
-        <th>Kaas Thox Xi Aten Ha Ra</th>
-        <th>The Creator</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let character of characters">
-        <td class="ion-text-start">{{ character.name }}</td>
-        <td>
-          <app-quest-icon [quest]="character.vaDynKhar"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.xakra"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.betrayer1"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.betrayer2"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.betrayer3"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.betrayer4"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.zzz"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.kaasThoxXiAtenHaRa"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.creator"></app-quest-icon>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="4">Shadow's Hold</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>Greta Gnitrat</th>
+          <th>Beast from Beyond</th>
+          <th>Shadowcaster Grimlock</th>
+          <th>Colossus of Crystallized Shadow</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.greta"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon
+              [quest]="character.beastFromBeyond"
+            ></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.grimlock"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.colossus"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-  <table class="ion-text-center">
-    <thead>
-      <tr>
-        <th></th>
-        <th colspan="6">Vex Thal 2</th>
-      </tr>
-      <tr>
-        <th>Character</th>
-        <th>Diabo Xi Va</th>
-        <th>Thall Xundrax Diabo</th>
-        <th>Thall Va Xakra Fer</th>
-        <th>Akhessa Va Liako Vess</th>
-        <th>High Priest Verrkara</th>
-        <th>Emperor Ssraeshza</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let character of characters">
-        <td class="ion-text-start">{{ character.name }}</td>
-        <td>
-          <app-quest-icon [quest]="character.diabo"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.thallXundraxDiabo"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.thallVaXakraFer"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.akhessaVaLiakoVess"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.verrkara"></app-quest-icon>
-        </td>
-        <td>
-          <app-quest-icon [quest]="character.emperor"></app-quest-icon>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="9">Vex Thal 1</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>Va Dyn Khar</th>
+          <th>Xakra Fu'un</th>
+          <th>Betrayer 1</th>
+          <th>Betrayer 2</th>
+          <th>Betrayer 3</th>
+          <th>Betrayer 4</th>
+          <th>Zun, Zun, and Zun</th>
+          <th>Kaas Thox Xi Aten Ha Ra</th>
+          <th>The Creator</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.vaDynKhar"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.xakra"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.betrayer1"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.betrayer2"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.betrayer3"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.betrayer4"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.zzz"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon
+              [quest]="character.kaasThoxXiAtenHaRa"
+            ></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.creator"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="6">Vex Thal 2</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>Diabo Xi Va</th>
+          <th>Thall Xundrax Diabo</th>
+          <th>Thall Va Xakra Fer</th>
+          <th>Akhessa Va Liako Vess</th>
+          <th>High Priest Verrkara</th>
+          <th>Emperor Ssraeshza</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.diabo"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon
+              [quest]="character.thallXundraxDiabo"
+            ></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon
+              [quest]="character.thallVaXakraFer"
+            ></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon
+              [quest]="character.akhessaVaLiakoVess"
+            ></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.verrkara"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.emperor"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
 </ion-content>

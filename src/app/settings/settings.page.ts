@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CensusService, CensusCharacter } from '../census.service';
 import { CharacterService } from '../character.service';
+import { Observable, defer, asapScheduler } from 'rxjs';
+import { map, tap, observeOn, subscribeOn } from 'rxjs/operators';
 
 @Component({
   selector: 'app-settings',
@@ -11,7 +13,7 @@ export class SettingsPage implements OnInit {
   searching = false;
   searchName: string;
   searchServer: number;
-  searchResults: CensusCharacter[];
+  searchResults$: Observable<CensusCharacter[]>;
   selected: CensusCharacter[];
 
   constructor(
@@ -24,16 +26,20 @@ export class SettingsPage implements OnInit {
   }
 
   async searchForCharacter(): Promise<void> {
-    this.searching = true;
-    try {
-      const { character_list } = await this.census.getCharactersByName(
+    this.searchResults$ = defer(() => {
+      this.searching = true;
+      return this.census.getCharactersByName(
         this.searchName,
         this.searchServer
       );
-      this.searchResults = character_list;
-    } finally {
-      this.searching = false;
-    }
+    }).pipe(
+      subscribeOn(asapScheduler),
+      map((data) => data.character_list),
+      tap({
+        next: () => (this.searching = false),
+        error: () => (this.searching = false),
+      })
+    );
   }
 
   async add(character: CensusCharacter): Promise<void> {

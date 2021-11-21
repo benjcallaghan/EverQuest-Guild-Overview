@@ -31,7 +31,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let character of characters">
+      <tr *ngFor="let character of characters$ | async">
         <td class="ion-text-start">{{ character.name }}</td>
         <td>
           <app-quest-icon [quest]="character.answerTheCall"></app-quest-icon>
