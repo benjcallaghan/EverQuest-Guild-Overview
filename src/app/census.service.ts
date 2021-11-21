@@ -26,15 +26,15 @@ export interface CharacterSearchResults {
   character_list: CensusCharacter[];
 }
 
-export type CensusQuery = {
+export type QuestQuery = {
   [key: string]: { type: 'achievement' | 'quest' | 'collection'; id: number };
 };
 
-export type CensusResults<TQuery extends CensusQuery> = ({
+export type QuestResults<Query extends QuestQuery> = ({
   id: number;
   name: string;
 } & {
-  [key in keyof TQuery]: QuestStatus;
+  [key in keyof Query]: QuestStatus;
 })[];
 
 @Injectable({
@@ -78,10 +78,10 @@ export class CensusService {
     });
   }
 
-  public async queryCurrentStatus<TQuery extends CensusQuery>(
+  public async queryQuestStatus<Query extends QuestQuery>(
     characterIds: number[],
-    query: TQuery
-  ): Promise<CensusResults<TQuery>> {
+    query: Query
+  ): Promise<QuestResults<Query>> {
     const hasQuests = Object.values(query).some(({ type }) => type === 'quest');
     const hasAchievements = Object.values(query).some(
       ({ type }) => type === 'achievement'

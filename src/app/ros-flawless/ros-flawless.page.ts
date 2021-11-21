@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage-angular';
 import {
   CensusService,
   CensusCharacter,
-  CensusResults,
+  QuestResults,
 } from '../census.service';
 
 @Component({
@@ -42,7 +42,7 @@ export class RosFlawlessPage implements OnInit {
     grieg: { type: 'achievement', id: 3061320400 },
   } as const;
 
-  public characters: CensusResults<typeof RosFlawlessPage.achievements>;
+  public characters: QuestResults<typeof RosFlawlessPage.achievements>;
   public refreshing = false;
 
   constructor(
@@ -56,7 +56,7 @@ export class RosFlawlessPage implements OnInit {
       const characters: CensusCharacter[] =
         (await this.storage.get('characters')) ?? [];
       const ids = characters.map((c) => c.id);
-      this.characters = await this.census.queryCurrentStatus(
+      this.characters = await this.census.queryQuestStatus(
         ids,
         RosFlawlessPage.achievements
       );

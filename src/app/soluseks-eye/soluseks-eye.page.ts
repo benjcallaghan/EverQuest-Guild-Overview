@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage-angular';
 import {
   CensusService,
   CensusCharacter,
-  CensusResults,
+  QuestResults,
 } from '../census.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class SoluseksEyePage implements OnInit {
     formulaForSuccess: { type: 'quest', id: 4175814299 },
   } as const;
 
-  public characters: CensusResults<typeof SoluseksEyePage.quests>;
+  public characters: QuestResults<typeof SoluseksEyePage.quests>;
   public refreshing = false;
 
   constructor(
@@ -35,7 +35,7 @@ export class SoluseksEyePage implements OnInit {
       const characters: CensusCharacter[] =
         (await this.storage.get('characters')) ?? [];
       const ids = characters.map((c) => c.id);
-      this.characters = await this.census.queryCurrentStatus(
+      this.characters = await this.census.queryQuestStatus(
         ids,
         SoluseksEyePage.quests
       );
