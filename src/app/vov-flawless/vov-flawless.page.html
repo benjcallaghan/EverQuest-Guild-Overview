@@ -19,7 +19,7 @@
       <thead>
         <tr>
           <th></th>
-          <th colspan="4">Non-Raid Achievements</th>
+          <th colspan="3">Non-Raid Achievements</th>
         </tr>
         <tr>
           <th>Character</th>
@@ -39,6 +39,80 @@
           </td>
           <td>
             <app-quest-icon [quest]="character.masterOfVetrovia"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="5">Karuupa Jungle: The Fading Light</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>Quilliclaw (T1)</th>
+          <th>Gluar Xrzin (T1)</th>
+          <th>The Vetrovian Mantrap (T1)</th>
+          <th>Behemothrus and Gargantaur (T2)</th>
+          <th>The Guardian of the Plumage (T2)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.quilliclaw"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.glaurXrzin"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.vetrovianMantrap"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.behemothrusAndGargantaur"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.guardianOfThePlumage"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="5">Mahngavi Wastes: The Engulfing Night</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>Cewtie (T1)</th>
+          <th>Cliff Dweller Gadsin (T1)</th>
+          <th>Persepherator (T1)</th>
+          <th>Cewtie? (T2)</th>
+          <th>The Legion Lords (T2)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.cewtie"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.cliffDwellerGadsin"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.persepherator"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.cewtie2"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.legionLords"></app-quest-icon>
           </td>
         </tr>
       </tbody>
