@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon slot="icon-only" name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-title>Visions of Vetrovia "Flawless"</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-spinner *ngIf="refreshing"></ion-spinner>
+
+  <ng-container *ngIf="characters$ | async as characters">
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="4">Non-Raid Achievements</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>Heroic I</th>
+          <th>Heroic II</th>
+          <th>Master of Vetrovia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.heroic1"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.heroic2"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.masterOfVetrovia"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</ion-content>

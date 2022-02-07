@@ -37,6 +37,10 @@ const routes: Routes = [
     path: 'ros-flawless',
     loadChildren: () => import('./ros-flawless/ros-flawless.module').then( m => m.RosFlawlessPageModule)
   },
+  {
+    path: 'vov-flawless',
+    loadChildren: () => import('./vov-flawless/vov-flawless.module').then( m => m.VovFlawlessPageModule)
+  },
 ];
 
 @NgModule({
