@@ -44,7 +44,7 @@ export type QuestResults<Query extends QuestQuery> = ({
 })
 export class CensusService {
   private defaultOptions: CensusUrlOptions = {
-    serviceId: 's:benjadorncalculator',
+    serviceId: 's:vexedencetracker',
     format: 'json',
     verb: 'get',
     namespace: 'eq2',
