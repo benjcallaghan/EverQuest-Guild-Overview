@@ -117,5 +117,42 @@
         </tr>
       </tbody>
     </table>
+
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="5">Forlorn Gist: Emerging Deceit</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>Envoy to Bloodrite (T2)</th>
+          <th>G'dalt Spirit-stitcher (T2)</th>
+          <th>The Hand of Lithania (T3)</th>
+          <th>The Reanimated Horror (T3)</th>
+          <th>Lithania Dyrmelia (T3)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.envoyToBloodrite"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.gdaltSpiritStitcher"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.handOfLithania"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.reanimatedHorror"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.lithaniaDyrmelia"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </ng-container>
 </ion-content>

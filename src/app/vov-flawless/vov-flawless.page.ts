@@ -31,6 +31,11 @@ export class VovFlawlessPage {
         persepherator: { type: 'achievement', id: 4287567854 },
         cewtie2: { type: 'achievement', id: 2897939876 },
         legionLords: { type: 'achievement', id: 3341839889 },
+        envoyToBloodrite: { type: 'achievement', id: 56755689 },
+        gdaltSpiritStitcher: { type: 'achievement', id: 1387611581 },
+        handOfLithania: { type: 'achievement', id: 1326012009 },
+        reanimatedHorror: { type: 'achievement', id: 1316189009 },
+        lithaniaDyrmelia: { type: 'achievement', id: 417986812 },
       })
     ),
     tap({
