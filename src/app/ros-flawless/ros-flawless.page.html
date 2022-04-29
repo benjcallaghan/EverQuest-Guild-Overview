@@ -15,7 +15,7 @@
   <ion-spinner *ngIf="refreshing"></ion-spinner>
 
   <ng-container *ngIf="characters$ | async as characters">
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -31,7 +31,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon [quest]="character.burrowerBeast"></app-quest-icon>
           </td>
@@ -48,7 +48,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -64,7 +64,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon [quest]="character.nelonHes"></app-quest-icon>
           </td>
@@ -81,7 +81,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -97,7 +97,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td >{{ character.name }}</td>
           <td>
             <app-quest-icon [quest]="character.greta"></app-quest-icon>
           </td>
@@ -116,7 +116,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -137,7 +137,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon [quest]="character.vaDynKhar"></app-quest-icon>
           </td>
@@ -171,7 +171,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -189,7 +189,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon [quest]="character.diabo"></app-quest-icon>
           </td>

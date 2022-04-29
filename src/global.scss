@@ -34,3 +34,11 @@ td {
     border-color: white;
   }
 }
+
+table {
+  text-align: center;
+}
+
+td:first-child {
+  text-align: left;
+}

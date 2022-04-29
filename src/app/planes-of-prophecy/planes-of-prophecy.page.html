@@ -15,7 +15,7 @@
   <ion-spinner *ngIf="refreshing"></ion-spinner>
 
   <ng-container *ngIf="characters$ | async as characters">
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -47,7 +47,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon
               [quest]="character.manaeticPrototypeIX"
@@ -111,7 +111,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -141,7 +141,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon [quest]="character.dysperitia"></app-quest-icon>
           </td>
@@ -187,7 +187,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -217,7 +217,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon
               [quest]="character.valbrandAndThangbrand"
@@ -273,7 +273,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -292,7 +292,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon
               [quest]="character.dyronisHarbingerOfEci"
@@ -312,7 +312,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -342,7 +342,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon [quest]="character.ferris"></app-quest-icon>
           </td>
@@ -388,7 +388,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -404,7 +404,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon
               [quest]="character.theDeathrotKnight"
@@ -427,7 +427,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -443,7 +443,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-start">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon
               [quest]="character.theMistressOfScorn"
@@ -466,7 +466,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -482,7 +482,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-left">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon
               [quest]="character.theHoarderPlewt"
@@ -505,7 +505,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -521,7 +521,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-left">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon
               [quest]="character.highPriestMkari"
@@ -544,7 +544,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -560,7 +560,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-left">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon [quest]="character.coercerTvala"></app-quest-icon>
           </td>
@@ -583,7 +583,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -599,7 +599,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-left">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon
               [quest]="character.theAshenboneBroodmaster"
@@ -622,7 +622,7 @@
       </tbody>
     </table>
 
-    <table class="ion-text-center">
+    <table>
       <thead>
         <tr>
           <th></th>
@@ -635,7 +635,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let character of characters">
-          <td class="ion-text-left">{{ character.name }}</td>
+          <td>{{ character.name }}</td>
           <td>
             <app-quest-icon
               [quest]="character.innoruukGodOfHate"
