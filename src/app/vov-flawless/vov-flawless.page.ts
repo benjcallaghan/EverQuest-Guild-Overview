@@ -36,6 +36,16 @@ export class VovFlawlessPage {
         handOfLithania: { type: 'achievement', id: 1326012009 },
         reanimatedHorror: { type: 'achievement', id: 1316189009 },
         lithaniaDyrmelia: { type: 'achievement', id: 417986812 },
+        ladyOfTheLute: { type: 'achievement', id: 2646401724 },
+        legionCaptainBloodrite: { type: 'achievement', id: 1902962868 },
+        bloodtenderAndGidget: { type: 'achievement', id: 1387471891 },
+        heirApparent: { type: 'achievement', id: 151001061 },
+        thirstborn: { type: 'achievement', id: 818960137 },
+        butcher: { type: 'achievement', id: 4157760058 },
+        returnedFoeOfLegend: { type: 'achievement', id: 4058713937 },
+        vampireQueen: { type: 'achievement', id: 3562627241 },
+        poppetTheThrasher: { type: 'achievement', id: 4281222609 },
+        lordOfTheCastle: { type: 'achievement', id: 1405493614 },
       })
     ),
     tap({

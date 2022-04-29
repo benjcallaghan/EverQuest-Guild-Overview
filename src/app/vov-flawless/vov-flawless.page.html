@@ -154,5 +154,79 @@
         </tr>
       </tbody>
     </table>
+
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="5">Castle Vacrul: Thirst for Power</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>The Lady of the Lute (T3)</th>
+          <th>Legion Captain Bloodrite (T3)</th>
+          <th>The Bloodtender and Gidget (T4)</th>
+          <th>The Heir Apparent (T4)</th>
+          <th>The Thirstborn (T4)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.ladyOfTheLute"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.legionCaptainBloodrite"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.bloodtenderAndGidget"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.heirApparent"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.thirstborn"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="ion-text-center">
+      <thead>
+        <tr>
+          <th></th>
+          <th colspan="5">Castle Vacrul: Haunting Presence</th>
+        </tr>
+        <tr>
+          <th>Character</th>
+          <th>The Butcher (T4)</th>
+          <th>The Returned Foe of Legend (T4)</th>
+          <th>The Vampire Queen (T4)</th>
+          <th>Poppet the Thrasher (T4)</th>
+          <th>The Lord of the Castle (T5)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let character of characters">
+          <td class="ion-text-start">{{ character.name }}</td>
+          <td>
+            <app-quest-icon [quest]="character.butcher"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.returnedFoeOfLegend"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.vampireQueen"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.poppetTheThrasher"></app-quest-icon>
+          </td>
+          <td>
+            <app-quest-icon [quest]="character.lordOfTheCastle"></app-quest-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </ng-container>
 </ion-content>
