@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { QuestIconComponent } from './quest-icon.component';
@@ -7,7 +7,7 @@ describe('QuestIconComponent', () => {
   let component: QuestIconComponent;
   let fixture: ComponentFixture<QuestIconComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [QuestIconComponent],
       imports: [IonicModule.forRoot()],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { RosFlawlessPage } from './ros-flawless.page';
@@ -7,7 +7,7 @@ describe('RosFlawlessPage', () => {
   let component: RosFlawlessPage;
   let fixture: ComponentFixture<RosFlawlessPage>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RosFlawlessPage ],
       imports: [IonicModule.forRoot()]

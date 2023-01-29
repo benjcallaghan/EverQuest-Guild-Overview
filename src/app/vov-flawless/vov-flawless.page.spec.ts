@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { VovFlawlessPage } from './vov-flawless.page';
@@ -7,7 +7,7 @@ describe('VovFlawlessPage', () => {
   let component: VovFlawlessPage;
   let fixture: ComponentFixture<VovFlawlessPage>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ VovFlawlessPage ],
       imports: [IonicModule.forRoot()]

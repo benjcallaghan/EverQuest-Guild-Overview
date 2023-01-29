@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { ReignOfShadowsPage } from './reign-of-shadows.page';
@@ -7,7 +7,7 @@ describe('ReignOfShadowsPage', () => {
   let component: ReignOfShadowsPage;
   let fixture: ComponentFixture<ReignOfShadowsPage>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ReignOfShadowsPage ],
       imports: [IonicModule.forRoot()]
