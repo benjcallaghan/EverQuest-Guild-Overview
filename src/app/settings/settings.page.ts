@@ -2,14 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { CensusService, CensusCharacter } from '../census.service';
 import { CharacterService } from '../character.service';
 import { Observable, defer, asapScheduler } from 'rxjs';
-import { map, tap, observeOn, subscribeOn } from 'rxjs/operators';
+import { map, tap, subscribeOn } from 'rxjs/operators';
+import { IonicModule } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-settings',
+  standalone: true,
+  imports: [IonicModule, FormsModule, NgIf, NgFor, AsyncPipe],
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
 })
-export class SettingsPage implements OnInit {
+export default class SettingsPage implements OnInit {
   searching = false;
   searchName: string;
   searchServer: number;

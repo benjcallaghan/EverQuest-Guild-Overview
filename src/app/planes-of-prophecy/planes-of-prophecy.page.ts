@@ -3,13 +3,18 @@ import { CensusService } from '../census.service';
 import { CharacterService } from '../character.service';
 import { defer } from 'rxjs';
 import { switchMap, map, tap } from 'rxjs/operators';
+import { IonicModule } from '@ionic/angular';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { QuestIconComponent } from '../quest-icon/quest-icon.component';
 
 @Component({
   selector: 'app-planes-of-prophecy',
+  standalone: true,
+  imports: [NgIf, NgFor, AsyncPipe, IonicModule, QuestIconComponent],
   templateUrl: './planes-of-prophecy.page.html',
   styleUrls: ['./planes-of-prophecy.page.scss'],
 })
-export class PlanesOfProphecyPage {
+export default class PlanesOfProphecyPage {
   public refreshing = false;
   public characters$ = defer(() => {
     this.refreshing = true;

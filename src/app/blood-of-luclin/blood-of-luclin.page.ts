@@ -3,13 +3,18 @@ import { CensusService } from '../census.service';
 import { CharacterService } from '../character.service';
 import { defer } from 'rxjs';
 import { switchMap, map, tap } from 'rxjs/operators';
+import { IonicModule } from '@ionic/angular';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { QuestIconComponent } from '../quest-icon/quest-icon.component';
 
 @Component({
   selector: 'app-blood-of-luclin',
+  standalone: true,
+  imports: [NgFor, AsyncPipe, IonicModule, QuestIconComponent, NgIf],
   templateUrl: 'blood-of-luclin.page.html',
   styleUrls: ['blood-of-luclin.page.scss'],
 })
-export class BloodOfLuclinPage {
+export default class BloodOfLuclinPage {
   public refreshing = false;
   public characters$ = defer(() => {
     this.refreshing = true;

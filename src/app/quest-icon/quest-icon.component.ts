@@ -5,11 +5,13 @@ import {
   ElementRef,
   AfterViewChecked,
 } from '@angular/core';
-import { IonIcon } from '@ionic/angular';
+import { IonicModule, IonIcon } from '@ionic/angular';
 import { QuestStatus } from '../census.service';
 
 @Component({
   selector: 'app-quest-icon',
+  standalone: true,
+  imports: [IonicModule],
   templateUrl: './quest-icon.component.html',
   styleUrls: ['./quest-icon.component.scss'],
 })

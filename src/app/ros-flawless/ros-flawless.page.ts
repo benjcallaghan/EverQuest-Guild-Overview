@@ -3,13 +3,18 @@ import { CensusService } from '../census.service';
 import { CharacterService } from '../character.service';
 import { defer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { IonicModule } from '@ionic/angular';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { QuestIconComponent } from '../quest-icon/quest-icon.component';
 
 @Component({
   selector: 'app-ros-flawless',
+  standalone: true,
+  imports: [IonicModule, NgIf, AsyncPipe, NgFor, QuestIconComponent],
   templateUrl: './ros-flawless.page.html',
   styleUrls: ['./ros-flawless.page.scss'],
 })
-export class RosFlawlessPage {
+export default class RosFlawlessPage {
   public refreshing = false;
   public characters$ = defer(() => {
     this.refreshing = true;

@@ -3,13 +3,18 @@ import { CensusService } from '../census.service';
 import { CharacterService } from '../character.service';
 import { defer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { IonicModule } from '@ionic/angular';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { QuestIconComponent } from '../quest-icon/quest-icon.component';
 
 @Component({
   selector: 'app-soluseks-eye',
+  standalone: true,
+  imports: [IonicModule, NgFor, AsyncPipe, QuestIconComponent, NgIf],
   templateUrl: './soluseks-eye.page.html',
   styleUrls: ['./soluseks-eye.page.scss'],
 })
-export class SoluseksEyePage {
+export default class SoluseksEyePage {
   public refreshing = false;
   public characters$ = defer(() => {
     this.refreshing = true;

@@ -1,15 +1,20 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
 import { defer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { CensusService } from '../census.service';
 import { CharacterService } from '../character.service';
+import { QuestIconComponent } from '../quest-icon/quest-icon.component';
 
 @Component({
   selector: 'app-vov-flawless',
+  standalone: true,
+  imports: [IonicModule, NgIf, AsyncPipe, NgFor, QuestIconComponent],
   templateUrl: './vov-flawless.page.html',
   styleUrls: ['./vov-flawless.page.scss'],
 })
-export class VovFlawlessPage {
+export default class VovFlawlessPage {
   public refreshing = false;
   public characters$ = defer(() => {
     this.refreshing = true;
