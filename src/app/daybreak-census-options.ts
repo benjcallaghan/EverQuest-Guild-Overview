@@ -72,10 +72,6 @@ export interface StringFilter {
   /**
    * The value that the provided field should be compared against.
    */
-
-  /**
-   * The value that the provided field should be compared against.
-   */
   value: string;
 
   /**
