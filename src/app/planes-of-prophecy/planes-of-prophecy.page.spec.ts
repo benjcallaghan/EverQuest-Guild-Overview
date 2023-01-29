@@ -9,8 +9,8 @@ describe('PlanesOfProphecyPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlanesOfProphecyPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PlanesOfProphecyPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PlanesOfProphecyPage);

@@ -30,7 +30,7 @@ td {
   border: 1px solid black;
   padding: 8px;
 
-  @media(prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: dark) {
     border-color: white;
   }
 }

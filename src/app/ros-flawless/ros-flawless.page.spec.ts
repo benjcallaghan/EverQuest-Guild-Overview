@@ -9,8 +9,8 @@ describe('RosFlawlessPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RosFlawlessPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [RosFlawlessPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RosFlawlessPage);

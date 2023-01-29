@@ -9,8 +9,8 @@ describe('VovFlawlessPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ VovFlawlessPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [VovFlawlessPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(VovFlawlessPage);

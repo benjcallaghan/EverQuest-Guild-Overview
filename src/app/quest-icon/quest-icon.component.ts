@@ -1,9 +1,9 @@
 import {
+  AfterViewChecked,
   Component,
+  ElementRef,
   Input,
   ViewChild,
-  ElementRef,
-  AfterViewChecked,
 } from '@angular/core';
 import { IonicModule, IonIcon } from '@ionic/angular';
 import { QuestStatus } from '../census.service';

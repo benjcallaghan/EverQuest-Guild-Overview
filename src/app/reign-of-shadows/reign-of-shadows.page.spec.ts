@@ -9,8 +9,8 @@ describe('ReignOfShadowsPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReignOfShadowsPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ReignOfShadowsPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReignOfShadowsPage);

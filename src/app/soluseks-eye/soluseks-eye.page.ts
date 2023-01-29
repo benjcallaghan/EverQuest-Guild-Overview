@@ -1,10 +1,10 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { CensusService } from '../census.service';
-import { CharacterService } from '../character.service';
+import { IonicModule } from '@ionic/angular';
 import { defer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { IonicModule } from '@ionic/angular';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { CensusService } from '../census.service';
+import { CharacterService } from '../character.service';
 import { QuestIconComponent } from '../quest-icon/quest-icon.component';
 
 @Component({

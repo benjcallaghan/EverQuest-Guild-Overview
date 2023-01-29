@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { build, CensusUrlOptions, Join, Tree } from './daybreak-census-options';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { build, CensusUrlOptions, Join, Tree } from './daybreak-census-options';
 
 export interface QuestStatus {
   text?: string;

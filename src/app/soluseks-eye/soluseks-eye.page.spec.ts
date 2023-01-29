@@ -9,8 +9,8 @@ describe('SoluseksEyePage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SoluseksEyePage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [SoluseksEyePage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SoluseksEyePage);

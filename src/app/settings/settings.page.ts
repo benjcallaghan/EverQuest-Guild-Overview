@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CensusService, CensusCharacter } from '../census.service';
-import { CharacterService } from '../character.service';
-import { Observable, defer, asapScheduler } from 'rxjs';
-import { map, tap, subscribeOn } from 'rxjs/operators';
-import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { asapScheduler, defer, Observable } from 'rxjs';
+import { map, subscribeOn, tap } from 'rxjs/operators';
+import { CensusCharacter, CensusService } from '../census.service';
+import { CharacterService } from '../character.service';
 
 @Component({
   selector: 'app-settings',
