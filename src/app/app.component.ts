@@ -6,6 +6,10 @@ import { Storage } from '@ionic/storage-angular';
 export const ROUTES: Routes = [
   { path: '', redirectTo: 'settings', pathMatch: 'full' },
   {
+    path: 'adornments',
+    loadComponent: () => import('./adornments/adornments.page'),
+  },
+  {
     path: 'blood-of-luclin',
     loadComponent: () => import('./blood-of-luclin/blood-of-luclin.page'),
   },

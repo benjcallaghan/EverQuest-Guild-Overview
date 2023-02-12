@@ -80,6 +80,34 @@ export class CensusService {
     });
   }
 
+  public getCharacterByName(
+    name: string,
+    serverId?: number
+  ): Observable<CharacterSearchResults> {
+    return this.runQuery({
+      collection: 'character',
+      filter: [
+        {
+          field: 'name.first_lower',
+          value: name.toLowerCase(),
+          match: 'equals',
+        },
+        ...(serverId
+          ? [
+              {
+                field: 'locationdata.worldid',
+                value: `${serverId}`,
+              },
+            ]
+          : []),
+      ],
+      exactMatchFirst: true,
+      sort: [{ field: 'displayname' }],
+      // show: ['displayname', 'name', 'guild'],
+      limit: 1,
+    });
+  }
+
   public queryQuestStatus<Query extends QuestQuery>(
     characterIds: number[],
     query: Query
