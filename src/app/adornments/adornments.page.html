@@ -68,11 +68,9 @@
       <tr>
         <th>Slot</th>
         <th>Item</th>
-        <th>White</th>
-        <th>Red</th>
-        <th>Blue</th>
-        <th>Green</th>
-        <th>Cyan</th>
+        <th *ngFor="let color of store.colors$ | async">
+          {{ color | titlecase }}
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -85,45 +83,7 @@
             >{{ slot.item.details.displayname }}</a
           >
         </td>
-        <td>
-          <div>
-            <select
-              *ngFor="let equippedAdorn of slot.item.adornment_list.white"
-            >
-              <option>* {{ equippedAdorn }}</option>
-            </select>
-          </div>
-        </td>
-        <td>
-          <div>
-            <select *ngFor="let equippedAdorn of slot.item.adornment_list.red">
-              <option>* {{ equippedAdorn }}</option>
-            </select>
-          </div>
-        </td>
-        <td>
-          <div>
-            <select *ngFor="let equippedAdorn of slot.item.adornment_list.blue">
-              <option>* {{ equippedAdorn }}</option>
-            </select>
-          </div>
-        </td>
-        <td>
-          <div>
-            <select
-              *ngFor="let equippedAdorn of slot.item.adornment_list.green"
-            >
-              <option>* {{ equippedAdorn }}</option>
-            </select>
-          </div>
-        </td>
-        <td>
-          <div>
-            <select *ngFor="let equippedAdorn of slot.item.adornment_list.cyan">
-              <option>* {{ equippedAdorn }}</option>
-            </select>
-          </div>
-        </td>
+        <td *ngFor="let color of store.colors$ | async"></td>
       </tr>
     </tbody>
   </table>

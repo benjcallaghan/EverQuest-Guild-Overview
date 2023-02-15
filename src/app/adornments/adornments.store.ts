@@ -8,6 +8,7 @@ import { build } from '../daybreak-census-options';
 export interface AdornmentsState {
   searching: boolean;
   character?: Character;
+  colors?: string[];
 }
 
 interface SearchResults {
@@ -18,7 +19,7 @@ interface Character {
   equipmentslot_list: Array<{
     displayname: string;
     item: {
-      adornment_list: Record<string, string[]>;
+      adornment_list: Array<{ color: string; id: number }>;
       id: number;
       details: {
         displayname: string;
@@ -39,6 +40,7 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
 
   public searching$ = this.select((state) => state.searching);
   public character$ = this.select((state) => state.character);
+  public colors$ = this.select((state) => state.colors);
 
   public searchForCharacter = this.effect<[string, number]>(
     pipe(
@@ -98,8 +100,18 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
         this.patchState({
           searching: false,
           character,
+          colors: unique(
+            character.equipmentslot_list
+              .flatMap((slot) => slot.item.adornment_list)
+              .map((adorn) => adorn.color)
+              .filter(color => color !== 'temporary')
+          ),
         });
       })
     )
   );
+}
+
+function unique<Item>(arr: Item[]): Item[] {
+  return arr.filter((_, i) => arr.indexOf(arr[i]) === i);
 }
