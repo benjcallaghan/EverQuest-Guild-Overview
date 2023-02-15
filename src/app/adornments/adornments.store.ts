@@ -7,7 +7,7 @@ import { build } from '../daybreak-census-options';
 
 export interface AdornmentsState {
   searching: boolean;
-  character?: Character;
+  character?: CharacterWithAdorns;
   colors?: string[];
 }
 
@@ -17,19 +17,36 @@ interface SearchResults {
 
 interface Character {
   equipmentslot_list: Array<{
-    displayname: string;
     item: {
-      adornment_list: Array<{ color: string; id: number }>;
+      setbonus_list: unknown[];
+      modifiers: unknown;
+      growth_table?: unknown;
       id: number;
+      adornment_list: Array<{
+        color: string;
+        percenttonextlevel?: number;
+        spiritlevel?: number;
+        id?: number;
+        details?: {
+          displayname: string;
+        };
+      }>;
       details: {
         displayname: string;
       };
     };
+    displayname: string;
+    id: number;
+    name: string;
   }>;
   type: {
     level: number;
     class: string;
   };
+}
+
+interface CharacterWithAdorns extends Character {
+  adornmentSlots: Record<string, Record<string, string[]>>;
 }
 
 @Injectable()
@@ -97,14 +114,28 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
             slot.displayname !== 'Mount Armor'
         );
 
+        const adornmentSlots: Record<string, Record<string, string[]>> = {};
+        for (const equipmentSlot of character.equipmentslot_list) {
+          for (const adornSlot of equipmentSlot.item.adornment_list) {
+            adornmentSlots[equipmentSlot.name] ??= {};
+            adornmentSlots[equipmentSlot.name][adornSlot.color] ??= [];
+            adornmentSlots[equipmentSlot.name][adornSlot.color].push(
+              adornSlot.details?.displayname
+            );
+          }
+        }
+
         this.patchState({
           searching: false,
-          character,
+          character: {
+            ...character,
+            adornmentSlots,
+          },
           colors: unique(
             character.equipmentslot_list
               .flatMap((slot) => slot.item.adornment_list)
               .map((adorn) => adorn.color)
-              .filter(color => color !== 'temporary')
+              .filter((color) => color !== 'temporary')
           ),
         });
       })
