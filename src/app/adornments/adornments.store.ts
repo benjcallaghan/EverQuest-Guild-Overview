@@ -22,10 +22,20 @@ interface Adornment {
   id?: number;
   details?: {
     displayname: string;
+    modifiers?: Record<
+      string,
+      { displayname: string; type: string; value: number }
+    >;
   };
 }
 
+interface AdornmentWithDescription extends Adornment {
+  description: string | null;
+}
+
 interface Character {
+  displayname: string;
+  id: number;
   equipmentslot_list: Array<{
     item: {
       setbonus_list: unknown[];
@@ -48,7 +58,7 @@ interface Character {
 }
 
 interface CharacterWithAdorns extends Character {
-  adornmentSlots: Record<string, Record<string, Adornment[]>>;
+  adornmentSlots: Record<string, Record<string, AdornmentWithDescription[]>>;
 }
 
 @Injectable()
@@ -97,7 +107,7 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
                 on: 'equipmentslot_list.item.adornment_list.id',
                 to: 'id',
                 inject_at: 'details',
-                show: ['displayname'],
+                // show: ['displayname'],
               },
             ],
             limit: 1,
@@ -116,12 +126,30 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
             slot.displayname !== 'Mount Armor'
         );
 
-        const adornmentSlots: Record<string, Record<string, Adornment[]>> = {};
+        const adornmentSlots: Record<
+          string,
+          Record<string, AdornmentWithDescription[]>
+        > = {};
         for (const equipmentSlot of character.equipmentslot_list) {
           for (const adornSlot of equipmentSlot.item.adornment_list) {
             adornmentSlots[equipmentSlot.name] ??= {};
             adornmentSlots[equipmentSlot.name][adornSlot.color] ??= [];
-            adornmentSlots[equipmentSlot.name][adornSlot.color].push(adornSlot);
+            adornmentSlots[equipmentSlot.name][adornSlot.color].push({
+              ...adornSlot,
+              description: adornSlot.details?.modifiers
+                ? Object.values(adornSlot.details.modifiers)
+                    .map(
+                      (modifier) => {
+                        let description = `${modifier.value.toFixed(1)} ${modifier.displayname}`;
+                        if (modifier.type === 'overcapmod') {
+                          description += ' Overcap';
+                        }
+                        return description;
+                      }
+                    )
+                    .join(', ')
+                : null,
+            });
           }
         }
 

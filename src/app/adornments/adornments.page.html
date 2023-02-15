@@ -88,7 +88,7 @@
             <select
               *ngFor="let equippedAdorn of character.adornmentSlots[equipmentSlot.name][color]"
             >
-              <option>* {{ equippedAdorn.details?.displayname }}</option>
+              <option>* {{ equippedAdorn.description ?? equippedAdorn.details?.displayname }}</option>
             </select>
           </div>
         </td>
