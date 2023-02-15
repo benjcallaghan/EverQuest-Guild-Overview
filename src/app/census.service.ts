@@ -24,8 +24,41 @@ export interface CensusCharacter {
   };
 }
 
-export interface CharacterSearchResults {
-  character_list: CensusCharacter[];
+export interface AdornCalculatorViewModel {
+  character: CharacterWithAdorns;
+  allAdorns: Record<string, string[]>;
+}
+
+export interface CharacterWithAdorns {
+  equipmentslot_list: Array<{
+    displayname: string;
+    item: {
+      adornment_list: Record<string, string[]>;
+      id: number;
+      details: {
+        displayname: string;
+      };
+    };
+  }>;
+  type: {
+    level: number;
+    class: string;
+  };
+}
+
+interface Item {
+  displayname: string;
+  typeinfo: {
+    color: string;
+  };
+}
+
+interface CharacterSearchResults<T> {
+  character_list: T[];
+}
+
+interface ItemSearchResults<T> {
+  item_list: T[];
 }
 
 export type QuestQuery = {
@@ -55,8 +88,8 @@ export class CensusService {
   public getCharactersByName(
     name: string,
     serverId?: number
-  ): Observable<CharacterSearchResults> {
-    return this.runQuery({
+  ): Observable<CharacterSearchResults<CensusCharacter>> {
+    return this.runQuery<CharacterSearchResults<CensusCharacter>>({
       collection: 'character',
       filter: [
         {
@@ -80,32 +113,97 @@ export class CensusService {
     });
   }
 
-  public getCharacterByName(
+  public getCharacterWithAdorns(
     name: string,
-    serverId?: number
-  ): Observable<CharacterSearchResults> {
-    return this.runQuery({
+    serverId: number
+  ): Observable<CharacterWithAdorns> {
+    return this.runQuery<CharacterSearchResults<CharacterWithAdorns>>({
       collection: 'character',
       filter: [
         {
           field: 'name.first_lower',
           value: name.toLowerCase(),
-          match: 'equals',
         },
-        ...(serverId
-          ? [
-              {
-                field: 'locationdata.worldid',
-                value: `${serverId}`,
-              },
-            ]
-          : []),
+        {
+          field: 'locationdata.worldid',
+          value: `${serverId}`,
+        },
       ],
       exactMatchFirst: true,
       sort: [{ field: 'displayname' }],
-      // show: ['displayname', 'name', 'guild'],
+      join: [
+        {
+          type: 'item',
+          on: 'equipmentslot_list.item.id',
+          to: 'id',
+          inject_at: 'details',
+          show: ['displayname'],
+        },
+        {
+          type: 'item',
+          on: 'equipmentslot_list.item.adornment_list.id',
+          to: 'id',
+          inject_at: 'details',
+          show: ['displayname'],
+        },
+      ],
       limit: 1,
-    });
+      show: ['equipmentslot_list', 'type'],
+    }).pipe(
+      map((data) => data.character_list[0]),
+      // switchMap((character) =>
+      //   this.runQuery<ItemSearchResults<Item>>({
+      //     collection: 'item',
+      //     filter: [
+      //       {
+      //         field: 'typeinfo.name',
+      //         value: 'adornment',
+      //       },
+      //       {
+      //         field: `typeinfo.classes.${character.type.class.toLowerCase()}.level`,
+      //         value: character.type.level,
+      //         match: 'lessThanOrEqual',
+      //       },
+      //       {
+      //         field: 'typeinfo.color',
+      //         value: 'temporary',
+      //         match: 'notEqual',
+      //       },
+      //     ],
+      //     limit: 100,
+      //   }).pipe(map((rawAdorns) => ({ character, rawAdorns })))
+      // ),
+      map((character) => {
+        character.equipmentslot_list = character.equipmentslot_list.filter(
+          (slot) =>
+            slot.displayname !== 'Ammo' &&
+            slot.displayname !== 'Food' &&
+            slot.displayname !== 'Drink' &&
+            slot.displayname !== 'Mount Adornment' &&
+            slot.displayname !== 'Mount Armor'
+        );
+        // Couldn't figure out the tree query for this one, so I'm handling it "in post".
+        character.equipmentslot_list = character.equipmentslot_list.map(
+          (slot) => {
+            const adorns: Record<string, string[]> = {};
+            for (const adorn of slot.item.adornment_list as any) {
+              adorns[adorn.color] ??= [];
+              adorns[adorn.color].push(adorn.details?.displayname);
+            }
+            slot.item.adornment_list = adorns;
+            return slot;
+          }
+        );
+
+        // const allAdorns: Record<string, string[]> = {};
+        // for (const adorn of rawAdorns.item_list) {
+        //   allAdorns[adorn.typeinfo.color] ??= [];
+        //   allAdorns[adorn.typeinfo.color].push(adorn.displayname);
+        // }
+
+        return character;
+      })
+    );
   }
 
   public queryQuestStatus<Query extends QuestQuery>(
@@ -120,7 +218,7 @@ export class CensusService {
       ({ type }) => type === 'collection'
     );
 
-    return this.runQuery({
+    return this.runQuery<any>({
       collection: 'character',
       limit: characterIds.length,
       filter: [{ field: 'id', value: characterIds.join(',') }],
@@ -194,12 +292,12 @@ export class CensusService {
     );
   }
 
-  private runQuery(options: Partial<CensusUrlOptions>): Observable<any> {
+  private runQuery<T>(options: Partial<CensusUrlOptions>): Observable<T> {
     const url = build({
       ...this.defaultOptions,
       ...options,
     });
-    return this.http.get(url.href);
+    return this.http.get<T>(url.href);
   }
 
   private getQuestStatus(character: any, crc: number): QuestStatus {

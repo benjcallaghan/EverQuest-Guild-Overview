@@ -1,10 +1,10 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { asapScheduler, defer } from 'rxjs';
-import { map, subscribeOn, tap } from 'rxjs/operators';
-import { CensusService } from '../census.service';
+import { asapScheduler, defer, Observable } from 'rxjs';
+import { subscribeOn, tap } from 'rxjs/operators';
+import { CensusService, CharacterWithAdorns } from '../census.service';
 
 @Component({
   selector: 'app-adornments',
@@ -13,17 +13,27 @@ import { CensusService } from '../census.service';
   templateUrl: './adornments.page.html',
   styleUrls: ['./adornments.page.scss'],
 })
-export default class AdornmentsComponent implements OnInit {
+export default class AdornmentsComponent {
   protected searchName?: string;
   protected searchServer?: number;
   protected searching = false;
-  searchResults$: any;
+  protected character$: Observable<CharacterWithAdorns>;
 
   constructor(private census: CensusService) {}
 
-  ngOnInit() {}
-
   protected searchForCharacter(): void {
-
+    this.character$ = defer(() => {
+      this.searching = true;
+      return this.census.getCharacterWithAdorns(
+        this.searchName,
+        this.searchServer
+      );
+    }).pipe(
+      subscribeOn(asapScheduler),
+      tap({
+        next: () => (this.searching = false),
+        error: () => (this.searching = false),
+      })
+    );
   }
 }
