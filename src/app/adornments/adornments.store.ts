@@ -15,6 +15,16 @@ interface SearchResults {
   character_list: Character[];
 }
 
+interface Adornment {
+  color: string;
+  percenttonextlevel?: number;
+  spiritlevel?: number;
+  id?: number;
+  details?: {
+    displayname: string;
+  };
+}
+
 interface Character {
   equipmentslot_list: Array<{
     item: {
@@ -22,15 +32,7 @@ interface Character {
       modifiers: unknown;
       growth_table?: unknown;
       id: number;
-      adornment_list: Array<{
-        color: string;
-        percenttonextlevel?: number;
-        spiritlevel?: number;
-        id?: number;
-        details?: {
-          displayname: string;
-        };
-      }>;
+      adornment_list: Array<Adornment>;
       details: {
         displayname: string;
       };
@@ -46,7 +48,7 @@ interface Character {
 }
 
 interface CharacterWithAdorns extends Character {
-  adornmentSlots: Record<string, Record<string, string[]>>;
+  adornmentSlots: Record<string, Record<string, Adornment[]>>;
 }
 
 @Injectable()
@@ -114,14 +116,12 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
             slot.displayname !== 'Mount Armor'
         );
 
-        const adornmentSlots: Record<string, Record<string, string[]>> = {};
+        const adornmentSlots: Record<string, Record<string, Adornment[]>> = {};
         for (const equipmentSlot of character.equipmentslot_list) {
           for (const adornSlot of equipmentSlot.item.adornment_list) {
             adornmentSlots[equipmentSlot.name] ??= {};
             adornmentSlots[equipmentSlot.name][adornSlot.color] ??= [];
-            adornmentSlots[equipmentSlot.name][adornSlot.color].push(
-              adornSlot.details?.displayname
-            );
+            adornmentSlots[equipmentSlot.name][adornSlot.color].push(adornSlot);
           }
         }
 
