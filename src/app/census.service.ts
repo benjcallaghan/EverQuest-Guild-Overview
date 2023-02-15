@@ -24,41 +24,8 @@ export interface CensusCharacter {
   };
 }
 
-export interface AdornCalculatorViewModel {
-  character: CharacterWithAdorns;
-  allAdorns: Record<string, string[]>;
-}
-
-export interface CharacterWithAdorns {
-  equipmentslot_list: Array<{
-    displayname: string;
-    item: {
-      adornment_list: Record<string, string[]>;
-      id: number;
-      details: {
-        displayname: string;
-      };
-    };
-  }>;
-  type: {
-    level: number;
-    class: string;
-  };
-}
-
-interface Item {
-  displayname: string;
-  typeinfo: {
-    color: string;
-  };
-}
-
 interface CharacterSearchResults<T> {
   character_list: T[];
-}
-
-interface ItemSearchResults<T> {
-  item_list: T[];
 }
 
 export type QuestQuery = {
@@ -111,99 +78,6 @@ export class CensusService {
       show: ['displayname', 'name', 'guild'],
       limit: 8,
     });
-  }
-
-  public getCharacterWithAdorns(
-    name: string,
-    serverId: number
-  ): Observable<CharacterWithAdorns> {
-    return this.runQuery<CharacterSearchResults<CharacterWithAdorns>>({
-      collection: 'character',
-      filter: [
-        {
-          field: 'name.first_lower',
-          value: name.toLowerCase(),
-        },
-        {
-          field: 'locationdata.worldid',
-          value: `${serverId}`,
-        },
-      ],
-      exactMatchFirst: true,
-      sort: [{ field: 'displayname' }],
-      join: [
-        {
-          type: 'item',
-          on: 'equipmentslot_list.item.id',
-          to: 'id',
-          inject_at: 'details',
-          show: ['displayname'],
-        },
-        {
-          type: 'item',
-          on: 'equipmentslot_list.item.adornment_list.id',
-          to: 'id',
-          inject_at: 'details',
-          show: ['displayname'],
-        },
-      ],
-      limit: 1,
-      show: ['equipmentslot_list', 'type'],
-    }).pipe(
-      map((data) => data.character_list[0]),
-      // switchMap((character) =>
-      //   this.runQuery<ItemSearchResults<Item>>({
-      //     collection: 'item',
-      //     filter: [
-      //       {
-      //         field: 'typeinfo.name',
-      //         value: 'adornment',
-      //       },
-      //       {
-      //         field: `typeinfo.classes.${character.type.class.toLowerCase()}.level`,
-      //         value: character.type.level,
-      //         match: 'lessThanOrEqual',
-      //       },
-      //       {
-      //         field: 'typeinfo.color',
-      //         value: 'temporary',
-      //         match: 'notEqual',
-      //       },
-      //     ],
-      //     limit: 100,
-      //   }).pipe(map((rawAdorns) => ({ character, rawAdorns })))
-      // ),
-      map((character) => {
-        character.equipmentslot_list = character.equipmentslot_list.filter(
-          (slot) =>
-            slot.displayname !== 'Ammo' &&
-            slot.displayname !== 'Food' &&
-            slot.displayname !== 'Drink' &&
-            slot.displayname !== 'Mount Adornment' &&
-            slot.displayname !== 'Mount Armor'
-        );
-        // Couldn't figure out the tree query for this one, so I'm handling it "in post".
-        character.equipmentslot_list = character.equipmentslot_list.map(
-          (slot) => {
-            const adorns: Record<string, string[]> = {};
-            for (const adorn of slot.item.adornment_list as any) {
-              adorns[adorn.color] ??= [];
-              adorns[adorn.color].push(adorn.details?.displayname);
-            }
-            slot.item.adornment_list = adorns;
-            return slot;
-          }
-        );
-
-        // const allAdorns: Record<string, string[]> = {};
-        // for (const adorn of rawAdorns.item_list) {
-        //   allAdorns[adorn.typeinfo.color] ??= [];
-        //   allAdorns[adorn.typeinfo.color].push(adorn.displayname);
-        // }
-
-        return character;
-      })
-    );
   }
 
   public queryQuestStatus<Query extends QuestQuery>(

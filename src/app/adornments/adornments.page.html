@@ -12,25 +12,30 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="searchForCharacter()" #form="ngForm">
+  <form
+    #form="ngForm"
+    (ngSubmit)="store.searchForCharacter([$string(searchName.value), searchServer.value])"
+  >
     <ion-list>
       <ion-list-header> Add Character </ion-list-header>
       <ion-item>
         <ion-label position="fixed">Character Name</ion-label>
         <ion-input
+          #searchName
           placeholder="Benj"
-          [(ngModel)]="searchName"
           name="searchName"
+          ngModel
           required
         ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="fixed">Server</ion-label>
         <ion-select
+          #searchServer
           placeholder="Select server..."
           interface="popover"
-          [(ngModel)]="searchServer"
           name="searchServer"
+          ngModel
           required
         >
           <ion-select-option [value]="104">Antonia Bayle</ion-select-option>
@@ -48,14 +53,17 @@
     </ion-list>
 
     <div>
-      <ion-button type="submit" *ngIf="!searching" [disabled]="form.invalid"
+      <ion-button
+        type="submit"
+        *ngIf="!(store.searching$ | async)"
+        [disabled]="form.invalid"
         >Search</ion-button
       >
-      <ion-spinner *ngIf="searching"></ion-spinner>
+      <ion-spinner *ngIf="store.searching$ | async"></ion-spinner>
     </div>
   </form>
 
-  <table class="ion-text-left">
+  <table class="ion-text-left" *ngIf="store.character$ | async as character">
     <thead>
       <tr>
         <th>Slot</th>
@@ -67,7 +75,7 @@
         <th>Cyan</th>
       </tr>
     </thead>
-    <tbody *ngIf="character$ | async as character">
+    <tbody>
       <tr *ngFor="let slot of character.equipmentslot_list">
         <td>{{ slot.displayname }}</td>
         <td>
