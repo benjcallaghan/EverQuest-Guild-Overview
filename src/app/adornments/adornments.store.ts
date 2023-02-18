@@ -7,7 +7,7 @@ import { build } from '../daybreak-census-options';
 
 export interface AdornmentsState {
   searching: boolean;
-  character?: CharacterWithAdorns;
+  character?: Character;
 }
 
 interface SearchResults {
@@ -29,7 +29,7 @@ interface Adornment {
 }
 
 interface AdornmentWithDescription extends Adornment {
-  description: string | null;
+  description: string;
 }
 
 interface Character {
@@ -56,10 +56,6 @@ interface Character {
   };
 }
 
-interface CharacterWithAdorns extends Character {
-  adornmentSlots: Record<string, Record<string, AdornmentWithDescription[]>>;
-}
-
 @Injectable()
 export class AdornmentsStore extends ComponentStore<AdornmentsState> {
   constructor(private http: HttpClient) {
@@ -76,6 +72,37 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
         .filter((color) => color !== 'temporary')
     )
   );
+  public adornmentSlots$ = this.select(this.character$, (character) => {
+    const adornmentSlots: Record<
+      string,
+      Record<string, AdornmentWithDescription[]>
+    > = {};
+
+    for (const equipmentSlot of character.equipmentslot_list) {
+      for (const adornSlot of equipmentSlot.item.adornment_list) {
+        adornmentSlots[equipmentSlot.name] ??= {};
+        adornmentSlots[equipmentSlot.name][adornSlot.color] ??= [];
+        adornmentSlots[equipmentSlot.name][adornSlot.color].push({
+          ...adornSlot,
+          description: adornSlot.details?.modifiers
+            ? Object.values(adornSlot.details.modifiers)
+                .map((modifier) => {
+                  let description = `${modifier.value.toFixed(1)} ${
+                    modifier.displayname
+                  }`;
+                  if (modifier.type === 'overcapmod') {
+                    description += ' Overcap';
+                  }
+                  return description;
+                })
+                .join(', ')
+            : adornSlot.details?.displayname,
+        });
+      }
+    }
+
+    return adornmentSlots;
+  });
 
   public searchForCharacter = this.effect<[string, number]>(
     pipe(
@@ -132,43 +159,18 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
             slot.displayname !== 'Mount Armor'
         );
 
-        const adornmentSlots: Record<
-          string,
-          Record<string, AdornmentWithDescription[]>
-        > = {};
-        for (const equipmentSlot of character.equipmentslot_list) {
-          for (const adornSlot of equipmentSlot.item.adornment_list) {
-            adornmentSlots[equipmentSlot.name] ??= {};
-            adornmentSlots[equipmentSlot.name][adornSlot.color] ??= [];
-            adornmentSlots[equipmentSlot.name][adornSlot.color].push({
-              ...adornSlot,
-              description: adornSlot.details?.modifiers
-                ? Object.values(adornSlot.details.modifiers)
-                    .map((modifier) => {
-                      let description = `${modifier.value.toFixed(1)} ${
-                        modifier.displayname
-                      }`;
-                      if (modifier.type === 'overcapmod') {
-                        description += ' Overcap';
-                      }
-                      return description;
-                    })
-                    .join(', ')
-                : null,
-            });
-          }
-        }
-
         this.patchState({
           searching: false,
-          character: {
-            ...character,
-            adornmentSlots,
-          },
+          character,
         });
       })
     )
   );
+
+
+
+  public currentAdorn = (slot: string, color: string) =>
+    this.select(this.adornmentSlots$, (allAdorns) => allAdorns[slot][color]);
 }
 
 function unique<Item>(arr: Item[]): Item[] {

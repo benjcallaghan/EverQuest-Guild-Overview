@@ -86,9 +86,9 @@
         <td *ngFor="let color of store.colors$ | async">
           <div>
             <select
-              *ngFor="let equippedAdorn of character.adornmentSlots[equipmentSlot.name][color]"
+              *ngFor="let equippedAdorn of store.currentAdorn(equipmentSlot.name, color) | async"
             >
-              <option>* {{ equippedAdorn.description ?? equippedAdorn.details?.displayname }}</option>
+              <option>* {{ equippedAdorn.description }}</option>
             </select>
           </div>
         </td>
