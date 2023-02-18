@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { pipe } from 'rxjs';
+import { forkJoin, Observable, pipe } from 'rxjs';
 import { exhaustMap, map, tap } from 'rxjs/operators';
 import { build } from '../daybreak-census-options';
 
@@ -132,7 +132,7 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
           adornmentSlots[slot.name] ??= {};
           adornmentSlots[slot.name][adorn.typeinfo.color] ??= [];
           adornmentSlots[slot.name][adorn.typeinfo.color].push(
-            adorn?.modifiers
+            adorn.modifiers
               ? Object.values(adorn.modifiers)
                   .map((modifier) => {
                     let description = `${modifier.value.toFixed(1)} ${
@@ -219,42 +219,55 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
   public loadRenewalAdorns = this.effect<void>(
     pipe(
       exhaustMap(() =>
-        this.http.get<ItemSearchResults>(
-          build({
-            serviceId: 's:vexedencetracker',
-            format: 'json',
-            verb: 'get',
-            namespace: 'eq2',
-            collection: 'item',
-            filter: [
-              {
-                field: 'typeinfo.name',
-                value: 'adornment',
-              },
-              {
-                field: 'displayname_lower',
-                value: 'hizite',
-                match: 'contains',
-              },
-              {
-                field: 'typeinfo.color',
-                value: 'temporary',
-                match: 'notEqual',
-              },
-            ],
-            show: ['displayname', 'typeinfo', 'modifiers'],
-            limit: 100,
-          }).href
-        )
+        forkJoin([
+          this.getAdorns('forlorn'),
+          this.getAdorns('dreadfell'),
+          this.getAdorns('true blood'),
+          this.getAdorns('plateaus'),
+          this.getAdorns('hizite'),
+          this.getAdorns('delta'),
+          this.getAdorns('badlands'),
+          this.getAdorns('hua collector'),
+        ])
       ),
-      map((results) => results.item_list),
-      tap((availableAdornments: Item[]) => {
+      map((allResults) => allResults.flatMap((results) => results.item_list)),
+      tap((allAdornments: Item[]) => {
         this.patchState({
-          allAdornments: availableAdornments,
+          allAdornments,
         });
       })
     )
   );
+
+  private getAdorns(name: string): Observable<ItemSearchResults> {
+    return this.http.get<ItemSearchResults>(
+      build({
+        serviceId: 's:vexedencetracker',
+        format: 'json',
+        verb: 'get',
+        namespace: 'eq2',
+        collection: 'item',
+        filter: [
+          {
+            field: 'typeinfo.name',
+            value: 'adornment',
+          },
+          {
+            field: 'displayname_lower',
+            value: name,
+            match: 'contains',
+          },
+          {
+            field: 'typeinfo.color',
+            value: 'temporary',
+            match: 'notEqual',
+          },
+        ],
+        show: ['displayname', 'typeinfo', 'modifiers'],
+        limit: 100,
+      }).href
+    );
+  }
 
   public currentAdorn = (slot: string, color: string) =>
     this.select(this.adornmentSlots$, (allAdorns) => allAdorns[slot][color]);
