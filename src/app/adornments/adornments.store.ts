@@ -8,7 +8,6 @@ import { build } from '../daybreak-census-options';
 export interface AdornmentsState {
   searching: boolean;
   character?: CharacterWithAdorns;
-  colors?: string[];
 }
 
 interface SearchResults {
@@ -69,7 +68,14 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
 
   public searching$ = this.select((state) => state.searching);
   public character$ = this.select((state) => state.character);
-  public colors$ = this.select((state) => state.colors);
+  public colors$ = this.select(this.character$, (character) =>
+    unique(
+      character.equipmentslot_list
+        .flatMap((slot) => slot.item.adornment_list)
+        .map((adorn) => adorn.color)
+        .filter((color) => color !== 'temporary')
+    )
+  );
 
   public searchForCharacter = this.effect<[string, number]>(
     pipe(
@@ -138,15 +144,15 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
               ...adornSlot,
               description: adornSlot.details?.modifiers
                 ? Object.values(adornSlot.details.modifiers)
-                    .map(
-                      (modifier) => {
-                        let description = `${modifier.value.toFixed(1)} ${modifier.displayname}`;
-                        if (modifier.type === 'overcapmod') {
-                          description += ' Overcap';
-                        }
-                        return description;
+                    .map((modifier) => {
+                      let description = `${modifier.value.toFixed(1)} ${
+                        modifier.displayname
+                      }`;
+                      if (modifier.type === 'overcapmod') {
+                        description += ' Overcap';
                       }
-                    )
+                      return description;
+                    })
                     .join(', ')
                 : null,
             });
@@ -159,12 +165,6 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
             ...character,
             adornmentSlots,
           },
-          colors: unique(
-            character.equipmentslot_list
-              .flatMap((slot) => slot.item.adornment_list)
-              .map((adorn) => adorn.color)
-              .filter((color) => color !== 'temporary')
-          ),
         });
       })
     )
