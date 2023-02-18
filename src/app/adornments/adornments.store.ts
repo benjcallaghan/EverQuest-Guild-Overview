@@ -5,16 +5,7 @@ import { pipe } from 'rxjs';
 import { exhaustMap, map, tap } from 'rxjs/operators';
 import { build } from '../daybreak-census-options';
 
-export interface AdornmentsState {
-  searching: boolean;
-  character?: Character;
-}
-
-interface SearchResults {
-  character_list: Character[];
-}
-
-interface Adornment {
+interface EquippedAdornment {
   color: string;
   percenttonextlevel?: number;
   spiritlevel?: number;
@@ -28,8 +19,8 @@ interface Adornment {
   };
 }
 
-interface AdornmentWithDescription extends Adornment {
-  description: string;
+interface CharacterSearchResults {
+  character_list: Character[];
 }
 
 interface Character {
@@ -41,7 +32,7 @@ interface Character {
       modifiers: unknown;
       growth_table?: unknown;
       id: number;
-      adornment_list: Array<Adornment>;
+      adornment_list: Array<EquippedAdornment>;
       details: {
         displayname: string;
       };
@@ -56,14 +47,46 @@ interface Character {
   };
 }
 
+interface ItemSearchResults {
+  item_list: Item[];
+}
+
+interface Item {
+  typeinfo: {
+    name: string;
+    color: string;
+    slot_list: Array<{
+      displayname: string;
+      id: number;
+      name: string;
+    }>;
+    placementflag_list: unknown[];
+    classes: unknown;
+    duration?: number;
+  };
+  displayname: string;
+  modifiers?: Record<
+    string,
+    { displayname: string; type: string; value: number }
+  >;
+}
+
+export interface AdornmentsState {
+  searching: boolean;
+  character?: Character;
+  allAdornments?: Item[];
+}
+
 @Injectable()
 export class AdornmentsStore extends ComponentStore<AdornmentsState> {
   constructor(private http: HttpClient) {
     super({ searching: false });
+    this.loadRenewalAdorns();
   }
 
   public searching$ = this.select((state) => state.searching);
   public character$ = this.select((state) => state.character);
+  public allAdornments$ = this.select((state) => state.allAdornments);
   public colors$ = this.select(this.character$, (character) =>
     unique(
       character.equipmentslot_list
@@ -73,18 +96,14 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
     )
   );
   public adornmentSlots$ = this.select(this.character$, (character) => {
-    const adornmentSlots: Record<
-      string,
-      Record<string, AdornmentWithDescription[]>
-    > = {};
+    const adornmentSlots: Record<string, Record<string, string[]>> = {};
 
     for (const equipmentSlot of character.equipmentslot_list) {
       for (const adornSlot of equipmentSlot.item.adornment_list) {
         adornmentSlots[equipmentSlot.name] ??= {};
         adornmentSlots[equipmentSlot.name][adornSlot.color] ??= [];
-        adornmentSlots[equipmentSlot.name][adornSlot.color].push({
-          ...adornSlot,
-          description: adornSlot.details?.modifiers
+        adornmentSlots[equipmentSlot.name][adornSlot.color].push(
+          adornSlot.details?.modifiers
             ? Object.values(adornSlot.details.modifiers)
                 .map((modifier) => {
                   let description = `${modifier.value.toFixed(1)} ${
@@ -96,19 +115,49 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
                   return description;
                 })
                 .join(', ')
-            : adornSlot.details?.displayname,
-        });
+            : adornSlot.details?.displayname
+        );
       }
     }
 
     return adornmentSlots;
   });
+  public organizedAdornments$ = this.select(
+    this.allAdornments$,
+    (allAdorns) => {
+      const adornmentSlots: Record<string, Record<string, string[]>> = {};
+
+      for (const adorn of allAdorns) {
+        for (const slot of adorn.typeinfo.slot_list) {
+          adornmentSlots[slot.name] ??= {};
+          adornmentSlots[slot.name][adorn.typeinfo.color] ??= [];
+          adornmentSlots[slot.name][adorn.typeinfo.color].push(
+            adorn?.modifiers
+              ? Object.values(adorn.modifiers)
+                  .map((modifier) => {
+                    let description = `${modifier.value.toFixed(1)} ${
+                      modifier.displayname
+                    }`;
+                    if (modifier.type === 'overcapmod') {
+                      description += ' Overcap';
+                    }
+                    return description;
+                  })
+                  .join(', ')
+              : adorn.displayname
+          );
+        }
+      }
+
+      return adornmentSlots;
+    }
+  );
 
   public searchForCharacter = this.effect<[string, number]>(
     pipe(
       tap(() => this.patchState({ searching: true })),
       exhaustMap(([name, server]) =>
-        this.http.get<SearchResults>(
+        this.http.get<CharacterSearchResults>(
           build({
             serviceId: 's:vexedencetracker',
             format: 'json',
@@ -140,7 +189,7 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
                 on: 'equipmentslot_list.item.adornment_list.id',
                 to: 'id',
                 inject_at: 'details',
-                // show: ['displayname'],
+                show: ['displayname', 'modifiers'],
               },
             ],
             limit: 1,
@@ -167,12 +216,74 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
     )
   );
 
-
+  public loadRenewalAdorns = this.effect<void>(
+    pipe(
+      exhaustMap(() =>
+        this.http.get<ItemSearchResults>(
+          build({
+            serviceId: 's:vexedencetracker',
+            format: 'json',
+            verb: 'get',
+            namespace: 'eq2',
+            collection: 'item',
+            filter: [
+              {
+                field: 'typeinfo.name',
+                value: 'adornment',
+              },
+              {
+                field: 'displayname_lower',
+                value: 'hizite',
+                match: 'contains',
+              },
+              {
+                field: 'typeinfo.color',
+                value: 'temporary',
+                match: 'notEqual',
+              },
+            ],
+            show: ['displayname', 'typeinfo', 'modifiers'],
+            limit: 100,
+          }).href
+        )
+      ),
+      map((results) => results.item_list),
+      tap((availableAdornments: Item[]) => {
+        this.patchState({
+          allAdornments: availableAdornments,
+        });
+      })
+    )
+  );
 
   public currentAdorn = (slot: string, color: string) =>
     this.select(this.adornmentSlots$, (allAdorns) => allAdorns[slot][color]);
+
+  public availableAdorns = (slot: string, color: string) => {
+    let normalizedSlot = slot;
+
+    switch (slot) {
+      case 'right_ring':
+        normalizedSlot = 'left_ring';
+        break;
+      case 'ears2':
+        normalizedSlot = 'ears';
+        break;
+      case 'right_wrist':
+        normalizedSlot = 'left_wrist';
+        break;
+      case 'activate2':
+        normalizedSlot = 'activate1';
+        break;
+    }
+
+    return this.select(
+      this.organizedAdornments$,
+      (adorns) => adorns[normalizedSlot][color]
+    );
+  };
 }
 
-function unique<Item>(arr: Item[]): Item[] {
+function unique<T>(arr: T[]): T[] {
   return arr.filter((_, i) => arr.indexOf(arr[i]) === i);
 }

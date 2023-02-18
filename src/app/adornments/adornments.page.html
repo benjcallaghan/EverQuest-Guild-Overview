@@ -88,7 +88,12 @@
             <select
               *ngFor="let equippedAdorn of store.currentAdorn(equipmentSlot.name, color) | async"
             >
-              <option>* {{ equippedAdorn.description }}</option>
+              <option>* {{ equippedAdorn }}</option>
+              <option
+                *ngFor="let option of store.availableAdorns(equipmentSlot.name, color) | async"
+              >
+                {{ option }}
+              </option>
             </select>
           </div>
         </td>
