@@ -80,7 +80,7 @@
           <a
             target="_blank"
             [href]="'https://u.eq2wire.com/item/index/' + equipmentSlot.item.id"
-            >{{ equipmentSlot.item.details.displayname }}</a
+            >{{ equipmentSlot.item.details?.displayname }}</a
           >
         </td>
         <td *ngFor="let color of store.colors$ | async">

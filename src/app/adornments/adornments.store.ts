@@ -33,7 +33,7 @@ interface Character {
       growth_table?: unknown;
       id: number;
       adornment_list: Array<EquippedAdornment>;
-      details: {
+      details?: {
         displayname: string;
       };
     };
@@ -125,9 +125,10 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
   public organizedAdornments$ = this.select(
     this.allAdornments$,
     (allAdorns) => {
+      const sortedAdorns = sortAdornments(allAdorns);
       const adornmentSlots: Record<string, Record<string, string[]>> = {};
 
-      for (const adorn of allAdorns) {
+      for (const adorn of sortedAdorns) {
         for (const slot of adorn.typeinfo.slot_list) {
           adornmentSlots[slot.name] ??= {};
           adornmentSlots[slot.name][adorn.typeinfo.color] ??= [];
@@ -299,4 +300,34 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
 
 function unique<T>(arr: T[]): T[] {
   return arr.filter((_, i) => arr.indexOf(arr[i]) === i);
+}
+
+function sortAdornments(adornments: Item[]): Item[] {
+  const adornmentsByModifier: { [key: string]: Item[] } = {};
+
+  // Group adornments by modifier set
+  for (const adornment of adornments) {
+    const modifierSet = Object.keys(adornment.modifiers).sort();
+    const modifierSetKey = JSON.stringify(modifierSet);
+    adornmentsByModifier[modifierSetKey] ??= [];
+    adornmentsByModifier[modifierSetKey].push(adornment);
+  }
+
+  // Sort adornments within each group by increasing modifier value
+  for (const adornmentSet of Object.values(adornmentsByModifier)) {
+    adornmentSet.sort((a, b) => {
+      const modifierNames = Object.keys(a.modifiers).sort();
+      for (const modifierName of modifierNames) {
+        const aValue = a.modifiers[modifierName].value;
+        const bValue = b.modifiers[modifierName].value;
+        if (aValue !== bValue) {
+          return aValue - bValue;
+        }
+      }
+      return 0;
+    });
+  }
+
+  // Flatten groups back into a single array.
+  return Object.values(adornmentsByModifier).flat();
 }
