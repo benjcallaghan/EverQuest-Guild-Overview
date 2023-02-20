@@ -293,9 +293,11 @@ function sortAdornments(adornments: Item[]): Item[] {
   return sorted;
 }
 
-function getDescription(adornment: Item): string {
-  return adornment?.modifiers
-    ? Object.values(adornment.modifiers)
+function getDescription(adornment: Item | undefined): string {
+  if (adornment?.modifiers) {
+    const modifiers = Object.values(adornment?.modifiers);
+    if (modifiers.length) {
+      return modifiers
         .map((modifier) => {
           let description = `${modifier.value.toFixed(1)} ${
             modifier.displayname
@@ -305,6 +307,9 @@ function getDescription(adornment: Item): string {
           }
           return description;
         })
-        .join(', ')
-    : adornment?.displayname;
+        .join(', ');
+    }
+  }
+
+  return adornment?.displayname;
 }
