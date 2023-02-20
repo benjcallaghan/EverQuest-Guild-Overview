@@ -125,10 +125,10 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
   public organizedAdornments$ = this.select(
     this.allAdornments$,
     (allAdorns) => {
-      const sortedAdorns = sortAdornments(allAdorns);
+      const sortedAdornments = sortAdornments(allAdorns);
       const adornmentSlots: Record<string, Record<string, string[]>> = {};
 
-      for (const adorn of sortedAdorns) {
+      for (const adorn of sortedAdornments) {
         for (const slot of adorn.typeinfo.slot_list) {
           adornmentSlots[slot.name] ??= {};
           adornmentSlots[slot.name][adorn.typeinfo.color] ??= [];
@@ -303,31 +303,24 @@ function unique<T>(arr: T[]): T[] {
 }
 
 function sortAdornments(adornments: Item[]): Item[] {
-  const adornmentsByModifier: { [key: string]: Item[] } = {};
-
-  // Group adornments by modifier set
-  for (const adornment of adornments) {
-    const modifierSet = Object.keys(adornment.modifiers).sort();
-    const modifierSetKey = JSON.stringify(modifierSet);
-    adornmentsByModifier[modifierSetKey] ??= [];
-    adornmentsByModifier[modifierSetKey].push(adornment);
-  }
-
-  // Sort adornments within each group by increasing modifier value
-  for (const adornmentSet of Object.values(adornmentsByModifier)) {
-    adornmentSet.sort((a, b) => {
-      const modifierNames = Object.keys(a.modifiers).sort();
-      for (const modifierName of modifierNames) {
-        const aValue = a.modifiers[modifierName].value;
-        const bValue = b.modifiers[modifierName].value;
-        if (aValue !== bValue) {
-          return aValue - bValue;
-        }
+  const sorted = [...adornments];
+  sorted.sort((a, b) => {
+    const aModifierSet = Object.keys(a.modifiers).sort();
+    const bModifierSet = Object.keys(b.modifiers).sort();
+    const modifierSetCompare = JSON.stringify(aModifierSet).localeCompare(
+      JSON.stringify(bModifierSet)
+    );
+    if (modifierSetCompare !== 0) {
+      return modifierSetCompare;
+    }
+    for (const modifierName of aModifierSet) {
+      const aModifierValue = a.modifiers[modifierName].value;
+      const bModifierValue = b.modifiers[modifierName].value;
+      if (aModifierValue !== bModifierValue) {
+        return aModifierValue - bModifierValue;
       }
-      return 0;
-    });
-  }
-
-  // Flatten groups back into a single array.
-  return Object.values(adornmentsByModifier).flat();
+    }
+    return 0;
+  });
+  return sorted;
 }
