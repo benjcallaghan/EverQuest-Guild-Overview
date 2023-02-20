@@ -10,13 +10,7 @@ interface EquippedAdornment {
   percenttonextlevel?: number;
   spiritlevel?: number;
   id?: number;
-  details?: {
-    displayname: string;
-    modifiers?: Record<
-      string,
-      { displayname: string; type: string; value: number }
-    >;
-  };
+  details?: Item;
 }
 
 interface CharacterSearchResults {
@@ -100,23 +94,10 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
 
     for (const equipmentSlot of character.equipmentslot_list) {
       for (const adornSlot of equipmentSlot.item.adornment_list) {
+        const description = getDescription(adornSlot.details);
         adornmentSlots[equipmentSlot.name] ??= {};
         adornmentSlots[equipmentSlot.name][adornSlot.color] ??= [];
-        adornmentSlots[equipmentSlot.name][adornSlot.color].push(
-          adornSlot.details?.modifiers
-            ? Object.values(adornSlot.details.modifiers)
-                .map((modifier) => {
-                  let description = `${modifier.value.toFixed(1)} ${
-                    modifier.displayname
-                  }`;
-                  if (modifier.type === 'overcapmod') {
-                    description += ' Overcap';
-                  }
-                  return description;
-                })
-                .join(', ')
-            : adornSlot.details?.displayname
-        );
+        adornmentSlots[equipmentSlot.name][adornSlot.color].push(description);
       }
     }
 
@@ -130,23 +111,10 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
 
       for (const adorn of sortedAdornments) {
         for (const slot of adorn.typeinfo.slot_list) {
+          const description = getDescription(adorn);
           adornmentSlots[slot.name] ??= {};
           adornmentSlots[slot.name][adorn.typeinfo.color] ??= [];
-          adornmentSlots[slot.name][adorn.typeinfo.color].push(
-            adorn.modifiers
-              ? Object.values(adorn.modifiers)
-                  .map((modifier) => {
-                    let description = `${modifier.value.toFixed(1)} ${
-                      modifier.displayname
-                    }`;
-                    if (modifier.type === 'overcapmod') {
-                      description += ' Overcap';
-                    }
-                    return description;
-                  })
-                  .join(', ')
-              : adorn.displayname
-          );
+          adornmentSlots[slot.name][adorn.typeinfo.color].push(description);
         }
       }
 
@@ -323,4 +291,20 @@ function sortAdornments(adornments: Item[]): Item[] {
     return 0;
   });
   return sorted;
+}
+
+function getDescription(adornment: Item): string {
+  return adornment?.modifiers
+    ? Object.values(adornment.modifiers)
+        .map((modifier) => {
+          let description = `${modifier.value.toFixed(1)} ${
+            modifier.displayname
+          }`;
+          if (modifier.type === 'overcapmod') {
+            description += ' Overcap';
+          }
+          return description;
+        })
+        .join(', ')
+    : adornment?.displayname;
 }
