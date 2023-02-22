@@ -104,6 +104,8 @@
   </table>
 
   <ul>
-    <li *ngFor="let adorn of store.newAdornments$ | async">{{ adorn }}</li>
+    <li *ngFor="let adornSummary of store.newAdornmentsSummary$ | async">
+      {{ adornSummary }}
+    </li>
   </ul>
 </ion-content>

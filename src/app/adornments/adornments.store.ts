@@ -75,12 +75,13 @@ export interface AdornmentsState {
   character?: Character;
   allAdornments?: Item[];
   selectedAdornments: Record<string, Record<string, Record<number, string>>>;
+  newAdornments: Record<string, number>;
 }
 
 @Injectable()
 export class AdornmentsStore extends ComponentStore<AdornmentsState> {
   constructor(private http: HttpClient) {
-    super({ searching: false, selectedAdornments: {} });
+    super({ searching: false, selectedAdornments: {}, newAdornments: {} });
     this.loadRenewalAdorns();
   }
 
@@ -88,6 +89,8 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
   public character$ = this.select((state) => state.character);
   public allAdornments$ = this.select((state) => state.allAdornments);
   public selectedAdornments$ = this.select((state) => state.selectedAdornments);
+  public newAdornments$ = this.select((state) => state.newAdornments);
+
   public colors$ = this.select(this.character$, (character) =>
     unique(
       character.equipmentslot_list
@@ -142,22 +145,10 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
       return adornmentSlots;
     }
   );
-  public newAdornments$ = this.select(
-    this.selectedAdornments$,
-    (selectedAdornments) => {
-      const allSlots = Object.values(selectedAdornments);
-      const allColors = allSlots.flatMap((slot) => Object.values(slot));
-      const allAdorns = allColors.flatMap(color => Object.values(color));
-      const newAdorns = allAdorns.filter(adorn => !!adorn); // Already-equipped adorns have a value of ''.
-      const adornCounts = newAdorns.reduce<Record<string, number>>(
-        (acc, current) => {
-          acc[current] ??= 0;
-          acc[current]++;
-          return acc;
-        },
-        {}
-      );
-      return Object.entries(adornCounts).map(
+  public newAdornmentsSummary$ = this.select(
+    this.newAdornments$,
+    (newAdornments) => {
+      return Object.entries(newAdornments).map(
         ([name, count]) => `${count} - ${name}`
       );
     }
@@ -167,19 +158,32 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
     (
       state,
       [slot, color, index, adornName]: [string, string, number, string]
-    ) => ({
-      ...state,
-      selectedAdornments: {
-        ...state.selectedAdornments,
-        [slot]: {
-          ...state.selectedAdornments[slot],
-          [color]: {
-            ...(state.selectedAdornments[slot] ?? {})[color],
-            [index]: adornName,
-          },
-        },
-      },
-    })
+    ) => {
+      const oldAdorn = state.selectedAdornments[slot]?.[color]?.[index];
+
+      const newAdornments = { ...state.newAdornments };
+      if (oldAdorn) {
+        newAdornments[oldAdorn]--;
+        if (newAdornments[oldAdorn] === 0) {
+          delete newAdornments[oldAdorn];
+        }
+      }
+      if (adornName) {
+        newAdornments[adornName] ??= 0;
+        newAdornments[adornName]++;
+      }
+
+      const selectedAdornments = { ...state.selectedAdornments };
+      selectedAdornments[slot] ??= {};
+      selectedAdornments[slot][color] ??= {};
+      selectedAdornments[slot][color][index] = adornName;
+
+      return {
+        ...state,
+        newAdornments,
+        selectedAdornments,
+      };
+    }
   );
 
   public searchForCharacter = this.effect<[string, number]>(
