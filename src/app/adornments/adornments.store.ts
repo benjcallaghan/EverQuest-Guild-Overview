@@ -74,18 +74,20 @@ export interface AdornmentsState {
   searching: boolean;
   character?: Character;
   allAdornments?: Item[];
+  selectedAdornments: Record<string, Record<string, Record<number, string>>>;
 }
 
 @Injectable()
 export class AdornmentsStore extends ComponentStore<AdornmentsState> {
   constructor(private http: HttpClient) {
-    super({ searching: false });
+    super({ searching: false, selectedAdornments: {} });
     this.loadRenewalAdorns();
   }
 
   public searching$ = this.select((state) => state.searching);
   public character$ = this.select((state) => state.character);
   public allAdornments$ = this.select((state) => state.allAdornments);
+  public selectedAdornments$ = this.select((state) => state.selectedAdornments);
   public colors$ = this.select(this.character$, (character) =>
     unique(
       character.equipmentslot_list
@@ -94,15 +96,24 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
         .filter((color) => color !== 'temporary')
     )
   );
-  public adornmentSlots$ = this.select(this.character$, (character) => {
-    const adornmentSlots: Record<string, Record<string, string[]>> = {};
+  public equippedAdornments$ = this.select(this.character$, (character) => {
+    const adornmentSlots: Record<
+      string,
+      Record<string, AdornmentOption[]>
+    > = {};
+
+    if (!character) {
+      return adornmentSlots;
+    }
 
     for (const equipmentSlot of character.equipmentslot_list) {
-      for (const adornSlot of equipmentSlot.item.adornment_list) {
-        const description = getDescription(adornSlot.details);
+      for (const adorn of equipmentSlot.item.adornment_list) {
         adornmentSlots[equipmentSlot.name] ??= {};
-        adornmentSlots[equipmentSlot.name][adornSlot.color] ??= [];
-        adornmentSlots[equipmentSlot.name][adornSlot.color].push(description);
+        adornmentSlots[equipmentSlot.name][adorn.color] ??= [];
+        adornmentSlots[equipmentSlot.name][adorn.color].push({
+          description: getDescription(adorn.details),
+          displayName: adorn.details?.displayname,
+        });
       }
     }
 
@@ -112,7 +123,10 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
     this.allAdornments$,
     (allAdorns) => {
       const sortedAdornments = sortAdornments(allAdorns);
-      const adornmentSlots: Record<string, Record<string, AdornmentOption[]>> = {};
+      const adornmentSlots: Record<
+        string,
+        Record<string, AdornmentOption[]>
+      > = {};
 
       for (const adorn of sortedAdornments) {
         for (const slot of adorn.typeinfo.slot_list) {
@@ -127,6 +141,45 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
 
       return adornmentSlots;
     }
+  );
+  public newAdornments$ = this.select(
+    this.selectedAdornments$,
+    (selectedAdornments) => {
+      const allSlots = Object.values(selectedAdornments);
+      const allColors = allSlots.flatMap((slot) => Object.values(slot));
+      const allAdorns = allColors.flatMap(color => Object.values(color));
+      const newAdorns = allAdorns.filter(adorn => !!adorn); // Already-equipped adorns have a value of ''.
+      const adornCounts = newAdorns.reduce<Record<string, number>>(
+        (acc, current) => {
+          acc[current] ??= 0;
+          acc[current]++;
+          return acc;
+        },
+        {}
+      );
+      return Object.entries(adornCounts).map(
+        ([name, count]) => `${count} - ${name}`
+      );
+    }
+  );
+
+  public updateSlot = this.updater(
+    (
+      state,
+      [slot, color, index, adornName]: [string, string, number, string]
+    ) => ({
+      ...state,
+      selectedAdornments: {
+        ...state.selectedAdornments,
+        [slot]: {
+          ...state.selectedAdornments[slot],
+          [color]: {
+            ...(state.selectedAdornments[slot] ?? {})[color],
+            [index]: adornName,
+          },
+        },
+      },
+    })
   );
 
   public searchForCharacter = this.effect<[string, number]>(
@@ -245,8 +298,11 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
     );
   }
 
-  public currentAdorn = (slot: string, color: string) =>
-    this.select(this.adornmentSlots$, (allAdorns) => allAdorns[slot][color]);
+  public equippedAdorn = (slot: string, color: string) =>
+    this.select(
+      this.equippedAdornments$,
+      (allAdorns) => allAdorns[slot][color]
+    );
 
   public availableAdorns = (slot: string, color: string) => {
     let normalizedSlot = slot;
