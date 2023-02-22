@@ -86,13 +86,16 @@
         <td *ngFor="let color of store.colors$ | async">
           <div>
             <select
+              #adornmentSelect
               *ngFor="let equippedAdorn of store.currentAdorn(equipmentSlot.name, color) | async"
+              (change)="updateChangedAdornments()"
             >
-              <option>* {{ equippedAdorn }}</option>
+              <option value="">* {{ equippedAdorn }}</option>
               <option
                 *ngFor="let option of store.availableAdorns(equipmentSlot.name, color) | async"
+                [value]="option.displayName"
               >
-                {{ option }}
+                {{ option.description }}
               </option>
             </select>
           </div>
@@ -100,4 +103,10 @@
       </tr>
     </tbody>
   </table>
+
+  <ul>
+    <li *ngFor="let adorn of changedAdornments | keyvalue">
+      {{ adorn.value }} - {{ adorn.key }}
+    </li>
+  </ul>
 </ion-content>

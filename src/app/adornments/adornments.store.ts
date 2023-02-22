@@ -65,6 +65,11 @@ interface Item {
   >;
 }
 
+export interface AdornmentOption {
+  displayName: string;
+  description: string;
+}
+
 export interface AdornmentsState {
   searching: boolean;
   character?: Character;
@@ -107,14 +112,16 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
     this.allAdornments$,
     (allAdorns) => {
       const sortedAdornments = sortAdornments(allAdorns);
-      const adornmentSlots: Record<string, Record<string, string[]>> = {};
+      const adornmentSlots: Record<string, Record<string, AdornmentOption[]>> = {};
 
       for (const adorn of sortedAdornments) {
         for (const slot of adorn.typeinfo.slot_list) {
-          const description = getDescription(adorn);
           adornmentSlots[slot.name] ??= {};
           adornmentSlots[slot.name][adorn.typeinfo.color] ??= [];
-          adornmentSlots[slot.name][adorn.typeinfo.color].push(description);
+          adornmentSlots[slot.name][adorn.typeinfo.color].push({
+            description: getDescription(adorn),
+            displayName: adorn.displayname,
+          });
         }
       }
 
