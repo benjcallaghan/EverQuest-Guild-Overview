@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ComponentStore } from '@ngrx/component-store';
+import { ImmerComponentStore } from 'ngrx-immer/component-store';
 import { forkJoin, Observable, pipe } from 'rxjs';
 import { exhaustMap, map, tap } from 'rxjs/operators';
 import { build } from '../daybreak-census-options';
@@ -79,7 +79,7 @@ export interface AdornmentsState {
 }
 
 @Injectable()
-export class AdornmentsStore extends ComponentStore<AdornmentsState> {
+export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
   constructor(private http: HttpClient) {
     super({ searching: false, selectedAdornments: {}, newAdornments: {} });
     this.loadRenewalAdorns();
@@ -161,28 +161,20 @@ export class AdornmentsStore extends ComponentStore<AdornmentsState> {
     ) => {
       const oldAdorn = state.selectedAdornments[slot]?.[color]?.[index];
 
-      const newAdornments = { ...state.newAdornments };
       if (oldAdorn) {
-        newAdornments[oldAdorn]--;
-        if (newAdornments[oldAdorn] === 0) {
-          delete newAdornments[oldAdorn];
+        state.newAdornments[oldAdorn]--;
+        if (state.newAdornments[oldAdorn] === 0) {
+          delete state.newAdornments[oldAdorn];
         }
       }
       if (adornName) {
-        newAdornments[adornName] ??= 0;
-        newAdornments[adornName]++;
+        state.newAdornments[adornName] ??= 0;
+        state.newAdornments[adornName]++;
       }
 
-      const selectedAdornments = { ...state.selectedAdornments };
-      selectedAdornments[slot] ??= {};
-      selectedAdornments[slot][color] ??= {};
-      selectedAdornments[slot][color][index] = adornName;
-
-      return {
-        ...state,
-        newAdornments,
-        selectedAdornments,
-      };
+      state.selectedAdornments[slot] ??= {};
+      state.selectedAdornments[slot][color] ??= {};
+      state.selectedAdornments[slot][color][index] = adornName;
     }
   );
 
