@@ -5,6 +5,36 @@ import { forkJoin, Observable, pipe } from 'rxjs';
 import { exhaustMap, map, tap } from 'rxjs/operators';
 import { build } from '../daybreak-census-options';
 
+const rorLockboxAdorns = [
+  'Abysmal Sea Rune: Anguish',
+  'Abysmal Sea Rune: Arcane Rending',
+  'Abysmal Sea Rune: Aura of Stamina',
+  'Abysmal Sea Rune: Devastation Strike',
+  'Abysmal Sea Rune: Elemental Rending',
+  'Abysmal Sea Rune: Embers',
+  'Abysmal Sea Rune: Insight',
+  'Abysmal Sea Rune: Mystery',
+  'Abysmal Sea Rune: Noxious Rending',
+  'Bloodbound Rune: Blissful Thought',
+  'Bloodbound Rune: Force Projection',
+  "Bloodbound Rune: Infusion of Qua'ddathul",
+  'Bloodbound Rune: Resurgence',
+  'Bloodbound Rune: Timed Attacks',
+  'Ensorcelled Dreadfell Adornment of Increased Criticals',
+  'Ensorcelled Dreadfell Rune of Zeal',
+  'Forlorn Rune: Chorus of Night',
+  'Forlorn Rune: Symphony of the Void',
+  "Hua Collector's Cometglow",
+  "Hua Collector's Star Shard",
+  'Rune of Bloodbound Torment',
+  'Enscorcelled Dreadfell Adornment of Health',
+  'Ensorcelled Dreadfell Adornment of Extra Attacks',
+  'Ensorcelled Dreadfell Adornment of Health',
+  'Ensorcelled Dreadfell Adornment of Increased Criticals',
+  'Ensorcelled Dreadfell Adornment of Modified Power',
+  'Ensorcelled Dreadfell Adornment of Raw Power',
+].map((name) => name.toLowerCase());
+
 interface EquippedAdornment {
   color: string;
   percenttonextlevel?: number;
@@ -245,17 +275,19 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
     pipe(
       exhaustMap(() =>
         forkJoin([
-          this.getAdorns('forlorn'),
-          this.getAdorns('dreadfell'),
-          this.getAdorns('true blood'),
-          this.getAdorns('plateaus'),
-          this.getAdorns('hizite'),
-          this.getAdorns('delta'),
-          this.getAdorns('badlands'),
-          this.getAdorns('hua collector'),
+          this.getAdorns('forlorn'), // VoV Handcrafted
+          this.getAdorns('dreadfell'), // VoV Mastercrafted
+          this.getAdorns('true blood'), // VoV Mastercrafted Fabled
+          this.getAdorns('plateaus'), // RoR Handcrafted
+          this.getAdorns('hizite'), // RoR Mastercrafted
+          this.getAdorns('delta'), // RoR Mastercrafted Fabled (Tradeskill)
+          this.getAdorns('badlands'), // RoR Mastercrafted Fabled
+          this.getAdorns('hua collector'), // VoV->RoR Panda
+          ...rorLockboxAdorns.map((adornName) => this.getAdorns(adornName)),
         ])
       ),
       map((allResults) => allResults.flatMap((results) => results.item_list)),
+      map((allAdorns) => uniqueByKey(allAdorns, (adorn) => adorn.displayname)),
       tap((allAdornments: Item[]) => {
         this.patchState({
           allAdornments,
@@ -327,6 +359,14 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
 
 function unique<T>(arr: T[]): T[] {
   return arr.filter((_, i) => arr.indexOf(arr[i]) === i);
+}
+
+function uniqueByKey<Element, Key>(
+  arr: Element[],
+  keySelector: (item: Element) => Key
+): Element[] {
+  const vArr = arr.map(keySelector);
+  return arr.filter((_, i) => vArr.indexOf(vArr[i]) === i);
 }
 
 function sortAdornments(adornments: Item[]): Item[] {
