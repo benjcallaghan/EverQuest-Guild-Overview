@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { VovFlawlessPage } from './vov-flawless.page';
+import QuestStatusPage from './quest-status.page';
 
-describe('VovFlawlessPage', () => {
-  let component: VovFlawlessPage;
-  let fixture: ComponentFixture<VovFlawlessPage>;
+describe('QuestStatusPageComponent', () => {
+  let component: QuestStatusPage;
+  let fixture: ComponentFixture<QuestStatusPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [VovFlawlessPage],
+      declarations: [QuestStatusPage],
       imports: [IonicModule.forRoot()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(VovFlawlessPage);
+    fixture = TestBed.createComponent(QuestStatusPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
