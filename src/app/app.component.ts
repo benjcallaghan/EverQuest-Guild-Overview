@@ -204,6 +204,131 @@ export const ROUTES: Routes = [
     } satisfies QuestStatusRouteData,
   },
   {
+    path: 'renewal-of-ro',
+    loadComponent: () => import('./quest-status-page/quest-status.page'),
+    data: {
+      title: 'Renewal of Ro',
+      query: {
+        "Raj'Dur Plateaus: The Hunt": {
+          "Raj'Dur Foreman Yato (T1)": { type: 'achievement', id: 2131401295 },
+          "Raj'Dur Leader Mamu (T2)": { type: 'achievement', id: 2905591652 },
+          'Avenging Desert Spirit (T2)': {
+            type: 'achievement',
+            id: 2996794950,
+          },
+          'Poacher Paol (T2)': { type: 'achievement', id: 2971222468 },
+          'Scythe Rotgut (T2)': { type: 'achievement', id: 2272671587 },
+          'Slither Rattlebones (T3)': { type: 'achievement', id: 249389644 },
+        },
+        'Sandstone Delta: The Standing Storm': {
+          'Embodiment of Fright (T1)': { type: 'achievement', id: 113694900 },
+          'Tsmang Blightswarm Broodmaster (T2)': {
+            type: 'achievement',
+            id: 3288304938,
+          },
+          'Malformed Prophet (T2)': { type: 'achievement', id: 319658448 },
+          'Lockmaw (T2)': { type: 'achievement', id: 2181493241 },
+          'Mad Zealot (T3)': { type: 'achievement', id: 3197774793 },
+          "Rath'Mana High Priest (T3)": { type: 'achievement', id: 2420168081 },
+          'Kandti (Bonus T1)': { type: 'achievement', id: 1181594448 },
+          'Monkey Business': { type: 'achievement', id: 1230060842 },
+        },
+        'Takish Badlands: The Boundless Gulf': {
+          'Humuhngus Fuhngus Amuhngus (T3)': {
+            type: 'achievement',
+            id: 879966643,
+          },
+          'Desert Wildcat Matron (T3)': { type: 'achievement', id: 3925248132 },
+          'Mhyt-moo Migmu (T3)': { type: 'achievement', id: 3718951237 },
+          'Jellyfisher Ancient (T3)': { type: 'achievement', id: 2664506833 },
+          'Ragtag the Despoiler (T3)': { type: 'achievement', id: 3519946954 },
+          'Nirag the Boundless (T4)': { type: 'achievement', id: 3742132927 },
+        },
+        "Buried Takish'Hiz: Emergence from Stone": {
+          'Stonesong (T4)': { type: 'achievement', id: 1583785797 },
+          'Rugrat (T4)': { type: 'achievement', id: 2264084208 },
+          'Monument of Stone (T4)': { type: 'achievement', id: 51800976 },
+          'Them Bones (T4)': { type: 'achievement', id: 3301162796 },
+          'Veagth (T4)': { type: 'achievement', id: 2090739578 },
+          'Uruk the Unbound (T4)': { type: 'achievement', id: 4053290568 },
+          'Terrene Tyrant (T4)': { type: 'achievement', id: 2420885133 },
+          'Sanum Ordast the Cursed Scholar (T5)': {
+            type: 'achievement',
+            id: 3970772687,
+          },
+        },
+        "Sultan's Mahala: Daggers Drawn": {
+          'Aldys, Sultan of Daggers (T5)': {
+            type: 'achievement',
+            id: 2090690546,
+          },
+        },
+      },
+    } satisfies QuestStatusRouteData,
+  },
+  {
+    path: 'ror-flawless',
+    loadComponent: () => import('./quest-status-page/quest-status.page'),
+    data: {
+      title: 'Renewal of Ro Flawless',
+      query: {
+        "Raj'Dur Plateaus: The Hunt": {
+          "Raj'Dur Foreman Yato (T1)": { type: 'achievement', id: 2436751900 },
+          "Raj'Dur Leader Mamu (T2)": { type: 'achievement', id: 2486612070 },
+          'Avenging Desert Spirit (T2)': {
+            type: 'achievement',
+            id: 3215905276,
+          },
+          'Poacher Paol (T2)': { type: 'achievement', id: 3156797054 },
+          'Scythe Rotgut (T2)': { type: 'achievement', id: 2319945945 },
+          'Slither Rattlebones (T3)': { type: 'achievement', id: 1988899731 },
+        },
+        'Sandstone Delta: The Standing Storm': {
+          'Embodiment of Fright (T1)': { type: 'achievement', id: 2997614861 },
+          'Tsmang Blightswarm Broodmaster (T2)': {
+            type: 'achievement',
+            id: 3130080488,
+          },
+          'Malformed Prophet (T2)': { type: 'achievement', id: 2327359242 },
+          'Lockmaw (T2)': { type: 'achievement', id: 464766755 },
+          'Mad Zealot (T3)': { type: 'achievement', id: 50154442 },
+          "Rath'Mana High Priest (T3)": { type: 'achievement', id: 3951641559 },
+          'Kandti (Bonus T1)': { type: 'achievement', id: 2138360914 },
+        },
+        'Takish Badlands: The Boundless Gulf': {
+          'Humuhngus Fuhngus Amuhngus (T3)': {
+            type: 'achievement',
+            id: 3299196680,
+          },
+          'Desert Wildcat Matron (T3)': { type: 'achievement', id: 710132845 },
+          'Mhyt-moo Migmu (T3)': { type: 'achievement', id: 504364460 },
+          'Jellyfisher Ancient (T3)': { type: 'achievement', id: 2637923425 },
+          'Ragtag the Despoiler (T3)': { type: 'achievement', id: 2014079031 },
+          'Nirag the Boundless (T4)': { type: 'achievement', id: 1993220674 },
+        },
+        "Buried Takish'Hiz: Emergence from Stone": {
+          'Stonesong (T4)': { type: 'achievement', id: 3248145070 },
+          'Rugrat (T4)': { type: 'achievement', id: 2567665079 },
+          'Monument of Stone (T4)': { type: 'achievement', id: 1083647446 },
+          'Them Bones (T4)': { type: 'achievement', id: 1530911431 },
+          'Veagth (T4)': { type: 'achievement', id: 1667660861 },
+          'Uruk the Unbound (T4)': { type: 'achievement', id: 3544213403 },
+          'Terrene Tyrant (T4)': { type: 'achievement', id: 2028792549 },
+          'Sanum Ordast the Cursed Scholar (T5)': {
+            type: 'achievement',
+            id: 4116104017,
+          },
+        },
+        "Sultan's Mahala: Daggers Drawn": {
+          'Aldys, Sultan of Daggers (T5)': {
+            type: 'achievement',
+            id: 3949473313,
+          },
+        },
+      },
+    } satisfies QuestStatusRouteData,
+  },
+  {
     path: 'ros-flawless',
     loadComponent: () => import('./quest-status-page/quest-status.page'),
     data: {
