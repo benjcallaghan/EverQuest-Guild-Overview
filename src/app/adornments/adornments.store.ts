@@ -21,7 +21,7 @@ interface Character {
   displayname: string;
   id: number;
   equipmentslot_list: Array<{
-    item: {
+    item?: {
       setbonus_list: unknown[];
       modifiers: unknown;
       growth_table?: unknown;
@@ -94,7 +94,7 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
   public colors$ = this.select(this.character$, (character) =>
     unique(
       character.equipmentslot_list
-        .flatMap((slot) => slot.item.adornment_list)
+        .flatMap((slot) => slot.item?.adornment_list ?? [])
         .map((adorn) => adorn.color)
         .filter((color) => color !== 'temporary')
     )
@@ -110,7 +110,7 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
     }
 
     for (const equipmentSlot of character.equipmentslot_list) {
-      for (const adorn of equipmentSlot.item.adornment_list) {
+      for (const adorn of equipmentSlot.item?.adornment_list ?? []) {
         adornmentSlots[equipmentSlot.name] ??= {};
         adornmentSlots[equipmentSlot.name][adorn.color] ??= [];
         adornmentSlots[equipmentSlot.name][adorn.color].push({

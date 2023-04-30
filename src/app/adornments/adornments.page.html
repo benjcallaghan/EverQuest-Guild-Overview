@@ -78,13 +78,14 @@
         <td>{{ equipmentSlot.displayname }}</td>
         <td>
           <a
+            *ngIf="equipmentSlot.item"
             target="_blank"
             [href]="'https://u.eq2wire.com/item/index/' + equipmentSlot.item.id"
             >{{ equipmentSlot.item.details?.displayname }}</a
           >
         </td>
         <td *ngFor="let color of store.colors$ | async">
-          <div>
+          <div *ngIf="equipmentSlot.item">
             <select
               *ngFor="let equippedAdorn of store.equippedAdorn(equipmentSlot.name, color) | async; let i=index"
               (change)="store.updateSlot([equipmentSlot.name, color, i, $any($event.target).value])"
