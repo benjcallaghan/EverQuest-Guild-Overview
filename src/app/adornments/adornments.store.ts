@@ -1,39 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ImmerComponentStore } from 'ngrx-immer/component-store';
-import { forkJoin, Observable, pipe } from 'rxjs';
-import { exhaustMap, map, tap } from 'rxjs/operators';
+import { from, Observable, pipe } from 'rxjs';
+import { exhaustMap, map, mergeMap, tap, toArray } from 'rxjs/operators';
 import { build } from '../daybreak-census-options';
-
-const rorLockboxAdorns = [
-  'Abysmal Sea Rune: Anguish',
-  'Abysmal Sea Rune: Arcane Rending',
-  'Abysmal Sea Rune: Aura of Stamina',
-  'Abysmal Sea Rune: Devastation Strike',
-  'Abysmal Sea Rune: Elemental Rending',
-  'Abysmal Sea Rune: Embers',
-  'Abysmal Sea Rune: Insight',
-  'Abysmal Sea Rune: Mystery',
-  'Abysmal Sea Rune: Noxious Rending',
-  'Bloodbound Rune: Blissful Thought',
-  'Bloodbound Rune: Force Projection',
-  "Bloodbound Rune: Infusion of Qua'ddathul",
-  'Bloodbound Rune: Resurgence',
-  'Bloodbound Rune: Timed Attacks',
-  'Ensorcelled Dreadfell Adornment of Increased Criticals',
-  'Ensorcelled Dreadfell Rune of Zeal',
-  'Forlorn Rune: Chorus of Night',
-  'Forlorn Rune: Symphony of the Void',
-  "Hua Collector's Cometglow",
-  "Hua Collector's Star Shard",
-  'Rune of Bloodbound Torment',
-  'Enscorcelled Dreadfell Adornment of Health',
-  'Ensorcelled Dreadfell Adornment of Extra Attacks',
-  'Ensorcelled Dreadfell Adornment of Health',
-  'Ensorcelled Dreadfell Adornment of Increased Criticals',
-  'Ensorcelled Dreadfell Adornment of Modified Power',
-  'Ensorcelled Dreadfell Adornment of Raw Power',
-].map((name) => name.toLowerCase());
 
 interface EquippedAdornment {
   color: string;
@@ -274,19 +244,51 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
   public loadRenewalAdorns = this.effect<void>(
     pipe(
       exhaustMap(() =>
-        forkJoin([
-          this.getAdorns('forlorn'), // VoV Handcrafted
-          this.getAdorns('dreadfell'), // VoV Mastercrafted
-          this.getAdorns('true blood'), // VoV Mastercrafted Fabled
-          this.getAdorns('plateaus'), // RoR Handcrafted
-          this.getAdorns('hizite'), // RoR Mastercrafted
-          this.getAdorns('delta'), // RoR Mastercrafted Fabled (Tradeskill)
-          this.getAdorns('badlands'), // RoR Mastercrafted Fabled
-          this.getAdorns('hua collector'), // VoV->RoR Panda
-          ...rorLockboxAdorns.map((adornName) => this.getAdorns(adornName)),
-        ])
+        from([
+          'forlorn', // VoV Handcrafted
+          'dreadfell', // VoV Mastercrafted
+          'true blood', // VoV Mastercrafted Fabled
+          'plateaus', // RoR Handcrafted
+          'hizite', // RoR Mastercrafted
+          'delta', // RoR Mastercrafted Fabled (Tradeskill)
+          'badlands', // RoR Mastercrafted Fabled
+          'hua collector', // VoV->RoR Panda
+          // RoR Lockbox Gear
+          'Abysmal Sea Rune: Anguish',
+          'Abysmal Sea Rune: Arcane Rending',
+          'Abysmal Sea Rune: Aura of Stamina',
+          'Abysmal Sea Rune: Devastation Strike',
+          'Abysmal Sea Rune: Elemental Rending',
+          'Abysmal Sea Rune: Embers',
+          'Abysmal Sea Rune: Insight',
+          'Abysmal Sea Rune: Mystery',
+          'Abysmal Sea Rune: Noxious Rending',
+          'Bloodbound Rune: Blissful Thought',
+          'Bloodbound Rune: Force Projection',
+          "Bloodbound Rune: Infusion of Qua'ddathul",
+          'Bloodbound Rune: Resurgence',
+          'Bloodbound Rune: Timed Attacks',
+          'Ensorcelled Dreadfell Adornment of Increased Criticals',
+          'Ensorcelled Dreadfell Rune of Zeal',
+          'Forlorn Rune: Chorus of Night',
+          'Forlorn Rune: Symphony of the Void',
+          "Hua Collector's Cometglow",
+          "Hua Collector's Star Shard",
+          'Rune of Bloodbound Torment',
+          'Enscorcelled Dreadfell Adornment of Health',
+          'Ensorcelled Dreadfell Adornment of Extra Attacks',
+          'Ensorcelled Dreadfell Adornment of Health',
+          'Ensorcelled Dreadfell Adornment of Increased Criticals',
+          'Ensorcelled Dreadfell Adornment of Modified Power',
+          'Ensorcelled Dreadfell Adornment of Raw Power',
+        ]).pipe(
+          map((adornPattern) => adornPattern.toLowerCase()),
+          mergeMap((adornPattern) => this.getAdorns(adornPattern)),
+          map((searchResult) => searchResult.item_list),
+          toArray()
+        )
       ),
-      map((allResults) => allResults.flatMap((results) => results.item_list)),
+      map((allResults) => allResults.flat()),
       map((allAdorns) => uniqueByKey(allAdorns, (adorn) => adorn.displayname)),
       tap((allAdornments: Item[]) => {
         this.patchState({
