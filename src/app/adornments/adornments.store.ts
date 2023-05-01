@@ -1,8 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tapResponse } from '@ngrx/component-store';
 import { ImmerComponentStore } from 'ngrx-immer/component-store';
 import { from, Observable, pipe } from 'rxjs';
-import { exhaustMap, map, mergeMap, tap, toArray } from 'rxjs/operators';
+import {
+  distinct,
+  exhaustMap,
+  map,
+  mergeMap,
+  tap,
+  toArray,
+} from 'rxjs/operators';
 import { build } from '../daybreak-census-options';
 
 interface EquippedAdornment {
@@ -284,17 +292,15 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
         ]).pipe(
           map((adornPattern) => adornPattern.toLowerCase()),
           mergeMap((adornPattern) => this.getAdorns(adornPattern)),
-          map((searchResult) => searchResult.item_list),
-          toArray()
+          mergeMap((searchResult) => searchResult.item_list),
+          distinct((adorn) => adorn.displayname),
+          toArray(),
+          tapResponse(
+            (allAdornments) => this.patchState({ allAdornments }),
+            (error) => console.error(error)
+          )
         )
-      ),
-      map((allResults) => allResults.flat()),
-      map((allAdorns) => uniqueByKey(allAdorns, (adorn) => adorn.displayname)),
-      tap((allAdornments: Item[]) => {
-        this.patchState({
-          allAdornments,
-        });
-      })
+      )
     )
   );
 
@@ -361,14 +367,6 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
 
 function unique<T>(arr: T[]): T[] {
   return arr.filter((_, i) => arr.indexOf(arr[i]) === i);
-}
-
-function uniqueByKey<Element, Key>(
-  arr: Element[],
-  keySelector: (item: Element) => Key
-): Element[] {
-  const vArr = arr.map(keySelector);
-  return arr.filter((_, i) => vArr.indexOf(vArr[i]) === i);
 }
 
 function sortAdornments(adornments: Item[]): Item[] {
