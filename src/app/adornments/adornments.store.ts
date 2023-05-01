@@ -290,8 +290,8 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
           'Ensorcelled Dreadfell Adornment of Modified Power',
           'Ensorcelled Dreadfell Adornment of Raw Power',
         ]).pipe(
-          map((adornPattern) => adornPattern.toLowerCase()),
-          mergeMap((adornPattern) => this.getAdorns(adornPattern)),
+          map((searchPattern) => searchPattern.toLowerCase()),
+          mergeMap((searchPattern) => this.getAdorns(searchPattern)),
           mergeMap((searchResult) => searchResult.item_list),
           distinct((adorn) => adorn.displayname),
           toArray(),
