@@ -276,7 +276,6 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
           "Bloodbound Rune: Infusion of Qua'ddathul",
           'Bloodbound Rune: Resurgence',
           'Bloodbound Rune: Timed Attacks',
-          'Ensorcelled Dreadfell Adornment of Increased Criticals',
           'Ensorcelled Dreadfell Rune of Zeal',
           'Forlorn Rune: Chorus of Night',
           'Forlorn Rune: Symphony of the Void',
