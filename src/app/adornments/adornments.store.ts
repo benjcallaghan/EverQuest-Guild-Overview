@@ -283,7 +283,7 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
           "Hua Collector's Cometglow",
           "Hua Collector's Star Shard",
           'Rune of Bloodbound Torment',
-          'Enscorcelled Dreadfell Adornment of Health',
+          'Ensorcelled Dreadfell Adornment of Health',
           'Ensorcelled Dreadfell Adornment of Extra Attacks',
           'Ensorcelled Dreadfell Adornment of Health',
           'Ensorcelled Dreadfell Adornment of Increased Criticals',
