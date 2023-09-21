@@ -258,6 +258,26 @@ export const ROUTES: Routes = [
           },
         },
         "Sultan's Mahala: Daggers Drawn": {
+          'Poacher Paol the Persistent (T5)': {
+            type: 'achievement',
+            id: 4105828768,
+          },
+          "Raaijs Viruniq, Rath'Mana Incarnate (T5)": {
+            type: 'achievement',
+            id: 2851735631,
+          },
+          'Nirag, Boundless Titan (T5)': {
+            type: 'achievement',
+            id: 1619000230,
+          },
+          "Stonesong, Death's Throes (T5)": {
+            type: 'achievement',
+            id: 2703840774,
+          },
+          'Veagth the Unnatural (T5)': {
+            type: 'achievement',
+            id: 1605097831,
+          },
           'Aldys, Sultan of Daggers (T5)': {
             type: 'achievement',
             id: 2090690546,
@@ -320,6 +340,26 @@ export const ROUTES: Routes = [
           },
         },
         "Sultan's Mahala: Daggers Drawn": {
+          'Poacher Paol the Persistent (T5)': {
+            type: 'achievement',
+            id: 201504146,
+          },
+          "Raaijs Viruniq, Rath'Mana Incarnate (T5)": {
+            type: 'achievement',
+            id: 3598858928,
+          },
+          'Nirag, Boundless Titan (T5)': {
+            type: 'achievement',
+            id: 2134019457,
+          },
+          "Stonesong, Death's Throes (T5)": {
+            type: 'achievement',
+            id: 859043703,
+          },
+          'Veagth the Unnatural (T5)': {
+            type: 'achievement',
+            id: 2252964538,
+          },
           'Aldys, Sultan of Daggers (T5)': {
             type: 'achievement',
             id: 3949473313,
