@@ -283,6 +283,12 @@ export const ROUTES: Routes = [
             id: 2090690546,
           },
         },
+        "Buried Takish'Hiz: Empire of Antiquity [Contested]": {
+          'Titanious, Essence of Reviviscence': {
+            type: 'achievement',
+            id: 2164457779,
+          },
+        },
       },
     } satisfies QuestStatusRouteData,
   },
@@ -363,6 +369,12 @@ export const ROUTES: Routes = [
           'Aldys, Sultan of Daggers (T5)': {
             type: 'achievement',
             id: 3949473313,
+          },
+        },
+        "Buried Takish'Hiz: Empire of Antiquity [Contested]": {
+          'Titanious, Essence of Reviviscence': {
+            type: 'achievement',
+            id: 2999159680,
           },
         },
       },
