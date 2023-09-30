@@ -157,8 +157,8 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
     }
 
     for (const equipmentSlot of character.equipmentslot_list) {
+      adornmentSlots[equipmentSlot.name] ??= {};
       for (const adorn of equipmentSlot.item?.adornment_list ?? []) {
-        adornmentSlots[equipmentSlot.name] ??= {};
         adornmentSlots[equipmentSlot.name][adorn.color] ??= [];
         adornmentSlots[equipmentSlot.name][adorn.color].push({
           description: getDescription(adorn.details),
