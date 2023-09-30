@@ -129,7 +129,7 @@ const usableInRor = [
 export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
   constructor(private http: HttpClient) {
     super({ searching: false, selectedAdornments: {}, newAdornments: {} });
-    this.loadRenewalAdorns();
+    this.loadAdorns(usableInRor);
   }
 
   public searching$ = this.select((state) => state.searching);
@@ -288,11 +288,11 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
     )
   );
 
-  public loadRenewalAdorns = this.effect<void>(
+  public loadAdorns = this.effect<string[]>(
     pipe(
       tap(() => this.patchState({ searching: true })),
-      exhaustMap(() =>
-        from(usableInRor).pipe(
+      exhaustMap(searchPatterns =>
+        from(searchPatterns).pipe(
           map((searchPattern) => searchPattern.toLowerCase()),
           mergeMap((searchPattern) => this.getAdorns(searchPattern)),
           mergeMap((searchResult) => searchResult.item_list),
