@@ -86,6 +86,45 @@ export interface AdornmentsState {
   newAdornments: Record<string, number>;
 }
 
+const vovCrafted = ['forlorn', 'dreadfell', 'true blood'];
+const rorCrafted = ['plateaus', 'hizite', 'delta', 'badlands'];
+const vovIntoRorPanda = ['hua collector'];
+const rorLockbox = [
+  'Abysmal Sea Rune: Anguish',
+  'Abysmal Sea Rune: Arcane Rending',
+  'Abysmal Sea Rune: Aura of Stamina',
+  'Abysmal Sea Rune: Devastation Strike',
+  'Abysmal Sea Rune: Elemental Rending',
+  'Abysmal Sea Rune: Embers',
+  'Abysmal Sea Rune: Insight',
+  'Abysmal Sea Rune: Mystery',
+  'Abysmal Sea Rune: Noxious Rending',
+  'Bloodbound Rune: Blissful Thought',
+  'Bloodbound Rune: Force Projection',
+  "Bloodbound Rune: Infusion of Qua'ddathul",
+  'Bloodbound Rune: Resurgence',
+  'Bloodbound Rune: Timed Attacks',
+  'Ensorcelled Dreadfell Rune of Zeal',
+  'Forlorn Rune: Chorus of Night',
+  'Forlorn Rune: Symphony of the Void',
+  "Hua Collector's Cometglow",
+  "Hua Collector's Star Shard",
+  'Rune of Bloodbound Torment',
+  'Ensorcelled Dreadfell Adornment of Health',
+  'Ensorcelled Dreadfell Adornment of Extra Attacks',
+  'Ensorcelled Dreadfell Adornment of Health',
+  'Ensorcelled Dreadfell Adornment of Increased Criticals',
+  'Ensorcelled Dreadfell Adornment of Modified Power',
+  'Ensorcelled Dreadfell Adornment of Raw Power',
+];
+
+const usableInRor = [
+  ...vovCrafted,
+  ...rorCrafted,
+  ...vovIntoRorPanda,
+  ...rorLockbox,
+];
+
 @Injectable()
 export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
   constructor(private http: HttpClient) {
@@ -251,51 +290,17 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
 
   public loadRenewalAdorns = this.effect<void>(
     pipe(
+      tap(() => this.patchState({ searching: true })),
       exhaustMap(() =>
-        from([
-          'forlorn', // VoV Handcrafted
-          'dreadfell', // VoV Mastercrafted
-          'true blood', // VoV Mastercrafted Fabled
-          'plateaus', // RoR Handcrafted
-          'hizite', // RoR Mastercrafted
-          'delta', // RoR Mastercrafted Fabled (Tradeskill)
-          'badlands', // RoR Mastercrafted Fabled
-          'hua collector', // VoV->RoR Panda
-          // RoR Lockbox Gear
-          'Abysmal Sea Rune: Anguish',
-          'Abysmal Sea Rune: Arcane Rending',
-          'Abysmal Sea Rune: Aura of Stamina',
-          'Abysmal Sea Rune: Devastation Strike',
-          'Abysmal Sea Rune: Elemental Rending',
-          'Abysmal Sea Rune: Embers',
-          'Abysmal Sea Rune: Insight',
-          'Abysmal Sea Rune: Mystery',
-          'Abysmal Sea Rune: Noxious Rending',
-          'Bloodbound Rune: Blissful Thought',
-          'Bloodbound Rune: Force Projection',
-          "Bloodbound Rune: Infusion of Qua'ddathul",
-          'Bloodbound Rune: Resurgence',
-          'Bloodbound Rune: Timed Attacks',
-          'Ensorcelled Dreadfell Rune of Zeal',
-          'Forlorn Rune: Chorus of Night',
-          'Forlorn Rune: Symphony of the Void',
-          "Hua Collector's Cometglow",
-          "Hua Collector's Star Shard",
-          'Rune of Bloodbound Torment',
-          'Ensorcelled Dreadfell Adornment of Health',
-          'Ensorcelled Dreadfell Adornment of Extra Attacks',
-          'Ensorcelled Dreadfell Adornment of Health',
-          'Ensorcelled Dreadfell Adornment of Increased Criticals',
-          'Ensorcelled Dreadfell Adornment of Modified Power',
-          'Ensorcelled Dreadfell Adornment of Raw Power',
-        ]).pipe(
+        from(usableInRor).pipe(
           map((searchPattern) => searchPattern.toLowerCase()),
           mergeMap((searchPattern) => this.getAdorns(searchPattern)),
           mergeMap((searchResult) => searchResult.item_list),
           distinct((adorn) => adorn.displayname),
           toArray(),
           tapResponse(
-            (allAdornments) => this.patchState({ allAdornments }),
+            (allAdornments) =>
+              this.patchState({ allAdornments, searching: false }),
             (error) => console.error(error)
           )
         )
