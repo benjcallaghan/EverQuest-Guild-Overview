@@ -87,7 +87,7 @@ export interface AdornmentsState {
 }
 
 const vovCrafted = ['forlorn', 'dreadfell', 'true blood'];
-const rorCrafted = ['plateaus', 'hizite', 'delta', 'badlands'];
+const rorCrafted = ['plateaus', 'hizite', /*'delta', 'badlands'*/]; // Those last two are too rare to use in calculations.
 const vovIntoRorPanda = ['hua collector'];
 const rorLockbox = [
   'Abysmal Sea Rune: Anguish',
@@ -117,12 +117,14 @@ const rorLockbox = [
   'Ensorcelled Dreadfell Adornment of Modified Power',
   'Ensorcelled Dreadfell Adornment of Raw Power',
 ];
+const rorIntoBozPanda = ['botanist'];
 
 const usableInRor = [
   ...vovCrafted,
   ...rorCrafted,
   ...vovIntoRorPanda,
   ...rorLockbox,
+  ...rorIntoBozPanda
 ];
 
 @Injectable()
