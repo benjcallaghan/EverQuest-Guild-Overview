@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tapResponse } from '@ngrx/component-store';
 import { ImmerComponentStore } from 'ngrx-immer/component-store';
-import { from, Observable, pipe } from 'rxjs';
+import { forkJoin, from, Observable, pipe } from 'rxjs';
 import {
   distinct,
   exhaustMap,
@@ -87,7 +87,7 @@ export interface AdornmentsState {
 }
 
 const vovCrafted = ['forlorn', 'dreadfell', 'true blood'];
-const rorCrafted = ['plateaus', 'hizite', /*'delta', 'badlands'*/]; // Those last two are too rare to use in calculations.
+const rorCrafted = ['plateaus', 'hizite' /*'delta', 'badlands'*/]; // Those last two are too rare to use in calculations.
 const vovIntoRorPanda = ['hua collector'];
 const rorLockbox = [
   'Abysmal Sea Rune: Anguish',
@@ -119,19 +119,27 @@ const rorLockbox = [
 ];
 const rorIntoBozPanda = ['botanist'];
 
-const usableInRor = [
-  ...vovCrafted,
-  ...rorCrafted,
-  ...vovIntoRorPanda,
-  ...rorLockbox,
-  ...rorIntoBozPanda
-];
+const expansionAdorns = {
+  boz: rorIntoBozPanda,
+  ror: [
+    ...vovCrafted,
+    ...rorCrafted,
+    ...vovIntoRorPanda,
+    ...rorLockbox,
+    ...rorIntoBozPanda,
+  ],
+};
+
+interface SearchParams {
+  characterName: string;
+  serverId: number;
+  expansion: keyof typeof expansionAdorns;
+}
 
 @Injectable()
 export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
   constructor(private http: HttpClient) {
     super({ searching: false, selectedAdornments: {}, newAdornments: {} });
-    this.loadAdorns(usableInRor);
   }
 
   public searching$ = this.select((state) => state.searching);
@@ -227,50 +235,65 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
     }
   );
 
-  public searchForCharacter = this.effect<[string, number]>(
+  public search = this.effect<SearchParams>(
     pipe(
       tap(() => this.patchState({ searching: true })),
-      exhaustMap(([name, server]) =>
-        this.http.get<CharacterSearchResults>(
-          build({
-            serviceId: 's:vexedencetracker',
-            format: 'json',
-            verb: 'get',
-            namespace: 'eq2',
-            collection: 'character',
-            filter: [
-              {
-                field: 'name.first_lower',
-                value: name.toLowerCase(),
-              },
-              {
-                field: 'locationdata.worldid',
-                value: `${server}`,
-              },
-            ],
-            exactMatchFirst: true,
-            sort: [{ field: 'displayname' }],
-            join: [
-              {
-                type: 'item',
-                on: 'equipmentslot_list.item.id',
-                to: 'id',
-                inject_at: 'details',
-                show: ['displayname'],
-              },
-              {
-                type: 'item',
-                on: 'equipmentslot_list.item.adornment_list.id',
-                to: 'id',
-                inject_at: 'details',
-                show: ['displayname', 'modifiers'],
-              },
-            ],
-            limit: 1,
-            show: ['equipmentslot_list', 'type'],
-          }).href
+      exhaustMap((params) =>
+        forkJoin([this.loadCharacter(params), this.loadAdorns(params)]).pipe(
+          tapResponse(([character, allAdornments]) => {
+            this.patchState({
+              searching: false,
+              character,
+              allAdornments,
+              selectedAdornments: {},
+              newAdornments: {},
+            });
+          }, console.error)
         )
-      ),
+      )
+    )
+  );
+
+  private loadCharacter(params: SearchParams): Observable<Character> {
+    const url = build({
+      serviceId: 's:vexedencetracker',
+      format: 'json',
+      verb: 'get',
+      namespace: 'eq2',
+      collection: 'character',
+      filter: [
+        {
+          field: 'name.first_lower',
+          value: params.characterName.toLowerCase(),
+        },
+        {
+          field: 'locationdata.worldid',
+          value: `${params.serverId}`,
+        },
+      ],
+      exactMatchFirst: true,
+      sort: [{ field: 'displayname' }],
+      join: [
+        {
+          type: 'item',
+          on: 'equipmentslot_list.item.id',
+          to: 'id',
+          inject_at: 'details',
+          show: ['displayname'],
+        },
+        {
+          type: 'item',
+          on: 'equipmentslot_list.item.adornment_list.id',
+          to: 'id',
+          inject_at: 'details',
+          show: ['displayname', 'modifiers'],
+        },
+      ],
+      limit: 1,
+      show: ['equipmentslot_list', 'type'],
+    }).href;
+
+    return this.http.get<CharacterSearchResults>(url).pipe(
       map((results) => results.character_list[0]),
       tap((character: Character) => {
         character.equipmentslot_list = character.equipmentslot_list.filter(
@@ -281,34 +304,20 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
             slot.displayname !== 'Mount Adornment' &&
             slot.displayname !== 'Mount Armor'
         );
-
-        this.patchState({
-          searching: false,
-          character,
-        });
       })
-    )
-  );
+    );
+  }
 
-  public loadAdorns = this.effect<string[]>(
-    pipe(
-      tap(() => this.patchState({ searching: true })),
-      exhaustMap(searchPatterns =>
-        from(searchPatterns).pipe(
-          map((searchPattern) => searchPattern.toLowerCase()),
-          mergeMap((searchPattern) => this.getAdorns(searchPattern)),
-          mergeMap((searchResult) => searchResult.item_list),
-          distinct((adorn) => adorn.displayname),
-          toArray(),
-          tapResponse(
-            (allAdornments) =>
-              this.patchState({ allAdornments, searching: false }),
-            (error) => console.error(error)
-          )
-        )
-      )
-    )
-  );
+  private loadAdorns(params: SearchParams): Observable<Item[]> {
+    const searchPatterns = expansionAdorns[params.expansion];
+    return from(searchPatterns).pipe(
+      map((searchPattern) => searchPattern.toLowerCase()),
+      mergeMap((searchPattern) => this.getAdorns(searchPattern)),
+      mergeMap((searchResult) => searchResult.item_list),
+      distinct((adorn) => adorn.displayname),
+      toArray()
+    );
+  }
 
   private getAdorns(name: string): Observable<ItemSearchResults> {
     return this.http.get<ItemSearchResults>(

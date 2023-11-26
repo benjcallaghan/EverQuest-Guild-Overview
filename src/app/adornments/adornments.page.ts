@@ -5,7 +5,7 @@ import {
   NgIf,
   TitleCasePipe,
 } from '@angular/common';
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AdornmentsStore } from './adornments.store';

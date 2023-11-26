@@ -12,18 +12,14 @@
 </ion-header>
 
 <ion-content>
-  <form
-    #form="ngForm"
-    (ngSubmit)="store.searchForCharacter([$string(searchName.value), searchServer.value])"
-  >
+  <form #form="ngForm" (ngSubmit)="store.search(form.value)">
     <ion-list>
       <ion-list-header> Add Character </ion-list-header>
       <ion-item>
         <ion-label position="fixed">Character Name</ion-label>
         <ion-input
-          #searchName
           placeholder="Benj"
-          name="searchName"
+          name="characterName"
           ngModel
           required
         ></ion-input>
@@ -31,10 +27,9 @@
       <ion-item>
         <ion-label position="fixed">Server</ion-label>
         <ion-select
-          #searchServer
           placeholder="Select server..."
           interface="alert"
-          name="searchServer"
+          name="serverId"
           ngModel
           required
         >
@@ -48,6 +43,19 @@
           <ion-select-option [value]="606">Skyfire</ion-select-option>
           <ion-select-option [value]="100">Test</ion-select-option>
           <ion-select-option [value]="701">Thurgadin</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="fixed">Expansion</ion-label>
+        <ion-select
+          placeholder="Select Expansion..."
+          interface="alert"
+          name="expansion"
+          ngModel="boz"
+          required
+        >
+          <ion-select-option value="boz">Ballads of Zimara</ion-select-option>
+          <ion-select-option value="ror">Renewal of Ro</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-list>
