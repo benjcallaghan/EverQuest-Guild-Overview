@@ -118,9 +118,10 @@ const rorLockbox = [
   'Ensorcelled Dreadfell Adornment of Raw Power',
 ];
 const rorIntoBozPanda = ['botanist'];
+const bozLockbox = ["Tishan's Zimaran", 'Zimaran Rune: Zeal'];
 
 const expansionAdorns = {
-  boz: rorIntoBozPanda,
+  boz: [...rorIntoBozPanda, ...bozLockbox],
   ror: [
     ...vovCrafted,
     ...rorCrafted,
