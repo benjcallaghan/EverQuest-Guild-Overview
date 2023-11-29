@@ -121,12 +121,12 @@ const rorIntoBozPanda = ['botanist'];
 const bozLockbox = ["Tishan's Zimaran", 'Zimaran Rune: Zeal'];
 
 const expansionAdorns = {
-  boz: [...rorIntoBozPanda, ...bozLockbox],
+  boz: [...rorCrafted, ...rorIntoBozPanda, ...bozLockbox],
   ror: [
     ...vovCrafted,
-    ...rorCrafted,
     ...vovIntoRorPanda,
     ...rorLockbox,
+    ...rorCrafted,
     ...rorIntoBozPanda,
   ],
 };
