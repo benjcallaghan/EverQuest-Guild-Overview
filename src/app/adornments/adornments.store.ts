@@ -54,6 +54,7 @@ interface ItemSearchResults {
 }
 
 interface Item {
+  id: number;
   typeinfo: {
     name: string;
     color: string;
@@ -315,7 +316,7 @@ export class AdornmentsStore extends ImmerComponentStore<AdornmentsState> {
       map((searchPattern) => searchPattern.toLowerCase()),
       mergeMap((searchPattern) => this.getAdorns(searchPattern)),
       mergeMap((searchResult) => searchResult.item_list),
-      distinct((adorn) => adorn.displayname),
+      distinct((adorn) => `${adorn.displayname} ${adorn.typeinfo.color}`),
       toArray()
     );
   }
