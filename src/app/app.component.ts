@@ -29,6 +29,78 @@ export const ROUTES: Routes = [
     } satisfies QuestStatusRouteData,
   },
   {
+    path: 'boz-flawless',
+    loadComponent: () => import('./quest-status-page/quest-status.page'),
+    data: {
+      title: 'Ballads of Zimara Flawless',
+      query: {
+        'Vaashkaani, Alcazar of Zimara: Chromatic Chamber': {
+          'Chromon, Titan of Colors (T1)': {
+            type: 'achievement',
+            id: 3147450800,
+          },
+          'Krayte, Titan of Colors (T1)': {
+            type: 'achievement',
+            id: 2329210861,
+          },
+          'Aurous the Judged (T1)': { type: 'achievement', id: 333811466 },
+        },
+        'Zimara Breadth: Crested Expanse': {
+          'Chohnki (T2)': { type: 'achievement', id: 3885879144 },
+          'Chohnkasaurus (T2)': { type: 'achievement', id: 1033257332 },
+          'Chohnkanon (T3)': { type: 'achievement', id: 951427459 },
+        },
+        'Aether Wroughtlands: The Delves': {
+          'Mezkhuur (T2)': { type: 'achievement', id: 2593562561 },
+          "Tuer'el of the Delves (T2)": { type: 'achievement', id: 3663359251 },
+          'Rouk the Lustrous (T3)': { type: 'achievement', id: 668371720 },
+          'Rouk the Ironclad (T3)': { type: 'achievement', id: 329352271 },
+          "Feri'tal the Immesurableb (T4)": {
+            type: 'achievement',
+            id: 297406013,
+          },
+        },
+        'Vaashkaani, Alcazar of Zimara: Sovereign Summons': {
+          'Galeistria the Polished (T2)': {
+            type: 'achievement',
+            id: 2966400657,
+          },
+          'Chaltieu, Mirrored Sentry (T3)': {
+            type: 'achievement',
+            id: 3207553441,
+          },
+          'Ikal-tam the Pensive (T3)': {
+            type: 'achievement',
+            id: 1029353763,
+          },
+          "Sti'Vyrn the Persecutor (T4)": {
+            type: 'achievement',
+            id: 503863540,
+          },
+          'Zakir-Sar-Ussur (T5)': { type: 'achievement', id: 2976812362 },
+          'Monstrous Azure-Leafed Maneater (T3)': {
+            type: 'achievement',
+            id: 425573603,
+          },
+          'Monstrous Crimson-Leafed Maneater (T3)': {
+            type: 'achievement',
+            id: 497577182,
+          },
+          'Monstrous Emerald-Leafed Maneater (T3)': {
+            type: 'achievement',
+            id: 4067035104,
+          },
+          'Monstrous Indigo-Leafed Maneater (T3)': {
+            type: 'achievement',
+            id: 4285822887,
+          },
+          'Smee the Iron Sprite (T3)': { type: 'achievement', id: 3781809254 },
+          'Smol the Golden Sprite (T3)': { type: 'achievement', id: 377858165 },
+        },
+      },
+    } satisfies QuestStatusRouteData,
+  },
+  {
     path: 'planes-of-prophecy',
     loadComponent: () => import('./quest-status-page/quest-status.page'),
     data: {
