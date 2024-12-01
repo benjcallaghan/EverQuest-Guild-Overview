@@ -122,8 +122,11 @@ const rorIntoBozPanda = ['botanist'];
 const bozLockbox = ["Tishan's Zimaran", 'Zimaran Rune: Zeal'];
 const bozCrafted = ['Hooluk', 'Felfeather'];
 const bozIntoSodPanda = ['Felfeather', '[Tier 1]', 'Metis'];
+const sodLockbox = ["Tishan's Coldforged"];
+const sodCrafted = ['Wasteland', 'Blackhook'];
 
 const expansionAdorns = {
+  sod: [...bozCrafted, ...bozIntoSodPanda, ...sodLockbox, ...sodCrafted],
   boz: [
     ...rorCrafted,
     ...rorIntoBozPanda,
