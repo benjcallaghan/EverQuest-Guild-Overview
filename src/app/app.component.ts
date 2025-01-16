@@ -575,6 +575,176 @@ export const ROUTES: Routes = [
             id: 2127372106,
           },
         },
+        'Sodden Archipelago: Thawed Marshes - Thawing Rivalry': {
+          'Barlsbit the Scavenger (T1)': {
+            type: 'achievement',
+            id: 2001196261,
+          },
+          'Viterol the Voracious (T1)': {
+            type: 'achievement',
+            id: 3426706654,
+          },
+          'Monuseru, Titan of the Depths (T1)': {
+            type: 'achievement',
+            id: 336857222,
+          },
+          'Grand Shaman Grungizt (T1)': {
+            type: 'achievement',
+            id: 3843302325,
+          },
+        },
+        'Sodden Archipelago: Thawed Marshes - Bonds of Mischief': {
+          'Joggu the Steadfast (T1)': {
+            type: 'achievement',
+            id: 3379487457,
+          },
+          'Sommumun the Frenzied (T1)': {
+            type: 'achievement',
+            id: 2520803634,
+          },
+          'Bucko, Loyal Pet to Maferi (T1)': {
+            type: 'achievement',
+            id: 783938874,
+          },
+          'Chieftain Maferi (T1)': {
+            type: 'achievement',
+            id: 1751921913,
+          },
+        },
+        'Sodden Archipelago: Thawed Marshes - Aftermath': {
+          'Vitoth of the Gnarled Roots (T1)': {
+            type: 'achievement',
+            id: 588518548,
+          },
+        },
+        'Blackhook Spiral: Frenzied Breach': {
+          'Orgain the Frenzied (T2)': {
+            type: 'achievement',
+            id: 905898420,
+          },
+          'Taskmaster Peggs (T2)': {
+            type: 'achievement',
+            id: 1448628782,
+          },
+          'Overseer Decarun (T2)': {
+            type: 'achievement',
+            id: 2604166031,
+          },
+          'Foulgore the Rotten (T2)': {
+            type: 'achievement',
+            id: 2923964183,
+          },
+        },
+        'Blackhook Spiral: Spiritual Terror': {
+          'The Stalking Doombringer (T2)': {
+            type: 'achievement',
+            id: 227169415,
+          },
+          'Hexxin the Nethertitan (T2)': {
+            type: 'achievement',
+            id: 1782548135,
+          },
+          'Xychintus the Voidcaller (T2)': {
+            type: 'achievement',
+            id: 464037423,
+          },
+          'Soulless Husk (T2)': {
+            type: 'achievement',
+            id: 2776791640,
+          },
+        },
+        'Blackhook Spiral: Aftermath': {
+          'Jagah the Ferocious (T2)': {
+            type: 'achievement',
+            id: 2247310288,
+          },
+        },
+        'Western Wastes: Exploration Determination': {
+          'Guard Imobium (T3)': {
+            type: 'achievement',
+            id: 2728623115,
+          },
+          'Court Sorceror Viranor (T3)': {
+            type: 'achievement',
+            id: 490714375,
+          },
+          'Enforcer Rimefield (T3)': {
+            type: 'achievement',
+            id: 716504278,
+          },
+          "Frostking Jund'Erin (T3)": {
+            type: 'achievement',
+            id: 3446687582,
+          },
+        },
+        'Western Wastes: Temple Crater': {
+          'Digger Grendok (T3)': {
+            type: 'achievement',
+            id: 2809202772,
+          },
+          'Marrowseeker Hazzir (T3)': {
+            type: 'achievement',
+            id: 1914340433,
+          },
+          'Lacetor the Fiendish (T3)': {
+            type: 'achievement',
+            id: 219308926,
+          },
+          'Grand Shaman Shaekk (T3)': {
+            type: 'achievement',
+            id: 4280931211,
+          },
+        },
+        'Kael Drakkel: Abdicated Throne': {
+          'The Enraged Frostking (T4)': {
+            type: 'achievement',
+            id: 1221394744,
+          },
+        },
+        'Temple of Veeshan: Echoing Silence': {
+          'Revenant of Shaekk (T4)': {
+            type: 'achievement',
+            id: 3620122022,
+          },
+        },
+        'Sodden Archipelago: Operation Cooperation': {
+          'Biethimut, Deepwater Titan (T4)': {
+            type: 'achievement',
+            id: 2316169558,
+          },
+        },
+        'Dragon Necropolis: Ancient Tombs': {
+          'Churaggus (T4)': {
+            type: 'achievement',
+            id: 3823966639,
+          },
+          'Rexxil the Gilded Spirit (T4)': {
+            type: 'achievement',
+            id: 399189493,
+          },
+          'Sabelraze the Rotting (T4)': {
+            type: 'achievement',
+            id: 1856879903,
+          },
+          'Nerafiun of the Burning Bones (T4)': {
+            type: 'achievement',
+            id: 494054036,
+          },
+          'Amalgus the Many (T5)': {
+            type: 'achievement',
+            id: 4224231756,
+          },
+        },
+        'Dragon Necropolis: Disturbed Valuts': {
+          'Lady Karkona (T5)': {
+            type: 'achievement',
+            id: 2778216528,
+          },
+          'Ulvaxazoviak (T5)': {
+            type: 'achievement',
+            id: 78580384,
+          },
+        },
       },
     } satisfies QuestStatusRouteData,
   },
