@@ -574,6 +574,10 @@ export const ROUTES: Routes = [
             type: 'achievement',
             id: 2127372106,
           },
+          // 'Soils and Silts of Exploration (Hot Zones)': {
+          //   type: 'collection',
+          //   id: 3898663856,
+          // }, // This collection is not in Census yet.
         },
         'Sodden Archipelago: Thawed Marshes - Thawing Rivalry': {
           'Barlsbit the Scavenger (T1)': {
