@@ -32,7 +32,7 @@ export const ROUTES: Routes = [
     path: 'boz-flawless',
     loadComponent: () => import('./quest-status-page/quest-status.page'),
     data: {
-      title: 'Ballads of Zimara Flawless',
+      title: 'Ballads of Zimara: Supremacy',
       query: {
         'Vaashkaani, Alcazar of Zimara: Chromatic Chamber': {
           'Chromon, Titan of Colors (T1)': {
@@ -497,6 +497,83 @@ export const ROUTES: Routes = [
           'Akhessa Va Liako Vess': { type: 'achievement', id: 1732565854 },
           'High Priest Verrkara': { type: 'achievement', id: 2042129110 },
           'Emperor Ssraeshza': { type: 'achievement', id: 2098276653 },
+        },
+      },
+    } satisfies QuestStatusRouteData,
+  },
+  {
+    path: 'scars-of-destruction',
+    loadComponent: () => import('./quest-status-page/quest-status.page'),
+    data: {
+      title: 'Scars of Destruction: Supremacy',
+      query: {
+        Tradeskills: {
+          'Stealthy Supplies': {
+            type: 'achievement',
+            id: 683588074,
+          },
+        },
+        Questing: {
+          'Scars of Destruction (Signature)': {
+            type: 'achievement',
+            id: 859910229,
+          },
+          'Aim For the Scars (Overland)': {
+            type: 'achievement',
+            id: 3692539847,
+          },
+          'Scar Tactics (Dungeons)': {
+            type: 'achievement',
+            id: 1962146284,
+          },
+        },
+        Dungeons: {
+          'Salt in the Wounds (Solo)': {
+            type: 'achievement',
+            id: 944597666,
+          },
+          'Scab Rat (Heroic I)': {
+            type: 'achievement',
+            id: 3565571988,
+          },
+          'Tilt the Scales (Heroic II)': {
+            type: 'achievement',
+            id: 1301225006,
+          },
+          'Blow This Hot Gob Stand (Hot Zones)': {
+            type: 'achievement',
+            id: 167235098,
+          },
+          'Yet Another Scar (Challenge)': {
+            type: 'achievement',
+            id: 3813566837,
+          },
+        },
+        Collections: {
+          'Tales of the Scars (Overland)': {
+            type: 'achievement',
+            id: 2321624060,
+          },
+          'Adventure and Anguish (Solo)': {
+            type: 'achievement',
+            id: 2207682096,
+          },
+          'Blood and Abandonment (Heroic I)': {
+            type: 'achievement',
+            id: 2906560804,
+          },
+          'Hope and Hopelessness (Heroic II)': {
+            type: 'achievement',
+            id: 388067725,
+          },
+          'Curse Them! (Drop Quests)': {
+            type: 'achievement',
+            id: 1430993555,
+          },
+          'Humanizing the Inhuman (PoI Quests)': {
+            type: 'achievement',
+            id: 2127372106,
+          },
         },
       },
     } satisfies QuestStatusRouteData,
