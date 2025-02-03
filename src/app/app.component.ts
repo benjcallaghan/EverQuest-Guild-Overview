@@ -566,14 +566,14 @@ export const ROUTES: Routes = [
             type: 'achievement',
             id: 388067725,
           },
-          'Curse Them! (Drop Quests)': {
-            type: 'achievement',
-            id: 1430993555,
-          },
-          'Humanizing the Inhuman (PoI Quests)': {
-            type: 'achievement',
-            id: 2127372106,
-          },
+          // 'Curse Them! (Drop Quests)': {
+          //   type: 'achievement',
+          //   id: 1430993555,
+          // },
+          // 'Humanizing the Inhuman (PoI Quests)': {
+          //   type: 'achievement',
+          //   id: 2127372106,
+          // },
           // 'Soils and Silts of Exploration (Hot Zones)': {
           //   type: 'collection',
           //   id: 3898663856,
