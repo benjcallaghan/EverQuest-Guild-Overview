@@ -10,8 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng deploy",
-    "postinstall": "ngcc"
+    "deploy": "ng deploy"
   },
   "private": true,
   "dependencies": {
@@ -24,7 +23,7 @@
     "@ionic/angular": "^6.5.1",
     "@ionic/storage": "^3.0.6",
     "@ionic/storage-angular": "^3.0.6",
-    "@ngrx/component-store": "^15.3.0",
+    "@ngrx/component-store": "^20.0.1",
     "core-js": "^3.6.5",
     "firebase": "^7.22.1",
     "ngrx-immer": "^2.0.1",
