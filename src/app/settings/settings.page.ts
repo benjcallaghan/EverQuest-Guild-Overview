@@ -8,11 +8,10 @@ import { CensusCharacter, CensusService } from '../census.service';
 import { CharacterService } from '../character.service';
 
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  imports: [IonicModule, FormsModule, NgIf, NgFor, AsyncPipe],
-  templateUrl: './settings.page.html',
-  styleUrls: ['./settings.page.scss'],
+    selector: 'app-settings',
+    imports: [IonicModule, FormsModule, NgIf, NgFor, AsyncPipe],
+    templateUrl: './settings.page.html',
+    styleUrls: ['./settings.page.scss']
 })
 export default class SettingsPage implements OnInit {
   searching = false;

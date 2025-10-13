@@ -16,11 +16,10 @@ export type QuestStatusRouteData = {
 };
 
 @Component({
-  selector: 'app-quest-status',
-  standalone: true,
-  imports: [IonicModule, AsyncPipe, NgFor, QuestIconComponent],
-  templateUrl: './quest-status.page.html',
-  styleUrls: ['./quest-status.page.scss'],
+    selector: 'app-quest-status',
+    imports: [IonicModule, AsyncPipe, NgFor, QuestIconComponent],
+    templateUrl: './quest-status.page.html',
+    styleUrls: ['./quest-status.page.scss']
 })
 export default class QuestStatusPage {
   private readonly census = inject(CensusService);

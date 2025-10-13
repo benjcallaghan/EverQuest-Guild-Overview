@@ -11,20 +11,19 @@ import { IonicModule } from '@ionic/angular';
 import { AdornmentsStore } from './adornments.store';
 
 @Component({
-  selector: 'app-adornments',
-  standalone: true,
-  imports: [
-    IonicModule,
-    FormsModule,
-    NgIf,
-    AsyncPipe,
-    NgFor,
-    TitleCasePipe,
-    KeyValuePipe,
-  ],
-  templateUrl: './adornments.page.html',
-  styleUrls: ['./adornments.page.scss'],
-  providers: [AdornmentsStore],
+    selector: 'app-adornments',
+    imports: [
+        IonicModule,
+        FormsModule,
+        NgIf,
+        AsyncPipe,
+        NgFor,
+        TitleCasePipe,
+        KeyValuePipe,
+    ],
+    templateUrl: './adornments.page.html',
+    styleUrls: ['./adornments.page.scss'],
+    providers: [AdornmentsStore]
 })
 export default class AdornmentsComponent {
   constructor(protected store: AdornmentsStore) {}

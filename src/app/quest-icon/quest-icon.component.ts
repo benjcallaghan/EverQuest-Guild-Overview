@@ -9,11 +9,10 @@ import { IonicModule, IonIcon } from '@ionic/angular';
 import { QuestStatus } from '../census.service';
 
 @Component({
-  selector: 'app-quest-icon',
-  standalone: true,
-  imports: [IonicModule],
-  templateUrl: './quest-icon.component.html',
-  styleUrls: ['./quest-icon.component.scss'],
+    selector: 'app-quest-icon',
+    imports: [IonicModule],
+    templateUrl: './quest-icon.component.html',
+    styleUrls: ['./quest-icon.component.scss']
 })
 export class QuestIconComponent implements AfterViewChecked {
   @Input() quest?: QuestStatus;
