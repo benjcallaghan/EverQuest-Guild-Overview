@@ -1,110 +1,136 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-toggle>
-        <ion-button>
-          <ion-icon slot="icon-only" name="menu"></ion-icon>
-        </ion-button>
-      </ion-menu-toggle>
-    </ion-buttons>
-    <ion-title>Settings</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-toggle>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                </ion-button>
+            </ion-menu-toggle>
+        </ion-buttons>
+        <ion-title>Settings</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="searchForCharacter()" #form="ngForm">
-    <ion-list>
-      <ion-list-header> Add Character </ion-list-header>
-      <ion-item>
-        <ion-label position="fixed">Character Name</ion-label>
-        <ion-input
-          placeholder="Benj"
-          [(ngModel)]="searchName"
-          name="searchName"
-          required
-        ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="fixed">Server</ion-label>
-        <ion-select
-          placeholder="Select server..."
-          interface="alert"
-          [(ngModel)]="searchServer"
-          name="searchServer"
-          required
-        >
-          <ion-select-option [value]="104">Antonia Bayle</ion-select-option>
-          <!-- <ion-select-option [value]="">Beta</ion-select-option> -->
-          <ion-select-option [value]="605">Halls of Fate</ion-select-option>
-          <ion-select-option [value]="601">Isle of Refuge</ion-select-option>
-          <ion-select-option [value]="610">Kaladim</ion-select-option>
-          <ion-select-option [value]="604">Maj'Dul</ion-select-option>
-          <ion-select-option [value]="611">Rivervale</ion-select-option>
-          <ion-select-option [value]="606">Skyfire</ion-select-option>
-          <ion-select-option [value]="100">Test</ion-select-option>
-          <ion-select-option [value]="701">Thurgadin</ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
+    <form (ngSubmit)="searchForCharacter()" #form="ngForm">
+        <ion-list>
+            <ion-list-header> Add Character </ion-list-header>
+            <ion-item>
+                <ion-label position="fixed">Character Name</ion-label>
+                <ion-input
+                    placeholder="Benj"
+                    [(ngModel)]="searchName"
+                    name="searchName"
+                    required
+                ></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="fixed">Server</ion-label>
+                <ion-select
+                    placeholder="Select server..."
+                    interface="alert"
+                    [(ngModel)]="searchServer"
+                    name="searchServer"
+                    required
+                >
+                    <ion-select-option [value]="104"
+                        >Antonia Bayle</ion-select-option
+                    >
+                    <!-- <ion-select-option [value]="">Beta</ion-select-option> -->
+                    <ion-select-option [value]="605"
+                        >Halls of Fate</ion-select-option
+                    >
+                    <ion-select-option [value]="601"
+                        >Isle of Refuge</ion-select-option
+                    >
+                    <ion-select-option [value]="610">Kaladim</ion-select-option>
+                    <ion-select-option [value]="604">Maj'Dul</ion-select-option>
+                    <ion-select-option [value]="611"
+                        >Rivervale</ion-select-option
+                    >
+                    <ion-select-option [value]="606">Skyfire</ion-select-option>
+                    <ion-select-option [value]="100">Test</ion-select-option>
+                    <ion-select-option [value]="701"
+                        >Thurgadin</ion-select-option
+                    >
+                </ion-select>
+            </ion-item>
+        </ion-list>
 
-    <div>
-      <ion-button type="submit" *ngIf="!searching" [disabled]="form.invalid"
-        >Search</ion-button
-      >
-      <ion-spinner *ngIf="searching"></ion-spinner>
-    </div>
-  </form>
-
-  <ion-grid>
-    <ion-row>
-      <ion-col
-        *ngFor="let character of searchResults$ | async"
-        size="12"
-        size-md="4"
-      >
-        <ion-card>
-          <ion-card-header class="ion-float-left">
-            <ion-card-subtitle>{{ character.guild?.name }}</ion-card-subtitle>
-            <ion-card-title>{{ character.displayname }}</ion-card-title>
-          </ion-card-header>
-          <ion-button
-            class="ion-float-right"
-            fill="clear"
-            (click)="add(character)"
-          >
-            <ion-icon name="add" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-list>
-    <ion-list-header>Selected Characters</ion-list-header>
-    <ion-grid>
-      <ion-row>
-        @for (character of selected | async; track character.id) {
-        <ion-col size="12" size-md="4">
-          <ion-card>
-            <ion-card-header class="ion-float-left">
-              <ion-card-subtitle>{{ character.guild?.name }}</ion-card-subtitle>
-              <ion-card-title>{{ character.displayname }}</ion-card-title>
-            </ion-card-header>
+        <div>
             <ion-button
-              class="ion-float-right"
-              fill="clear"
-              (click)="remove(character)"
+                type="submit"
+                *ngIf="!searching"
+                [disabled]="form.invalid"
+                >Search</ion-button
             >
-              <ion-icon
-                name="remove"
-                color="danger"
-                slot="icon-only"
-              ></ion-icon>
-            </ion-button>
-          </ion-card>
-        </ion-col>
-        }
-      </ion-row>
+            <ion-spinner *ngIf="searching"></ion-spinner>
+        </div>
+    </form>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col
+                *ngFor="let character of searchResults$ | async"
+                size="12"
+                size-md="4"
+            >
+                <ion-card>
+                    <ion-card-header class="ion-float-left">
+                        <ion-card-subtitle
+                            >{{ character.guild?.name }}</ion-card-subtitle
+                        >
+                        <ion-card-title
+                            >{{ character.displayname }}</ion-card-title
+                        >
+                    </ion-card-header>
+                    <ion-button
+                        class="ion-float-right"
+                        fill="clear"
+                        (click)="add(character)"
+                    >
+                        <ion-icon name="add" slot="icon-only"></ion-icon>
+                    </ion-button>
+                </ion-card>
+            </ion-col>
+        </ion-row>
     </ion-grid>
-  </ion-list>
+
+    <ion-list>
+        <ion-list-header>
+            Selected Characters
+            <ion-button (click)="refreshOnline()"
+                >Refresh from Census</ion-button
+            >
+        </ion-list-header>
+        <ion-grid>
+            <ion-row>
+                @for (character of selected | async; track character.id) {
+                <ion-col size="12" size-md="4">
+                    <ion-card>
+                        <ion-card-header class="ion-float-left">
+                            <ion-card-subtitle
+                                >{{ character.guild?.name }}</ion-card-subtitle
+                            >
+                            <ion-card-title
+                                >{{ character.displayname }}</ion-card-title
+                            >
+                        </ion-card-header>
+                        <ion-button
+                            class="ion-float-right"
+                            fill="clear"
+                            (click)="remove(character)"
+                        >
+                            <ion-icon
+                                name="remove"
+                                color="danger"
+                                slot="icon-only"
+                            ></ion-icon>
+                        </ion-button>
+                    </ion-card>
+                </ion-col>
+                }
+            </ion-row>
+        </ion-grid>
+    </ion-list>
 </ion-content>

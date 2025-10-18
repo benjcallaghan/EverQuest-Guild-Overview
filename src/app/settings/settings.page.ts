@@ -49,4 +49,8 @@ export default class SettingsPage {
     async remove(character: CensusCharacter): Promise<void> {
         await this.characterService.remove(character);
     }
+
+    refreshOnline(): void {
+        this.characterService.refreshOnline();
+    }
 }
