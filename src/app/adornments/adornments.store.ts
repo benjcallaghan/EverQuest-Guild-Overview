@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tapResponse } from '@ngrx/component-store';
+import { tapResponse } from '@ngrx/operators';
 import { ImmerComponentStore } from 'ngrx-immer/component-store';
 import { forkJoin, from, Observable, pipe } from 'rxjs';
 import {
