@@ -26,18 +26,37 @@
                         <ion-list>
                             <ion-item>
                                 <ion-label>Thawed Rivalry</ion-label>
-                                <ion-note slot="end">{{ thawedRivalry(character) }}</ion-note>
+                                @let trProgress = thawedRivalry(character);
+                                <ion-note slot="end">{{ trProgress }}</ion-note>
                             </ion-item>
                             <ion-item>
                                 <ion-label>Bonds of Mischief</ion-label>
-                                <ion-note slot="end">{{ bondsOfMischief(character) }}</ion-note>
+                                @let bomProgress = bondsOfMischief(character);
+                                <ion-note slot="end"
+                                    >{{ bomProgress }}</ion-note
+                                >
                             </ion-item>
                             <ion-item>
                                 <ion-label>Depths of Destruction</ion-label>
-                                <ion-note slot="end">{{ depthsOfDestruction(character) }}</ion-note>
+                                @let dodProgress =
+                                depthsOfDestruction(character);
+                                <ion-note slot="end"
+                                    >{{ dodProgress }}</ion-note
+                                >
                             </ion-item>
                             <ion-item>
                                 <ion-label>Weapon for the Ages</ion-label>
+                                @let wftaProgress = weaponForTheAges(character);
+                                <ion-note slot="end">
+                                    @if (typeof wftaProgress === 'string') { {{
+                                    wftaProgress }} } @else {
+                                    <ul>
+                                        @for(step of wftaProgress; track step) {
+                                        <li>{{ step }}</li>
+                                        }
+                                    </ul>
+                                    }
+                                </ion-note>
                             </ion-item>
                         </ion-list>
                     </ion-card-content>
