@@ -95,6 +95,30 @@ export default class ScarsOfDestructionPage {
         return 'Not Started';
     }
 
+    depthsOfDestruction(character: CensusCharacter): string {
+        const part2 = '926301496';
+        const part1 = '2923392130';
+
+        if (character.misc === undefined) {
+            return 'Refresh';
+        }
+
+        if (part2 in character.misc.completed_quest_list) {
+            return 'Start Part 3';
+        }
+        if (part2 in character.misc.quest_list) {
+            return this.getProgressText(character, part2);
+        }
+        if (part1 in character.misc.completed_quest_list) {
+            return 'Start Part 2';
+        }
+        if (part1 in character.misc.quest_list) {
+            return this.getProgressText(character, part1);
+        }
+
+        return 'Not Started';
+    }
+
     private getProgressText(character: CensusCharacter, quest: string): string {
         console.assert(character.misc !== undefined);
         return character.misc!.quest_list[quest].requiredItem_list[0]
