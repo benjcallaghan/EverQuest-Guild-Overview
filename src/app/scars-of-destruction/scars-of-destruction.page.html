@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-toggle>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                </ion-button>
+            </ion-menu-toggle>
+        </ion-buttons>
+        <ion-title>Scars of Destruction</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            @for (character of characters | async; track character.id) {
+            <ion-col size="12" size-md="4">
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-title
+                            >{{ character.name.first }}</ion-card-title
+                        >
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-list>
+                            <ion-item>
+                                <ion-label>Thawed Rivalry</ion-label>
+                                <ion-note slot="end">{{ thawedRivalry(character) }}</ion-note>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label>Bonds of Mischief</ion-label>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label>Depths of Destruction</ion-label>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label>Weapon for the Ages</ion-label>
+                            </ion-item>
+                        </ion-list>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            }
+        </ion-row>
+    </ion-grid>
+</ion-content>
