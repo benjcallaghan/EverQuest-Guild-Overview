@@ -19,6 +19,10 @@ export default class ScarsOfDestructionPage {
 
     characters = this.characterService.characters$;
 
+    refreshOnline() {
+        this.characterService.refreshOnline();
+    }
+
     thawedRivalry(character: CensusCharacter): string | string[] {
         const part4 = '1346401727';
         const part3 = '3458523164';
