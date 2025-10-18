@@ -57,6 +57,44 @@ export default class ScarsOfDestructionPage {
         return 'Not Started';
     }
 
+    bondsOfMischief(character: CensusCharacter): string {
+        const part4 = '224232166';
+        const part3 = '2469992261';
+        const part2 = '3829278675';
+        const part1 = '2100786793';
+
+        if (character.misc === undefined) {
+            return 'Refresh';
+        }
+
+        if (part4 in character.misc.completed_quest_list) {
+            return 'Complete';
+        }
+        if (part4 in character.misc.quest_list) {
+            return this.getProgressText(character, part4);
+        }
+        if (part3 in character.misc.completed_quest_list) {
+            return 'Start Part 4';
+        }
+        if (part3 in character.misc.quest_list) {
+            return this.getProgressText(character, part3);
+        }
+        if (part2 in character.misc.completed_quest_list) {
+            return 'Start Part 3';
+        }
+        if (part2 in character.misc.quest_list) {
+            return this.getProgressText(character, part2);
+        }
+        if (part1 in character.misc.completed_quest_list) {
+            return 'Start Part 2';
+        }
+        if (part1 in character.misc.quest_list) {
+            return this.getProgressText(character, part1);
+        }
+
+        return 'Not Started';
+    }
+
     private getProgressText(character: CensusCharacter, quest: string): string {
         console.assert(character.misc !== undefined);
         return character.misc!.quest_list[quest].requiredItem_list[0]
