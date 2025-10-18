@@ -169,8 +169,10 @@ export default class ScarsOfDestructionPage {
         quest: string
     ): string[] {
         console.assert(character.misc !== undefined);
-        return character.misc!.quest_list[quest].requiredItem_list.map(
-            (i) => i.progress_text
+        return character.misc!.quest_list[quest].requiredItem_list.map((i) =>
+            i.quota > 1
+                ? `${i.progress_text} (${i.progress}/${i.quota})`
+                : i.progress_text
         );
     }
 }
