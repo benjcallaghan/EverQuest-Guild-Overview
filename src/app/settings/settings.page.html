@@ -83,11 +83,8 @@
     <ion-list-header>Selected Characters</ion-list-header>
     <ion-grid>
       <ion-row>
-        <ion-col
-          *ngFor="let character of selected; index as index"
-          size="12"
-          size-md="4"
-        >
+        @for (character of selected | async; track character.id) {
+        <ion-col size="12" size-md="4">
           <ion-card>
             <ion-card-header class="ion-float-left">
               <ion-card-subtitle>{{ character.guild?.name }}</ion-card-subtitle>
@@ -96,7 +93,7 @@
             <ion-button
               class="ion-float-right"
               fill="clear"
-              (click)="remove(index)"
+              (click)="remove($index)"
             >
               <ion-icon
                 name="remove"
@@ -106,6 +103,7 @@
             </ion-button>
           </ion-card>
         </ion-col>
+        }
       </ion-row>
     </ion-grid>
   </ion-list>

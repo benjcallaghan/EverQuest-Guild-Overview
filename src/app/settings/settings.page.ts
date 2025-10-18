@@ -13,21 +13,17 @@ import { CharacterService } from '../character.service';
     templateUrl: './settings.page.html',
     styleUrls: ['./settings.page.scss']
 })
-export default class SettingsPage implements OnInit {
+export default class SettingsPage {
   searching = false;
   searchName: string;
   searchServer: number;
   searchResults$: Observable<CensusCharacter[]>;
-  selected: CensusCharacter[];
+  selected: Observable<CensusCharacter[]> = this.characterService.characters$;
 
   constructor(
     private readonly census: CensusService,
     private readonly characterService: CharacterService
   ) {}
-
-  async ngOnInit(): Promise<void> {
-    this.selected = await this.characterService.getAllCharacters();
-  }
 
   async searchForCharacter(): Promise<void> {
     this.searchResults$ = defer(() => {
@@ -47,18 +43,18 @@ export default class SettingsPage implements OnInit {
   }
 
   async add(character: CensusCharacter): Promise<void> {
-    if (this.selected.every((c) => c.id !== character.id)) {
-      this.selected.push(character);
-      this.selected.sort((a, b) => a.displayname.localeCompare(b.displayname));
-    }
+    // if (this.selected.every((c) => c.id !== character.id)) {
+    //   this.selected.push(character);
+    //   this.selected.sort((a, b) => a.displayname.localeCompare(b.displayname));
+    // }
 
-    await this.characterService.saveCharacters(this.selected);
+    // await this.characterService.saveCharacters(this.selected);
   }
 
   async remove(index: number): Promise<void> {
-    this.selected.splice(index, 1);
-    this.selected.sort((a, b) => a.displayname.localeCompare(b.displayname));
+    // this.selected.splice(index, 1);
+    // this.selected.sort((a, b) => a.displayname.localeCompare(b.displayname));
 
-    await this.characterService.saveCharacters(this.selected);
+    // await this.characterService.saveCharacters(this.selected);
   }
 }
