@@ -30,4 +30,14 @@ export class CharacterService {
         this.#characters.next(characters);
         await this.saveCharacters(characters);
     }
+
+    public async remove(character: CensusCharacter): Promise<void> {
+        const characters = [...this.#characters.value];
+        const index = characters.findIndex(c => c.id === character.id);
+        if (index > -1) {
+            characters.splice(index, 1);
+            this.#characters.next(characters);
+            await this.saveCharacters(characters);
+        }
+    }
 }

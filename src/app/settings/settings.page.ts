@@ -46,9 +46,7 @@ export default class SettingsPage {
         await this.characterService.add(character);
     }
 
-    async remove(index: number): Promise<void> {
-        // this.selected.splice(index, 1);
-        // this.selected.sort((a, b) => a.displayname.localeCompare(b.displayname));
-        // await this.characterService.saveCharacters(this.selected);
+    async remove(character: CensusCharacter): Promise<void> {
+        await this.characterService.remove(character);
     }
 }
