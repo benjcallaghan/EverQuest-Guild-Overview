@@ -9,6 +9,9 @@
         </ion-buttons>
         <ion-title>Scars of Destruction</ion-title>
         <ion-buttons slot="end">
+            @if (refreshing | async) {
+            <ion-spinner></ion-spinner>
+            }
             <ion-button (click)="refreshOnline()"
                 >Refresh from Census</ion-button
             >

@@ -18,6 +18,7 @@ export default class ScarsOfDestructionPage {
     ) {}
 
     characters = this.characterService.characters$;
+    refreshing = this.characterService.refreshing$;
 
     refreshOnline() {
         this.characterService.refreshOnline();

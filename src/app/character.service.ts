@@ -1,7 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { BehaviorSubject } from 'rxjs';
+import {
+    BehaviorSubject,
+    exhaustMap,
+    map,
+    Observable,
+    Subject,
+    Subscription,
+    tap,
+} from 'rxjs';
 import { CensusCharacter } from './census.service';
 import { build } from './daybreak-census-options';
 
@@ -12,7 +20,12 @@ interface CharacterSearchResults {
 @Injectable({
     providedIn: 'root',
 })
-export class CharacterService {
+export class CharacterService implements OnDestroy {
+    #refresh = new Subject<void>();
+    #refreshSubscription: Subscription;
+    #refreshing = new BehaviorSubject<boolean>(false);
+    refreshing$ = this.#refreshing.asObservable();
+
     #characters = new BehaviorSubject<CensusCharacter[]>([]);
     characters$ = this.#characters.asObservable();
 
@@ -23,6 +36,20 @@ export class CharacterService {
         this.getAllCharacters().then((characters) =>
             this.#characters.next(characters)
         );
+        this.#refreshSubscription = this.#refresh
+            .pipe(
+                tap(() => this.#refreshing.next(true)),
+                exhaustMap(() => this.getCharactersOnline()),
+                tap(() => this.#refreshing.next(false))
+            )
+            .subscribe(async (refreshed) => {
+                this.#characters.next(refreshed);
+                await this.saveCharacters(refreshed);
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.#refreshSubscription.unsubscribe();
     }
 
     public async getAllCharacters(): Promise<CensusCharacter[]> {
@@ -51,6 +78,10 @@ export class CharacterService {
     }
 
     public refreshOnline(): void {
+        this.#refresh.next();
+    }
+
+    private getCharactersOnline(): Observable<CensusCharacter[]> {
         const characters = this.#characters.value;
         const url = build({
             serviceId: 's:vexedencetracker',
@@ -88,15 +119,14 @@ export class CharacterService {
                 'achievements.achievement_list',
             ],
         });
-        this.http
-            .get<CharacterSearchResults>(url.href)
-            .subscribe(async (data) => {
+        return this.http.get<CharacterSearchResults>(url.href).pipe(
+            map((data) => {
                 const refreshed = data.character_list;
                 refreshed.sort((a, b) =>
                     a.displayname.localeCompare(b.displayname)
                 );
-                this.#characters.next(refreshed);
-                await this.saveCharacters(refreshed);
-            });
+                return refreshed;
+            })
+        );
     }
 }
