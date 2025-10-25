@@ -75,6 +75,7 @@ export class CharacterService {
 
     #actions = new BehaviorSubject<Command>(new Initialize());
     characters$ = this.#actions.pipe(
+        tap((_) => this.#refreshing.next(true)),
         // TODO: Change to exhaustScan (an operator that doesn't exist)
         mergeScan(
             (characters, action) => action.execute(characters, this),
@@ -86,6 +87,7 @@ export class CharacterService {
             )
         ),
         tap((characters) => this.saveCharacters(characters)),
+        tap((_) => this.#refreshing.next(false)),
         share({
             connector: () => new BehaviorSubject([] as CensusCharacter[]),
             resetOnRefCountZero: false,
