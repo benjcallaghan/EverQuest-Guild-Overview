@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import {
     BehaviorSubject,
+    catchError,
     from,
     map,
     Observable,
@@ -20,9 +21,7 @@ interface CharacterSearchResults {
     character_list: CensusCharacter[];
 }
 
-type Action = (
-    characters: CensusCharacter[]
-) => ObservableInput<CensusCharacter[]>;
+type Action = (characters: CensusCharacter[]) => Observable<CensusCharacter[]>;
 
 function exhaustScan<T, A>(
     accumulator: (acc: A, value: T, index: number) => ObservableInput<A>,
@@ -72,11 +71,14 @@ export class CharacterService {
     #refreshing = new BehaviorSubject<boolean>(false);
     refreshing$ = this.#refreshing.asObservable();
 
-    #actions = new BehaviorSubject<Action>((_) => this.getSavedCharacters());
+    #actions = new BehaviorSubject<Action>((_) =>
+        from(this.getSavedCharacters())
+    );
     characters$ = this.#actions.pipe(
         tap((_) => this.#refreshing.next(true)),
         exhaustScan(
-            (characters, action) => action(characters),
+            (characters, action) =>
+                action(characters).pipe(catchError((_) => of(characters))),
             [] as CensusCharacter[]
         ),
         tap((characters) =>
@@ -85,7 +87,11 @@ export class CharacterService {
             )
         ),
         tap((characters) => this.saveCharacters(characters)),
-        tap((_) => this.#refreshing.next(false)),
+        tap({
+            next: (_) => this.#refreshing.next(false),
+            error: (_) => this.#refreshing.next(false),
+            complete: () => this.#refreshing.next(false),
+        }),
         share({
             connector: () => new BehaviorSubject([] as CensusCharacter[]),
             resetOnRefCountZero: false,
