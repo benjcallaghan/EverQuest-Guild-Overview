@@ -5,10 +5,12 @@ import {
     BehaviorSubject,
     from,
     map,
-    mergeScan,
     Observable,
+    ObservableInput,
     of,
+    OperatorFunction,
     share,
+    Subscription,
     tap,
 } from 'rxjs';
 import { CensusCharacter } from './census.service';
@@ -18,7 +20,50 @@ interface CharacterSearchResults {
     character_list: CensusCharacter[];
 }
 
-type Action = (characters: CensusCharacter[]) => Observable<CensusCharacter[]>;
+type Action = (
+    characters: CensusCharacter[]
+) => ObservableInput<CensusCharacter[]>;
+
+function exhaustScan<T, A>(
+    accumulator: (acc: A, value: T, index: number) => ObservableInput<A>,
+    seed: A
+): OperatorFunction<T, A> {
+    return (source) =>
+        new Observable((subscriber) => {
+            let state: A = seed;
+            let index = 0;
+            let innerSub: Subscription | null = null;
+            let outerSub = source.subscribe({
+                next: (value) => {
+                    if (!innerSub) {
+                        const inner = from(accumulator(state, value, index++));
+                        innerSub = inner.subscribe({
+                            next: (val) => {
+                                state = val;
+                                subscriber.next(state);
+                            },
+                            error: (e) => {
+                                innerSub?.unsubscribe();
+                                innerSub = null;
+                                subscriber.error(e);
+                            },
+                            complete: () => {
+                                innerSub?.unsubscribe();
+                                innerSub = null;
+                            },
+                        });
+                    }
+                },
+                error: (e) => subscriber.error(e),
+                complete: () => subscriber.complete(),
+            });
+
+            return () => {
+                innerSub?.unsubscribe();
+                outerSub.unsubscribe();
+            };
+        });
+}
 
 @Injectable({
     providedIn: 'root',
@@ -27,13 +72,10 @@ export class CharacterService {
     #refreshing = new BehaviorSubject<boolean>(false);
     refreshing$ = this.#refreshing.asObservable();
 
-    #actions = new BehaviorSubject<Action>((_) =>
-        from(this.getSavedCharacters())
-    );
+    #actions = new BehaviorSubject<Action>((_) => this.getSavedCharacters());
     characters$ = this.#actions.pipe(
         tap((_) => this.#refreshing.next(true)),
-        // TODO: Change to exhaustScan (an operator that doesn't exist)
-        mergeScan(
+        exhaustScan(
             (characters, action) => action(characters),
             [] as CensusCharacter[]
         ),
