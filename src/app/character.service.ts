@@ -18,7 +18,7 @@ interface CharacterSearchResults {
     character_list: CensusCharacter[];
 }
 
-type Command = (characters: CensusCharacter[]) => Observable<CensusCharacter[]>;
+type Action = (characters: CensusCharacter[]) => Observable<CensusCharacter[]>;
 
 @Injectable({
     providedIn: 'root',
@@ -27,7 +27,7 @@ export class CharacterService {
     #refreshing = new BehaviorSubject<boolean>(false);
     refreshing$ = this.#refreshing.asObservable();
 
-    #actions = new BehaviorSubject<Command>((_) =>
+    #actions = new BehaviorSubject<Action>((_) =>
         from(this.getSavedCharacters())
     );
     characters$ = this.#actions.pipe(
