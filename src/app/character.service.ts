@@ -18,53 +18,7 @@ interface CharacterSearchResults {
     character_list: CensusCharacter[];
 }
 
-interface Command {
-    execute(
-        characters: CensusCharacter[],
-        service: CharacterService
-    ): Observable<CensusCharacter[]>;
-}
-
-class Initialize implements Command {
-    execute(
-        characters: CensusCharacter[],
-        service: CharacterService
-    ): Observable<CensusCharacter[]> {
-        return from(service.getSavedCharacters());
-    }
-}
-
-class Refresh implements Command {
-    execute(
-        characters: CensusCharacter[],
-        service: CharacterService
-    ): Observable<CensusCharacter[]> {
-        return service.getOnlineCharacters(characters);
-    }
-}
-
-class Add implements Command {
-    constructor(private character: CensusCharacter) {}
-
-    execute(
-        characters: CensusCharacter[],
-        service: CharacterService
-    ): Observable<CensusCharacter[]> {
-        return of([...characters, this.character]);
-    }
-}
-
-class Remove implements Command {
-    constructor(private character: CensusCharacter) {}
-
-    execute(
-        characters: CensusCharacter[],
-        service: CharacterService
-    ): Observable<CensusCharacter[]> {
-        const index = characters.findIndex((c) => c.id === this.character.id);
-        return of(index > -1 ? characters.toSpliced(index, 1) : characters);
-    }
-}
+type Command = (characters: CensusCharacter[]) => Observable<CensusCharacter[]>;
 
 @Injectable({
     providedIn: 'root',
@@ -73,12 +27,14 @@ export class CharacterService {
     #refreshing = new BehaviorSubject<boolean>(false);
     refreshing$ = this.#refreshing.asObservable();
 
-    #actions = new BehaviorSubject<Command>(new Initialize());
+    #actions = new BehaviorSubject<Command>((_) =>
+        from(this.getSavedCharacters())
+    );
     characters$ = this.#actions.pipe(
         tap((_) => this.#refreshing.next(true)),
         // TODO: Change to exhaustScan (an operator that doesn't exist)
         mergeScan(
-            (characters, action) => action.execute(characters, this),
+            (characters, action) => action(characters),
             [] as CensusCharacter[]
         ),
         tap((characters) =>
@@ -103,27 +59,32 @@ export class CharacterService {
         return this.getSavedCharacters();
     }
 
-    public async getSavedCharacters(): Promise<CensusCharacter[]> {
+    private async getSavedCharacters(): Promise<CensusCharacter[]> {
         return (await this.storage.get('characters')) ?? [];
     }
 
-    public async saveCharacters(characters: CensusCharacter[]): Promise<void> {
+    private async saveCharacters(characters: CensusCharacter[]): Promise<void> {
         await this.storage.set('characters', characters);
     }
 
     public add(character: CensusCharacter): void {
-        this.#actions.next(new Add(character));
+        this.#actions.next((characters) => of([...characters, character]));
     }
 
     public remove(character: CensusCharacter): void {
-        this.#actions.next(new Remove(character));
+        this.#actions.next((characters) => {
+            const index = characters.findIndex((c) => c.id === character.id);
+            return of(index > -1 ? characters.toSpliced(index, 1) : characters);
+        });
     }
 
     public refreshOnline(): void {
-        this.#actions.next(new Refresh());
+        this.#actions.next((characters) =>
+            this.getOnlineCharacters(characters)
+        );
     }
 
-    public getOnlineCharacters(
+    private getOnlineCharacters(
         characters: CensusCharacter[]
     ): Observable<CensusCharacter[]> {
         const url = build({
